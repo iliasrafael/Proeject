@@ -1,14 +1,19 @@
 /* domes */
+#define N 100
 
-typedef struct list_node {
+class list_node {
 	int neighbor[N];
 	int edgeProperty[N];
 	int offset;	
-}list_node;
+};
 
-typedef struct NodeIndex {
+class NodeIndex {
 	list_node* list_head;
-}NodeIndex;
+};
+
+class Buffer{
+	list_node cells[N];
+};
 
 NodeIndex* createNodeIndex();
 int InsertNode(NodeIndex* index, int id);
