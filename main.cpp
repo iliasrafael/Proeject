@@ -2,7 +2,6 @@
 
 int main(void)
 {
-			
-	Buffer * buffer=new Buffer();
+	Graph * graph=new Graph();
 	return 0;
 }

@@ -12,7 +12,14 @@ class NodeIndex {
 };
 
 class Buffer{
-	list_node cells[N];
+	list_node *cells;
+};
+
+class Graph{
+	NodeIndex * inc_index;
+	NodeIndex * out_index;
+	Buffer * inc_buffer;
+	Buffer * out_buffer;
 };
 
 NodeIndex* createNodeIndex();
