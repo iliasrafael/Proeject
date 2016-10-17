@@ -7,26 +7,25 @@ bool OK_SUCCESS;
 class list_node {
 	uint32_t neighbor[N];
 	uint32_t edgeProperty[N];
-	int offset;	
-};
-
-class NodeIndex {
-	list_node* list_head;
-
-	NodeIndex* createNodeIndex();
-	int InsertNode(NodeIndex* index, int id);
-	list_node* getListHead(NodeIndex* index, int id);
-	int destroyNodeIndex(NodeIndex* index);
+	unsigned int offset;	
 };
 
 class Buffer{
 	list_node *cells;
-
-
+public:
 	Buffer* createBuffer();
-	int allocNewNode(Buffer*);
-	list_node* getListNode(int);
-	OK_SUCCESS destroyBuffer(Buffer*);
+	unsigned int allocNewNode();
+	list_node* getListNode(unsigned int);
+	bool destroyBuffer();
+};
+
+class NodeIndex {
+	unsigned int* Nodes;
+public:
+	NodeIndex* createNodeIndex();
+	bool InsertNode(uint32_t id);
+	unsigned int getListHead(uint32_t id);
+	bool destroyNodeIndex();
 };
 
 class Graph{
@@ -34,10 +33,6 @@ class Graph{
 	NodeIndex * out_index;
 	Buffer * inc_buffer;
 	Buffer * out_buffer;
+public:
+
 };
-/*
-Graph::Graph()
-{
-	
-}
-*/
