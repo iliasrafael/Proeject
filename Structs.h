@@ -1,11 +1,11 @@
 /* Structs.h */
 #include <stdint.h>
 #define N 100
-#define BufferSize 100
-
+#define BufferSize 90
+#define NodeIndexSize 10
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-bool OK_SUCCESS;
+#define OK_SUCCESS 1
 ///////////////////////////////////////////////////////////////////////////////
 /* LIST NODE*/
 ///////////////////////////////////////////////////////////////////////////////
@@ -27,6 +27,7 @@ class Buffer{
 	unsigned int size;
 public:
 	Buffer();
+	~Buffer();
 	unsigned int allocNewNode();
 	list_node* getListNode(unsigned int);
 	unsigned int getLast();
@@ -37,21 +38,27 @@ public:
 /* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
-	unsigned int* Nodes;
+	unsigned int* nodes;
+	unsigned int last;
+	unsigned int size;
 public:
 	NodeIndex();
+	~NodeIndex();
 	bool InsertNode(uint32_t id);
 	unsigned int getListHead(uint32_t id);
+	unsigned int getLast();
+	unsigned int getSize();
 	bool destroyNodeIndex();
 };
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
 class Graph{
-	NodeIndex * inc_index;
-	NodeIndex * out_index;
-	Buffer * inc_buffer;
-	Buffer * out_buffer;
+	NodeIndex inc_index;
+	NodeIndex out_index;
+	Buffer inc_buffer;
+	Buffer out_buffer;
+public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////

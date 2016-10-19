@@ -2,6 +2,6 @@
 
 int main(void)
 {
-	Graph * graph=new Graph();
+	Graph graph;
 	return 0;
 }

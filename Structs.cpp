@@ -1,7 +1,7 @@
 #include "Structs.h"
 #include <iostream>
-
-
+#include <cstdlib>
+using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 /* LIST NODE*/
 ///////////////////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ unsigned int list_node::getNext()
 ///////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer()                                         //
 {                                                       //
-	cells=new list_node[BufferSize];       	           //
+	cells=(list_node *)malloc(sizeof(list_node)*BufferSize);       	           //
 	last=0;                                           //
 	size=BufferSize;                                 //
 	cout <<"Buffer Created"<<endl;                  //
@@ -34,7 +34,7 @@ Buffer::Buffer()                                         //
 ////////////////////////////////////////////////////
 Buffer::~Buffer()
 {
-	delete []cells;
+	free(cells);
 	cout <<"Buffer Deleted"<<endl;
 }
 ////////////////////////////////////////////////////
@@ -56,7 +56,28 @@ unsigned int Buffer::getLast()
 ////////////////////////////////////////////////////
 unsigned int Buffer::getSize()
 {
- return size;
+	return size;
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+NodeIndex::NodeIndex()
+{
+	nodes=(unsigned int*)malloc(sizeof(unsigned int)*NodeIndexSize);
+	last=0;
+	size=NodeIndexSize;
+	cout <<"Index Created"<<endl;    
+}
+NodeIndex::~NodeIndex()
+{
+	free(nodes);
+	cout <<"Index Deleted"<<endl;
+}
+unsigned int NodeIndex::getLast()
+{
+	return last;
+}
+////////////////////////////////////////////////////
+unsigned int NodeIndex::getSize()
+{
+	return size;
+}
