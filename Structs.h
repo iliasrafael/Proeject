@@ -13,7 +13,7 @@ class list_node {
 class Buffer{
 	list_node *cells;
 public:
-	Buffer* createBuffer();
+	Buffer();
 	unsigned int allocNewNode();
 	list_node* getListNode(unsigned int);
 	bool destroyBuffer();
@@ -22,7 +22,7 @@ public:
 class NodeIndex {
 	unsigned int* Nodes;
 public:
-	NodeIndex* createNodeIndex();
+	NodeIndex();
 	bool InsertNode(uint32_t id);
 	unsigned int getListHead(uint32_t id);
 	bool destroyNodeIndex();
@@ -33,6 +33,4 @@ class Graph{
 	NodeIndex * out_index;
 	Buffer * inc_buffer;
 	Buffer * out_buffer;
-public:
-
 };
