@@ -11,7 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 class list_node {                          
 public:
-		uint32_t neighbor[N];                 
+	uint32_t neighbor[N];                 
 	uint32_t edgeProperty[N];            
 	unsigned int offset;
 	unsigned int last_neighbor;
@@ -30,7 +30,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 class Buffer{
 public:
-		list_node *cells;
+	list_node *cells;
 	unsigned int last;
 	unsigned int size;
 	Buffer();
@@ -46,16 +46,20 @@ public:
 /* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
-public:
-		unsigned int* nodes;
+	unsigned int* nodes;
 	unsigned int last;
 	unsigned int size;
+public:
 	NodeIndex();
 	~NodeIndex();
 	bool InsertNode(uint32_t id,uint32_t offset);
 	unsigned int getListHead(uint32_t id);
+	unsigned int* getNodes();
+	unsigned int getPosition(unsigned int );
 	unsigned int getLast();
 	unsigned int getSize();
+	void setLast(unsigned int);
+	void setSize(unsigned int);
 	bool destroyNodeIndex();
 };
 ///////////////////////////////////////////////////////////////////////////////

@@ -19,37 +19,51 @@ unsigned int list_node::getOffset()
 {
 	return offset;
 }
+////////////////////////////////////////////////////
 unsigned int list_node::getLastOffset()
 {
 	return last_offset;
 }
+////////////////////////////////////////////////////
 unsigned int list_node::getLastNeighbor()
 {
 	return last_neighbor;
 }
+////////////////////////////////////////////////////
 void list_node::setOffset(unsigned int off)
 {
 	offset=off;
 }
+////////////////////////////////////////////////////
 void list_node::setLastOffset(unsigned int off){
 	last_offset=off;
 }
+////////////////////////////////////////////////////
+bool list_node::Insert(uint32_t id)
+{
+	if(last_neighbor<N)
+		neighbor[last_neighbor++]=id;
+	else
+		return false;
+	return true;
+}
+////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 /* BUFFER */
 ///////////////////////////////////////////////////////////////////////////////
-Buffer::Buffer()                                         //
-{                                                       //
-	cells=(list_node *)malloc(sizeof(list_node)*BufferSize);       	           //
+Buffer::Buffer()                                         
+{                                                       
+	cells=(list_node *)malloc(sizeof(list_node)*BufferSize);       	           
 	for(int i=0;i<BufferSize;i++)
 	{
 		cells[i].setOffset(0);
 		cells[i].setLastOffset(0);
 	}
-	last=0;                                           //
-	size=BufferSize;                                 //
-	cout <<"Buffer Created"<<endl;                  //
-}                                                  //
+	last=0;                                           
+	size=BufferSize;                                 
+	cout <<"Buffer Created"<<endl;                  
+}                                                  
 ////////////////////////////////////////////////////
 Buffer::~Buffer()
 {
@@ -77,7 +91,16 @@ unsigned int Buffer::getSize()
 {
 	return size;
 }
+////////////////////////////////////////////////////
+int Buffer::InsertFirstNode(uint32_t id)
+{
+	cells[last++].Insert(id);
+	return last-1;
+}
+////////////////////////////////////////////////////
+
 ///////////////////////////////////////////////////////////////////////////////
+/* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 NodeIndex::NodeIndex()
 {
@@ -88,11 +111,22 @@ NodeIndex::NodeIndex()
 	size=NodeIndexSize;
 	cout <<"Index Created"<<endl;    
 }
+////////////////////////////////////////////////////
 NodeIndex::~NodeIndex()
 {
 	free(nodes);
 	cout <<"Index Deleted"<<endl;
 }
+////////////////////////////////////////////////////
+unsigned int* NodeIndex::getNodes()
+{
+	return nodes;
+}
+unsigned int NodeIndex::getPosition(unsigned int i)
+{
+	return nodes[i];
+}
+////////////////////////////////////////////////////
 unsigned int NodeIndex::getLast()
 {
 	return last;
@@ -102,17 +136,26 @@ unsigned int NodeIndex::getSize()
 {
 	return size;
 }
-
+////////////////////////////////////////////////////
+void NodeIndex::setLast(unsigned int last_)
+{
+	last=last_;
+}
+////////////////////////////////////////////////////
+void NodeIndex::setSize(unsigned int size_)
+{
+	size=size_;
+}
+////////////////////////////////////////////////////
 bool NodeIndex::InsertNode(uint32_t id,uint32_t offset)
 {
 	nodes[id]=offset;
 }
+////////////////////////////////////////////////////
 
-int Buffer::InsertFirstNode(uint32_t id)
-{
-	cells[last++].Insert(id);
-	return last-1;
-}
+///////////////////////////////////////////////////////////////////////////////
+/* GRAPH */
+///////////////////////////////////////////////////////////////////////////////
 
 bool Graph::Insert(uint32_t id,uint32_t id2)
 {	
@@ -121,7 +164,7 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 	{
 		//realloc to index
 	}*/
-	if(out_index.nodes[id]==-1)
+	if(out_index.getPosition(id)==-1)
 	{
 		/*
 		if(out_buffer.last>=BufferSize)
@@ -133,7 +176,7 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 	}
 	else
 	{
-		int position = out_index.nodes[id];
+		int position = out_index.getPosition(id);
 		bool res=out_buffer.cells[position].Insert(id2);
 		if(res==false)
 		{
@@ -147,12 +190,5 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 			}
 	}
 }
-
-bool list_node::Insert(uint32_t id)
-{
-	if(last_neighbor<N)
-		neighbor[last_neighbor++]=id;
-	else
-		return false;
-	return true;
-}
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
