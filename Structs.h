@@ -2,7 +2,7 @@
 #include <stdint.h>
 #define N 100
 #define BufferSize 90
-#define NodeIndexSize 10
+#define NodeIndexSize 100
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 #define OK_SUCCESS 1
@@ -10,25 +10,33 @@
 /* LIST NODE*/
 ///////////////////////////////////////////////////////////////////////////////
 class list_node {                          
-	uint32_t neighbor[N];                 
+public:
+		uint32_t neighbor[N];                 
 	uint32_t edgeProperty[N];            
 	unsigned int offset;
-public:
+	unsigned int last_neighbor;
+	unsigned int last_offset;
+	bool Insert(uint32_t id);
 	uint32_t* getNeighbors();
 	uint32_t* getProperties();
-	unsigned int getNext();	            
+	unsigned int getOffset();
+	unsigned int getLastOffset();
+	unsigned int getLastNeighbor();	 
+	void setOffset(unsigned int off);
+	void setLastOffset(unsigned int off);           
 };								       
 ///////////////////////////////////////////////////////////////////////////////
 /* BUFFER */
 ///////////////////////////////////////////////////////////////////////////////
 class Buffer{
-	list_node *cells;
+public:
+		list_node *cells;
 	unsigned int last;
 	unsigned int size;
-public:
 	Buffer();
 	~Buffer();
 	unsigned int allocNewNode();
+	int InsertFirstNode(uint32_t id);
 	list_node* getListNode(unsigned int);
 	unsigned int getLast();
 	unsigned int getSize();
@@ -38,13 +46,13 @@ public:
 /* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
-	unsigned int* nodes;
+public:
+		unsigned int* nodes;
 	unsigned int last;
 	unsigned int size;
-public:
 	NodeIndex();
 	~NodeIndex();
-	bool InsertNode(uint32_t id);
+	bool InsertNode(uint32_t id,uint32_t offset);
 	unsigned int getListHead(uint32_t id);
 	unsigned int getLast();
 	unsigned int getSize();
@@ -59,6 +67,7 @@ class Graph{
 	Buffer inc_buffer;
 	Buffer out_buffer;
 public:
+	bool Insert(uint32_t id,uint32_t id2);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

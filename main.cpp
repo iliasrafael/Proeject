@@ -17,6 +17,7 @@ int main(void)
     	if(myReadFile.good())
     		cout<<node<<" "<<edge<<endl;
     	else break;
+    	graph.Insert(node,edge);
     }
 }
 myReadFile.close();
