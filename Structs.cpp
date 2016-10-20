@@ -39,6 +39,10 @@ void list_node::setLastOffset(unsigned int off){
 	last_offset=off;
 }
 ////////////////////////////////////////////////////
+void list_node::setLastNeighbor(unsigned int neighbor){
+	last_neighbor=neighbor;
+}
+////////////////////////////////////////////////////
 bool list_node::Insert(uint32_t id)
 {
 	if(last_neighbor<N)
@@ -59,6 +63,7 @@ Buffer::Buffer()
 	{
 		cells[i].setOffset(0);
 		cells[i].setLastOffset(0);
+		cells[i].setLastNeighbor(0);
 	}
 	last=0;                                           
 	size=BufferSize;                                 

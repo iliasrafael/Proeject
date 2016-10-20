@@ -23,7 +23,8 @@ public:
 	unsigned int getLastOffset();
 	unsigned int getLastNeighbor();	 
 	void setOffset(unsigned int off);
-	void setLastOffset(unsigned int off);           
+	void setLastOffset(unsigned int off);
+	void setLastNeighbor(unsigned int neighbor);         
 };								       
 ///////////////////////////////////////////////////////////////////////////////
 /* BUFFER */
