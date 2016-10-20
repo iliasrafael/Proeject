@@ -1,8 +1,8 @@
 /* Structs.h */
 #include <stdint.h>
-#define N 100
-#define BufferSize 90
-#define NodeIndexSize 100
+#define N 5
+#define BufferSize 10
+#define NodeIndexSize 5
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 #define OK_SUCCESS 1
@@ -41,16 +41,19 @@ public:
 	list_node* getListNode(unsigned int);
 	unsigned int getLast();
 	unsigned int getSize();
+	void setSize(unsigned int);
+	void reallocation();
 	bool destroyBuffer();
 };
 ///////////////////////////////////////////////////////////////////////////////
 /* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
-	unsigned int* nodes;
+	
 	unsigned int last;
 	unsigned int size;
 public:
+	unsigned int* nodes;
 	NodeIndex();
 	~NodeIndex();
 	bool InsertNode(uint32_t id,uint32_t offset);

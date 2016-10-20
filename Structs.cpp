@@ -97,10 +97,27 @@ unsigned int Buffer::getSize()
 	return size;
 }
 ////////////////////////////////////////////////////
+void Buffer::setSize(unsigned int size_)
+{
+	size=size_;
+}
+////////////////////////////////////////////////////
 int Buffer::InsertFirstNode(uint32_t id)
 {
 	cells[last++].Insert(id);
 	return last-1;
+}
+////////////////////////////////////////////////////
+void Buffer::reallocation()
+{
+	size*=2;
+	cells=(list_node *)realloc(cells, sizeof(list_node)*size);       	           
+	for(int i=(size/2); i<size; i++)
+	{
+		cells[i].setOffset(0);
+		cells[i].setLastOffset(0);
+		cells[i].setLastNeighbor(0);
+	}
 }
 ////////////////////////////////////////////////////
 
@@ -164,20 +181,24 @@ bool NodeIndex::InsertNode(uint32_t id,uint32_t offset)
 
 bool Graph::Insert(uint32_t id,uint32_t id2)
 {	
-	/*
-	if(id>=size)
+	if(id>=out_index.getSize()) 
 	{
-		//realloc to index
-	}*/
+		cout<<"Index -> realloc for "<<id<<endl;
+		out_index.setSize(2*out_index.getSize());
+		out_index.nodes = (unsigned int*) realloc(out_index.nodes, sizeof(unsigned int)*out_index.getSize());
+		for(int i = (out_index.getSize()/2); i<out_index.getSize(); i++)
+			out_index.nodes[i]=-1;
+	}
+
 	if(out_index.getPosition(id)==-1)
 	{
-		/*
-		if(out_buffer.last>=BufferSize)
-		{
-			//realloc
-		}*/
-			int offset=out_buffer.InsertFirstNode(id2);
-			out_index.InsertNode(id,offset);
+		if(out_buffer.last>=out_buffer.getSize()) {
+			out_buffer.reallocation();
+			cout<<"Buffer-> realloc for "<<id<<endl;
+		}
+
+		int offset=out_buffer.InsertFirstNode(id2);
+		out_index.InsertNode(id,offset);
 	}
 	else
 	{
@@ -185,14 +206,18 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 		bool res=out_buffer.cells[position].Insert(id2);
 		if(res==false)
 		{
-				//if(out_buffer.last>=BufferSize)
-				//reallox
-					if(out_buffer.cells[position].offset==0)
-						out_buffer.cells[position].offset=out_buffer.last;
-					out_buffer.cells[position].last_offset=out_buffer.last;
-					out_buffer.cells[out_buffer.last].Insert(id2);
-					out_buffer.last++;
+			if(out_buffer.last>=out_buffer.getSize()) {
+				cout<<"last "<<out_buffer.getLast()<<endl;
+				out_buffer.reallocation();
+				cout<<"Buffer2-> realloc for "<<id<<endl;
 			}
+
+			if(out_buffer.cells[position].offset==0)
+				out_buffer.cells[position].offset=out_buffer.last;
+			out_buffer.cells[position].last_offset=out_buffer.last;
+			out_buffer.cells[out_buffer.last].Insert(id2);
+			out_buffer.last++;
+		}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////
