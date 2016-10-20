@@ -183,7 +183,7 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 {	
 	if(id>=out_index.getSize()) 
 	{
-		cout<<"Index -> realloc for "<<id<<endl;
+		//cout<<"Index -> realloc for "<<id<<endl;
 		out_index.setSize(2*out_index.getSize());
 		out_index.nodes = (unsigned int*) realloc(out_index.nodes, sizeof(unsigned int)*out_index.getSize());
 		for(int i = (out_index.getSize()/2); i<out_index.getSize(); i++)
@@ -194,7 +194,7 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 	{
 		if(out_buffer.last>=out_buffer.getSize()) {
 			out_buffer.reallocation();
-			cout<<"Buffer-> realloc for "<<id<<endl;
+			//cout<<"Buffer-> realloc for "<<id<<endl;
 		}
 
 		int offset=out_buffer.InsertFirstNode(id2);
@@ -204,12 +204,11 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 	{
 		int position = out_index.getPosition(id);
 		bool res=out_buffer.cells[position].Insert(id2);
+		if(res==false)res=out_buffer.cells[out_buffer.cells[position].last_offset].Insert(id2);
 		if(res==false)
 		{
 			if(out_buffer.last>=out_buffer.getSize()) {
-				cout<<"last "<<out_buffer.getLast()<<endl;
 				out_buffer.reallocation();
-				cout<<"Buffer2-> realloc for "<<id<<endl;
 			}
 
 			if(out_buffer.cells[position].offset==0)
