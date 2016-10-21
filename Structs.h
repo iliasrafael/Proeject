@@ -15,7 +15,6 @@ public:
 	uint32_t edgeProperty[N];            
 	unsigned int offset;
 	unsigned int last_neighbor;
-	unsigned int last_offset;
 	bool Insert(uint32_t id);
 	uint32_t* getNeighbors();
 	uint32_t* getProperties();
@@ -51,19 +50,17 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
 	
-	unsigned int last;
 	unsigned int size;
 public:
 	unsigned int* nodes;
+	unsigned int* last_bucket;
 	NodeIndex();
 	~NodeIndex();
 	bool InsertNode(uint32_t id,uint32_t offset);
 	unsigned int getListHead(uint32_t id);
 	unsigned int* getNodes();
 	unsigned int getPosition(unsigned int );
-	unsigned int getLast();
 	unsigned int getSize();
-	void setLast(unsigned int);
 	void setSize(unsigned int);
 	bool destroyNodeIndex();
 };

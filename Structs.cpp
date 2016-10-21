@@ -20,10 +20,6 @@ unsigned int list_node::getOffset()
 	return offset;
 }
 ////////////////////////////////////////////////////
-unsigned int list_node::getLastOffset()
-{
-	return last_offset;
-}
 ////////////////////////////////////////////////////
 unsigned int list_node::getLastNeighbor()
 {
@@ -35,9 +31,6 @@ void list_node::setOffset(unsigned int off)
 	offset=off;
 }
 ////////////////////////////////////////////////////
-void list_node::setLastOffset(unsigned int off){
-	last_offset=off;
-}
 ////////////////////////////////////////////////////
 void list_node::setLastNeighbor(unsigned int neighbor){
 	last_neighbor=neighbor;
@@ -62,18 +55,15 @@ Buffer::Buffer()
 	for(int i=0;i<BufferSize;i++)
 	{
 		cells[i].setOffset(0);
-		cells[i].setLastOffset(0);
 		cells[i].setLastNeighbor(0);
 	}
 	last=0;                                           
-	size=BufferSize;                                 
-	cout <<"Buffer Created"<<endl;                  
+	size=BufferSize;                                                
 }                                                  
 ////////////////////////////////////////////////////
 Buffer::~Buffer()
 {
 	free(cells);
-	cout <<"Buffer Deleted"<<endl;
 }
 ////////////////////////////////////////////////////
 list_node* Buffer::getListNode(unsigned int offset)
@@ -119,7 +109,6 @@ void Buffer::reallocation()
 	for(int i=(size/2); i<size; i++)
 	{
 		cells[i].setOffset(0);
-		cells[i].setLastOffset(0);
 		cells[i].setLastNeighbor(0);
 	}
 }
@@ -131,17 +120,18 @@ void Buffer::reallocation()
 NodeIndex::NodeIndex()
 {
 	nodes=(unsigned int*)malloc(sizeof(unsigned int)*NodeIndexSize);
-	for(int i=0;i<NodeIndexSize;i++)
+	last_bucket=(uint32_t *)malloc(sizeof(uint32_t)*NodeIndexSize);
+	for(int i=0;i<NodeIndexSize;i++){
 		nodes[i]=-1;
-	last=0;
+		last_bucket[i]=0;
+	}
 	size=NodeIndexSize;
-	cout <<"Index Created"<<endl;    
 }
 ////////////////////////////////////////////////////
 NodeIndex::~NodeIndex()
 {
 	free(nodes);
-	cout <<"Index Deleted"<<endl;
+	free(last_bucket);
 }
 ////////////////////////////////////////////////////
 unsigned int* NodeIndex::getNodes()
@@ -153,20 +143,13 @@ unsigned int NodeIndex::getPosition(unsigned int i)
 	return nodes[i];
 }
 ////////////////////////////////////////////////////
-unsigned int NodeIndex::getLast()
-{
-	return last;
-}
 ////////////////////////////////////////////////////
 unsigned int NodeIndex::getSize()
 {
 	return size;
 }
 ////////////////////////////////////////////////////
-void NodeIndex::setLast(unsigned int last_)
-{
-	last=last_;
-}
+
 ////////////////////////////////////////////////////
 void NodeIndex::setSize(unsigned int size_)
 {
@@ -193,8 +176,12 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 		//cout<<"Index -> realloc for "<<id<<endl;
 		index->setSize(2*index->getSize());
 		index->nodes = (unsigned int*) realloc(index->nodes, sizeof(unsigned int)*index->getSize());
+		index->last_bucket= (unsigned int*) realloc(index->last_bucket, sizeof(unsigned int)*index->getSize());
 		for(int i = (index->getSize()/2); i<index->getSize(); i++)
+		{
 			index->nodes[i]=-1;
+			index->last_bucket[i]=0;
+		}
 	}
 
 	unsigned int last=buffer->getLast(); //fovamai
@@ -213,8 +200,8 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 		bool res=buffer->cells[position].Insert(id2);
 
 		if(res==false)
-			if(buffer->cells[position].last_offset!=0)
-				res=buffer->cells[buffer->cells[position].last_offset].Insert(id2);
+			if(index->last_bucket[id]!=0)
+				res=buffer->cells[index->last_bucket[id]].Insert(id2);
 		if(res==false)
 		{
 			if(last>=buffer->getSize()) {
@@ -223,7 +210,7 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 
 			if(buffer->cells[position].offset==0)
 				buffer->cells[position].offset=last;
-			buffer->cells[position].last_offset=last;
+			index->last_bucket[id]=last;
 			buffer->cells[last].Insert(id2);
 			buffer->setLast(last+1);
 		}

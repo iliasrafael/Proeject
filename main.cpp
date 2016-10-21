@@ -22,7 +22,7 @@ int main(void)
 	}
 	myReadFile.close();
 	//check gia out
-	
+	/*
 	for(int i = 0; i<graph.out_index.getSize(); i++) {
 		cout<<"Node "<<i<<" :"<<endl;
 		int offset = graph.out_index.nodes[i];
@@ -39,9 +39,8 @@ int main(void)
 		}
 		
 		cout<<endl;
-	}
-
-		/* check gia inc
+	}*/
+	/*
 		for(int i = 0; i<graph.inc_index.getSize(); i++) {
 			cout<<"Node "<<i<<" :"<<endl;
 			int offset = graph.inc_index.nodes[i];
