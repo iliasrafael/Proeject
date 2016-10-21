@@ -120,7 +120,7 @@ void Buffer::reallocation()
 NodeIndex::NodeIndex()
 {
 	nodes=(unsigned int*)malloc(sizeof(unsigned int)*NodeIndexSize);
-	last_bucket=(uint32_t *)malloc(sizeof(uint32_t)*NodeIndexSize);
+	last_bucket=(unsigned int *)malloc(sizeof(unsigned int)*NodeIndexSize);
 	for(int i=0;i<NodeIndexSize;i++){
 		nodes[i]=-1;
 		last_bucket[i]=0;
@@ -200,10 +200,11 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 	{
 		int position = index->getPosition(id);
 		bool res=buffer->cells[position].Insert(id2);
-
 		if(res==false)
 			if(index->last_bucket[id]!=0)
+			{
 				res=buffer->cells[index->last_bucket[id]].Insert(id2);
+			}
 		if(res==false)
 		{
 			if(last>=buffer->getSize()) {
@@ -212,6 +213,8 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 
 			if(buffer->cells[position].offset==0)
 				buffer->cells[position].offset=last;
+			else if(buffer->cells[index->last_bucket[id]].offset==0)
+				buffer->cells[index->last_bucket[id]].offset=last;
 			index->last_bucket[id]=last;
 			buffer->cells[last].Insert(id2);
 			buffer->setLast(last+1);

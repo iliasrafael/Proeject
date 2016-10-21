@@ -21,14 +21,16 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	//check gia out
-	/*
+
 	for(int i = 0; i<graph.out_index.getSize(); i++) {
 		cout<<"Node "<<i<<" :"<<endl;
 		int offset = graph.out_index.nodes[i];
+		if(offset==-1)
+			continue;
 		uint32_t* neighbors = graph.out_buffer.cells[offset].getNeighbors();
-		int offset2 = graph.out_buffer.cells[offset].getOffset();
-
+		int offset2 = graph.out_buffer.cells[offset].getOffset();		
+		if(i==13)
+			cout<<graph.out_index.nodes[1]<<"  "<<graph.out_index.last_bucket[12]<<endl;
 		for(int j = 0; j<graph.out_buffer.cells[offset].getLastNeighbor(); j++)
 			cout<<neighbors[j]<<"  ";
 		while(offset2!=0) {
@@ -39,7 +41,7 @@ int main(void)
 		}
 		
 		cout<<endl;
-	}*/
+	}
 	/*
 		for(int i = 0; i<graph.inc_index.getSize(); i++) {
 			cout<<"Node "<<i<<" :"<<endl;
