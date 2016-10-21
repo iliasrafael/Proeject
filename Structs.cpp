@@ -91,6 +91,10 @@ unsigned int Buffer::getLast()
 {
 	return last;
 }
+void Buffer::setLast(unsigned int last_)
+{
+	last=last_;
+}
 ////////////////////////////////////////////////////
 unsigned int Buffer::getSize()
 {
@@ -192,7 +196,7 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 
 	if(out_index.getPosition(id)==-1)
 	{
-		if(out_buffer.last>=out_buffer.getSize()) {
+		if(out_buffer.getLast()>=out_buffer.getSize()) {
 			out_buffer.reallocation();
 			//cout<<"Buffer-> realloc for "<<id<<endl;
 		}
@@ -207,15 +211,15 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 		if(res==false)res=out_buffer.cells[out_buffer.cells[position].last_offset].Insert(id2);
 		if(res==false)
 		{
-			if(out_buffer.last>=out_buffer.getSize()) {
+			if(out_buffer.getLast()>=out_buffer.getSize()) {
 				out_buffer.reallocation();
 			}
 
 			if(out_buffer.cells[position].offset==0)
-				out_buffer.cells[position].offset=out_buffer.last;
-			out_buffer.cells[position].last_offset=out_buffer.last;
-			out_buffer.cells[out_buffer.last].Insert(id2);
-			out_buffer.last++;
+				out_buffer.cells[position].offset=out_buffer.getLast();
+			out_buffer.cells[position].last_offset=out_buffer.getLast();
+			out_buffer.cells[out_buffer.getLast()].Insert(id2);
+			out_buffer.setLast(out_buffer.getLast()+1);
 		}
 	}
 }
