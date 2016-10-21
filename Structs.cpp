@@ -183,47 +183,49 @@ bool NodeIndex::InsertNode(uint32_t id,uint32_t offset)
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
 
-bool Graph::Insert(uint32_t id,uint32_t id2)
+bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 {	
-	if(id>=out_index.getSize()) 
+
+	NodeIndex * index=ind;
+	Buffer *buffer=buff;
+	while(id>=index->getSize()) 
 	{
 		//cout<<"Index -> realloc for "<<id<<endl;
-		out_index.setSize(2*out_index.getSize());
-		out_index.nodes = (unsigned int*) realloc(out_index.nodes, sizeof(unsigned int)*out_index.getSize());
-		for(int i = (out_index.getSize()/2); i<out_index.getSize(); i++)
-			out_index.nodes[i]=-1;
+		index->setSize(2*index->getSize());
+		index->nodes = (unsigned int*) realloc(index->nodes, sizeof(unsigned int)*index->getSize());
+		for(int i = (index->getSize()/2); i<index->getSize(); i++)
+			index->nodes[i]=-1;
 	}
 
-	if(out_index.getPosition(id)==-1)
+	unsigned int last=buffer->getLast(); //fovamai
+	if(index->getPosition(id)==-1)
 	{
-		if(out_buffer.getLast()>=out_buffer.getSize()) {
-			out_buffer.reallocation();
+		if(last>=buffer->getSize()) {
+			buffer->reallocation();
 			//cout<<"Buffer-> realloc for "<<id<<endl;
 		}
-
-		int offset=out_buffer.InsertFirstNode(id2);
-		out_index.InsertNode(id,offset);
+		int offset=buffer->InsertFirstNode(id2);
+		index->InsertNode(id,offset);
 	}
 	else
 	{
-		int position = out_index.getPosition(id);
-		bool res=out_buffer.cells[position].Insert(id2);
+		int position = index->getPosition(id);
+		bool res=buffer->cells[position].Insert(id2);
 
 		if(res==false)
-			if(out_buffer.cells[position].last_offset!=0)
-				res=out_buffer.cells[out_buffer.cells[position].last_offset].Insert(id2);
-
+			if(buffer->cells[position].last_offset!=0)
+				res=buffer->cells[buffer->cells[position].last_offset].Insert(id2);
 		if(res==false)
 		{
-			if(out_buffer.getLast()>=out_buffer.getSize()) {
-				out_buffer.reallocation();
+			if(last>=buffer->getSize()) {
+				buffer->reallocation();
 			}
 
-			if(out_buffer.cells[position].offset==0)
-				out_buffer.cells[position].offset=out_buffer.getLast();
-			out_buffer.cells[position].last_offset=out_buffer.getLast();
-			out_buffer.cells[out_buffer.getLast()].Insert(id2);
-			out_buffer.setLast(out_buffer.getLast()+1);
+			if(buffer->cells[position].offset==0)
+				buffer->cells[position].offset=last;
+			buffer->cells[position].last_offset=last;
+			buffer->cells[last].Insert(id2);
+			buffer->setLast(last+1);
 		}
 	}
 }

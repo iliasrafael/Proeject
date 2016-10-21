@@ -71,14 +71,12 @@ public:
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
 class Graph{
-	NodeIndex inc_index;
-	
-	Buffer inc_buffer;
-	
 public:
+	NodeIndex inc_index;
+	Buffer inc_buffer;
 	NodeIndex out_index;
 	Buffer out_buffer;
-	bool Insert(uint32_t id,uint32_t id2);
+	bool Insert(NodeIndex *ind ,Buffer *buff,uint32_t id,uint32_t id2);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
