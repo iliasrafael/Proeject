@@ -208,7 +208,11 @@ bool Graph::Insert(uint32_t id,uint32_t id2)
 	{
 		int position = out_index.getPosition(id);
 		bool res=out_buffer.cells[position].Insert(id2);
-		if(res==false)res=out_buffer.cells[out_buffer.cells[position].last_offset].Insert(id2);
+
+		if(res==false)
+			if(out_buffer.cells[position].last_offset!=0)
+				res=out_buffer.cells[out_buffer.cells[position].last_offset].Insert(id2);
+
 		if(res==false)
 		{
 			if(out_buffer.getLast()>=out_buffer.getSize()) {

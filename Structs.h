@@ -72,10 +72,12 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 class Graph{
 	NodeIndex inc_index;
-	NodeIndex out_index;
+	
 	Buffer inc_buffer;
-	Buffer out_buffer;
+	
 public:
+	NodeIndex out_index;
+	Buffer out_buffer;
 	bool Insert(uint32_t id,uint32_t id2);
 };
 
