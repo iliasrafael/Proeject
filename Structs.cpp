@@ -127,6 +127,17 @@ NodeIndex::NodeIndex()
 	}
 	size=NodeIndexSize;
 }
+void NodeIndex::reallocation()
+{
+	size*=2;
+	nodes = (unsigned int*) realloc(nodes, sizeof(unsigned int)*size);
+	last_bucket= (unsigned int*) realloc(last_bucket, sizeof(unsigned int)*size);
+	for(int i =size/2; i<size; i++)
+	{
+		nodes[i]=-1;
+		last_bucket[i]=0;
+	}
+}
 ////////////////////////////////////////////////////
 NodeIndex::~NodeIndex()
 {
@@ -171,17 +182,8 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 
 	NodeIndex * index=ind;
 	Buffer *buffer=buff;
-	while(id>=index->getSize()) 
-	{
-		//cout<<"Index -> realloc for "<<id<<endl;
-		index->setSize(2*index->getSize());
-		index->nodes = (unsigned int*) realloc(index->nodes, sizeof(unsigned int)*index->getSize());
-		index->last_bucket= (unsigned int*) realloc(index->last_bucket, sizeof(unsigned int)*index->getSize());
-		for(int i = (index->getSize()/2); i<index->getSize(); i++)
-		{
-			index->nodes[i]=-1;
-			index->last_bucket[i]=0;
-		}
+	while(id>=index->getSize()) {
+		index->reallocation();
 	}
 
 	unsigned int last=buffer->getLast(); //fovamai

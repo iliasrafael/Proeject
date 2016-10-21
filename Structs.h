@@ -57,6 +57,7 @@ public:
 	NodeIndex();
 	~NodeIndex();
 	bool InsertNode(uint32_t id,uint32_t offset);
+	void reallocation();
 	unsigned int getListHead(uint32_t id);
 	unsigned int* getNodes();
 	unsigned int getPosition(unsigned int );

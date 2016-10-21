@@ -8,7 +8,7 @@ int main(void)
 	Graph graph;
 
 	ifstream myReadFile;
-	myReadFile.open("tinyGraph.txt");
+	myReadFile.open("smallGraph.txt");
 	unsigned int node;
 	unsigned int edge;
 	if (myReadFile.is_open()) {
