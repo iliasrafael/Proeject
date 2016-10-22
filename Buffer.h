@@ -6,8 +6,8 @@
 class Buffer{
 	unsigned int last;
 	unsigned int size;
-public:
 	list_node *cells;
+public:
 	Buffer();
 	~Buffer();
 	unsigned int allocNewNode();

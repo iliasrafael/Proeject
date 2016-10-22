@@ -3,11 +3,9 @@
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
 
-bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
+bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 {	
 
-	NodeIndex * index=ind;
-	Buffer *buffer=buff;
 	while(id>=index->getSize()) {
 		index->reallocation();
 	}
@@ -25,11 +23,11 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 	else
 	{
 		int position = index->getPosition(id);
-		bool res=buffer->cells[position].Insert(id2);
+		bool res=buffer->getListNode(position)->Insert(id2);
 		if(res==false)
-			if(index->last_bucket[id]!=0)
+			if(index->getLastBucket(id)!=0)
 			{
-				res=buffer->cells[index->last_bucket[id]].Insert(id2);
+				res=buffer->getListNode(index->getLastBucket(id))->Insert(id2);
 			}
 		if(res==false)
 		{
@@ -37,12 +35,12 @@ bool Graph::Insert(NodeIndex *ind,Buffer *buff, uint32_t id,uint32_t id2)
 				buffer->reallocation();
 			}
 
-			if(buffer->cells[position].offset==0)
-				buffer->cells[position].offset=last;
-			else if(buffer->cells[index->last_bucket[id]].offset==0)
-				buffer->cells[index->last_bucket[id]].offset=last;
-			index->last_bucket[id]=last;
-			buffer->cells[last].Insert(id2);
+			if(buffer->getListNode(position)->getOffset()==0)
+				buffer->getListNode(position)->setOffset(last);
+			else if(buffer->getListNode(index->getLastBucket(id))->getOffset()==0)
+				buffer->getListNode(index->getLastBucket(id))->setOffset(last);
+			index->setLastBucket(id,last);
+			buffer->getListNode(last)->Insert(id2);
 			buffer->setLast(last+1);
 		}
 	}

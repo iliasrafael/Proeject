@@ -9,7 +9,7 @@ public:
 	Buffer inc_buffer;
 	NodeIndex out_index;
 	Buffer out_buffer;
-	bool Insert(NodeIndex *ind ,Buffer *buff,uint32_t id,uint32_t id2);
+	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

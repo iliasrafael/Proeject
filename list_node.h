@@ -9,12 +9,12 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 /* LIST NODE*/
 ///////////////////////////////////////////////////////////////////////////////
-class list_node {                          
-public:
+class list_node {   
 	uint32_t neighbor[N];                 
 	uint32_t edgeProperty[N];            
 	unsigned int offset;
-	unsigned int last_neighbor;
+	unsigned int last_neighbor;                       
+public:
 	bool Insert(uint32_t id);
 	uint32_t* getNeighbors();
 	uint32_t* getProperties();
