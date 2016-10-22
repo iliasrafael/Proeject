@@ -1,4 +1,4 @@
-#include "Structs.h"
+#include "Graph.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
