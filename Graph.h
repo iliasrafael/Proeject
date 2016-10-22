@@ -4,12 +4,16 @@
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
 class Graph{
-public:
 	NodeIndex inc_index;
 	Buffer inc_buffer;
 	NodeIndex out_index;
 	Buffer out_buffer;
+public:
 	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);
+	NodeIndex* getOutIndex();
+	NodeIndex* getIncIndex();
+	Buffer* getOutBuffer();
+	Buffer* getIncBuffer();
 };
 
 ///////////////////////////////////////////////////////////////////////////////

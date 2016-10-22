@@ -16,28 +16,28 @@ int main(void)
 			myReadFile >> node >>edge;
 			if(!myReadFile.good())
 				break;
-			graph.Insert(&graph.out_index,&graph.out_buffer,node,edge);
-			graph.Insert(&graph.inc_index,&graph.inc_buffer,edge,node);
+			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
+			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 		}
 	}
 	myReadFile.close();
 
-	for(int i = 0; i<graph.out_index.getSize(); i++) {
+	for(int i = 0; i<graph.getOutIndex()->getSize(); i++) {
 		cout<<"Node "<<i<<" :"<<endl;
-		int offset = graph.out_index.getPosition(i);
+		int offset = graph.getOutIndex()->getPosition(i);
 		if(offset==-1)
 			continue;
-		uint32_t* neighbors = graph.out_buffer.getListNode(offset)->getNeighbors();
-		int offset2 = graph.out_buffer.getListNode(offset)->getOffset();		
+		uint32_t* neighbors = graph.getOutBuffer()->getListNode(offset)->getNeighbors();
+		int offset2 = graph.getOutBuffer()->getListNode(offset)->getOffset();		
 		if(i==13)
-			cout<<graph.out_index.getPosition(i)<<"  "<<graph.out_index.getLastBucket(12)<<endl;
-		for(int j = 0; j<graph.out_buffer.getListNode(offset)->getLastNeighbor(); j++)
+			cout<<graph.getOutIndex()->getPosition(i)<<"  "<<graph.getOutIndex()->getLastBucket(12)<<endl;
+		for(int j = 0; j<graph.getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
 			cout<<neighbors[j]<<"  ";
 		while(offset2!=0) {
-			neighbors = graph.out_buffer.getListNode(offset2)->getNeighbors();
-			for(int j = 0; j<graph.out_buffer.getListNode(offset2)->getLastNeighbor(); j++)
+			neighbors = graph.getOutBuffer()->getListNode(offset2)->getNeighbors();
+			for(int j = 0; j<graph.getOutBuffer()->getListNode(offset2)->getLastNeighbor(); j++)
 				cout<<neighbors[j]<<"  ";
-			offset2 = graph.out_buffer.getListNode(offset2)->getOffset();
+			offset2 = graph.getOutBuffer()->getListNode(offset2)->getOffset();
 		}
 		
 		cout<<endl;
