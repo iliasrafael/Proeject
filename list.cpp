@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Node::Node(Node* next, int id) : next(next),id(id)
+Node::Node(int id) : next(NULL),id(id)
 {
 
 }
@@ -21,8 +21,17 @@ List::~List()
 void List::push(int id)
 {
 	size++;
-	back = new Node(back , id);
-}
+	if(head==NULL)
+	{
+		back = new Node(id);
+		head=back;
+	}
+	else
+	{
+		back->next=new Node(id);
+		back=back->next;
+	}
+}	
 
 bool List::find(int data)
 {
@@ -43,7 +52,9 @@ int List::remove()
 {
 	Node* node=head;
 	size--;
-	head=node->next; 
+	head=node->next;
+	if(head==NULL)
+		back=NULL; 
 	int res = node->id;
 	delete node;
 	return res;
