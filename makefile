@@ -23,8 +23,3 @@ Graph.o: Graph.cpp
 main.o: main.cpp
 	$(CC) $(FLAGS) main.cpp
 
-clean :
-	rm -f $(OBJS1) $(OBJS2) $(OBJS3) $(OUT1) $(OUT2) $(OUT3)
-
-count :
-	wc $(SOURCE) $(HEADER)

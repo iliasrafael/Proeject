@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "list.h	"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -29,8 +30,6 @@ int main(void)
 			continue;
 		uint32_t* neighbors = graph.getOutBuffer()->getListNode(offset)->getNeighbors();
 		int offset2 = graph.getOutBuffer()->getListNode(offset)->getOffset();		
-		if(i==13)
-			cout<<graph.getOutIndex()->getPosition(i)<<"  "<<graph.getOutIndex()->getLastBucket(12)<<endl;
 		for(int j = 0; j<graph.getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
 			cout<<neighbors[j]<<"  ";
 		while(offset2!=0) {
