@@ -64,11 +64,12 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	}
 }
 
+
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
-	List* out_oura=new List();
-	List* inc_oura=new List();
-	int * visited=(int *)malloc(sizeof(int *)*out_index.getSize());
+	List* out_oura = new List();
+	List* inc_oura = new List();
+	int * visited = (int *)malloc(sizeof(unsigned int)*out_index.getSize());
 	for(int i=0;i<out_index.getSize();i++)
 		visited[i]=-1;
 	int count=0;
@@ -78,12 +79,16 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 		return 0;
 	out_oura->push(start);
 	inc_oura->push(target);
+	int visit_count=0;
 
 	unsigned int off;
 	int id;
 	unsigned int off2;
 	while(!out_oura->empty() && !inc_oura->empty())
 	{
+		if(visit_count == out_index.getSize()-1) {
+			return -1;
+		}
 		if(!out_oura->empty())
 		{
 			int size=out_oura->get_size();
@@ -93,8 +98,12 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 				id=out_oura->remove();
 				//cout<<"id "<<id<<endl;
 				off=out_index.getPosition(id);
-				if(visited[id]==-1)
+				if(visited[id]==-1) 
+				{
 					visited[id]=1;
+					visit_count++;
+				}
+					
 				while(off!=-1)
 				{
 					cells=out_buffer.getListNode(off);
@@ -103,7 +112,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 					{
 						if(visited[neigh[i]]==0)
 							return count-1;
-						if(visited[i]!=1)
+						if(visited[neigh[i]]!=1)
 							out_oura->push(neigh[i]);
 					}
 					off=cells->getOffset();
@@ -119,8 +128,12 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 				id=inc_oura->remove();
 				//cout<<"id tou inc "<<id<<endl;
 				off2=inc_index.getPosition(id);
-				if(visited[id]==-1)
+				if(visited[id]==-1) 
+				{
 					visited[id]=0;
+					visit_count++;
+				}
+					
 				while(off2!=-1)
 				{
 					cells=inc_buffer.getListNode(off2);
