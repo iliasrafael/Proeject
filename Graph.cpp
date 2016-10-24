@@ -64,6 +64,7 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	}
 }
 
+
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
 	List out_oura;
