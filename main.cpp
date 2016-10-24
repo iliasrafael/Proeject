@@ -36,7 +36,7 @@ int main(void)
 			}
 			if(com=='Q')
 			{
-				cout<<"psaxnw gia : "<<node <<" "<<edge<<endl;
+				//cout<<"psaxnw gia : "<<node <<" "<<edge<<endl;
 				cout<<"apotel: "<<graph.BBFS(node,edge)<<endl;
 			}
 		}
