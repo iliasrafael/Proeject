@@ -15,7 +15,8 @@ List::List() : size(0), head(NULL)
 }
 List::~List()
 {
-	cout<<"ola telos"<<endl;
+	while(head!=NULL)
+		remove();
 }
 
 void List::push(int id)

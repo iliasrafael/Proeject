@@ -22,6 +22,7 @@ int main(void)
 		}
 	}
 	myReadFile.close();
+	cout<<"Isagwgi telos "<<endl;	
 	myReadFile.open("smallWorkload_FINAL.txt");
 	char com;
 	if(myReadFile.is_open()){
@@ -36,8 +37,7 @@ int main(void)
 			}
 			if(com=='Q')
 			{
-				//cout<<"psaxnw gia : "<<node <<" "<<edge<<endl;
-				cout<<"apotel: "<<graph.BBFS(node,edge)<<endl;
+				cout<<graph.BBFS(node,edge)<<endl;
 			}
 		}
 	}
