@@ -21,6 +21,8 @@ List::~List()
 void List::push(int id)
 {
 	size++;
+	if(find(id))
+		return;
 	if(head==NULL)
 	{
 		back = new Node(id);

@@ -9,7 +9,7 @@ int main(void)
 	Graph graph;
 
 	ifstream myReadFile;
-	myReadFile.open("tinyGraph.txt");
+	myReadFile.open("smallGraph.txt");
 	unsigned int node;
 	unsigned int edge;
 	if (myReadFile.is_open()) {
@@ -22,8 +22,25 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	cout<<"anazitisi"<<endl;
-	//cout<<"apotel: "<<graph.BBFS(0,14)<<endl;
+	myReadFile.open("smallWorkload_FINAL.txt");
+	char com;
+	if(myReadFile.is_open()){
+		while(!myReadFile.eof()){
+			myReadFile>>com;
+			if(com!='F')
+				myReadFile>>node>>edge;
+			if(com=='A')
+			{
+				graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
+				graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+			}
+			if(com=='Q')
+			{
+				cout<<"psaxnw gia : "<<node <<" "<<edge<<endl;
+				cout<<"apotel: "<<graph.BBFS(node,edge)<<endl;
+			}
+		}
+	}
 	/*
 	for(int i = 0; i<graph.getOutIndex()->getSize(); i++) {
 		cout<<"Node "<<i<<" :"<<endl;

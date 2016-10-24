@@ -91,17 +91,17 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 			for(int i=0;i<size;i++)
 			{
 				id=out_oura->remove();
-				cout<<"id"<<id<<endl;
+				cout<<"id "<<id<<endl;
 				off=out_index.getPosition(id);
-				visited[id]=1;
-				while(off!=0)
+				if(visited[id]==0)
+					visited[id]=2;
+				while(off!=-1)
 				{
-					cout<<"off"<<off<<endl;
 					cells=out_buffer.getListNode(off);
 					neigh=cells->getNeighbors();
 					for(int i=0;i<cells->getLastNeighbor();i++)
 					{
-						if(visited[neigh[i]]!=-1)
+						if(visited[neigh[i]]==0 ||visited[neigh[i]]==2)
 							return count-1;
 						out_oura->push(neigh[i]);
 					}
@@ -116,15 +116,17 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 			for(int i=0;i<size;i++)
 			{
 				id=inc_oura->remove();
+				cout<<"id tou inc "<<id<<endl;
 				off2=inc_index.getPosition(id);
-				visited[id]=1;
-				while(off2!=0)
+				if(visited[id]==1)
+					visited[id]=0;
+				while(off2!=-1)
 				{
 					cells=inc_buffer.getListNode(off2);
 					neigh=cells->getNeighbors();
 					for(int i=0;i<cells->getLastNeighbor();i++)
 					{
-						if(visited[neigh[i]]!=-1)
+						if(visited[neigh[i]]==1 ||visited[neigh[i]]==2)
 							return count-1;
 						inc_oura->push(neigh[i]);
 					}
@@ -133,8 +135,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 			}
 		}
 	}
-
-
+	return -1;
 }
 
 

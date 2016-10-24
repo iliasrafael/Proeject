@@ -13,13 +13,13 @@ class List
 {
 	Node* back;
 	Node* head;	
-	bool find(int id);
 public:
 	int size;
 	List();
 	~List();
 	void push(int id);
 	int remove();
+	bool find(int id);
 	int empty(); 
 	int get_size();
 	void print();
