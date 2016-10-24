@@ -1,5 +1,5 @@
 #include "Graph.h"
-#include "list.h	"
+#include "list.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -9,7 +9,7 @@ int main(void)
 	Graph graph;
 
 	ifstream myReadFile;
-	myReadFile.open("smallGraph.txt");
+	myReadFile.open("tinyGraph.txt");
 	unsigned int node;
 	unsigned int edge;
 	if (myReadFile.is_open()) {
@@ -22,7 +22,9 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-
+	cout<<"anazitisi"<<endl;
+	//cout<<"apotel: "<<graph.BBFS(0,14)<<endl;
+	/*
 	for(int i = 0; i<graph.getOutIndex()->getSize(); i++) {
 		cout<<"Node "<<i<<" :"<<endl;
 		int offset = graph.getOutIndex()->getPosition(i);
@@ -32,7 +34,7 @@ int main(void)
 		int offset2 = graph.getOutBuffer()->getListNode(offset)->getOffset();		
 		for(int j = 0; j<graph.getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
 			cout<<neighbors[j]<<"  ";
-		while(offset2!=0) {
+		while(offset2!=-1) {
 			neighbors = graph.getOutBuffer()->getListNode(offset2)->getNeighbors();
 			for(int j = 0; j<graph.getOutBuffer()->getListNode(offset2)->getLastNeighbor(); j++)
 				cout<<neighbors[j]<<"  ";
@@ -40,7 +42,7 @@ int main(void)
 		}
 		
 		cout<<endl;
-	}
+	}*/
 	/*
 		for(int i = 0; i<graph.inc_index.getSize(); i++) {
 			cout<<"Node "<<i<<" :"<<endl;

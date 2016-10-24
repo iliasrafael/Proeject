@@ -33,10 +33,8 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	unsigned int last=buffer->getLast(); //fovamai
 	if(index->getPosition(id)==-1)
 	{
-		if(last>=buffer->getSize()) {
+		if(last>=buffer->getSize())
 			buffer->reallocation();
-			//cout<<"Buffer-> realloc for "<<id<<endl;
-		}
 		int offset=buffer->InsertFirstNode(id2);
 		index->InsertNode(id,offset);
 	}
@@ -55,9 +53,9 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 				buffer->reallocation();
 			}
 
-			if(buffer->getListNode(position)->getOffset()==0)
+			if(buffer->getListNode(position)->getOffset()==-1)
 				buffer->getListNode(position)->setOffset(last);
-			else if(buffer->getListNode(index->getLastBucket(id))->getOffset()==0)
+			else if(buffer->getListNode(index->getLastBucket(id))->getOffset()==-1)
 				buffer->getListNode(index->getLastBucket(id))->setOffset(last);
 			index->setLastBucket(id,last);
 			buffer->getListNode(last)->Insert(id2);
@@ -68,12 +66,14 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
-	list* out_oura=new list();
-	list* inc_oura=new list();
-	int * visited=malloc(sizeof(int)*out_index.getSize());
+	List* out_oura=new List();
+	List* inc_oura=new List();
+	int * visited=(int *)malloc(sizeof(int *)*out_index.getSize());
 	for(int i=0;i<out_index.getSize();i++)
-		visited=-1;
+		visited[i]=-1;
 	int count=0;
+	list_node * cells;
+	uint32_t* neigh;
 	if(start==target)
 		return 0;
 	out_oura->push(start);
@@ -81,50 +81,59 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 
 	unsigned int off;
 	int id;
-	unsigned int off2;=inc_buffer.nodes[target];
+	unsigned int off2;
 	while(!out_oura->empty() && !inc_oura->empty())
 	{
 		if(!out_oura->empty())
 		{
-			id=out_oura->remove();
-			off=out_index.nodes[id];
-			if(visited[id]!=-1)
-				return visited[id];
-			else
-				visited[id]==
-			while(off!=0)
+			int size=out_oura->get_size();
+			count++;
+			for(int i=0;i<size;i++)
 			{
-				cells=buffer->getListNode(off);
-				for(int i=0;i<cells.getLastNeighbor();i++)
-					oura->push(neighbors[i]);
-				off=cells.getOffset();
+				id=out_oura->remove();
+				cout<<"id"<<id<<endl;
+				off=out_index.getPosition(id);
+				visited[id]=1;
+				while(off!=0)
+				{
+					cout<<"off"<<off<<endl;
+					cells=out_buffer.getListNode(off);
+					neigh=cells->getNeighbors();
+					for(int i=0;i<cells->getLastNeighbor();i++)
+					{
+						if(visited[neigh[i]]!=-1)
+							return count-1;
+						out_oura->push(neigh[i]);
+					}
+					off=cells->getOffset();
+				}
 			}
 		}
-
-
-
-
+		if(!inc_oura->empty())
+		{
+			int size=inc_oura->get_size();
+			count++;
+			for(int i=0;i<size;i++)
+			{
+				id=inc_oura->remove();
+				off2=inc_index.getPosition(id);
+				visited[id]=1;
+				while(off2!=0)
+				{
+					cells=inc_buffer.getListNode(off2);
+					neigh=cells->getNeighbors();
+					for(int i=0;i<cells->getLastNeighbor();i++)
+					{
+						if(visited[neigh[i]]!=-1)
+							return count-1;
+						inc_oura->push(neigh[i]);
+					}
+					off2=cells->getOffset();
+				}
+			}
+		}
 	}
 
-	/*
-	while(!oura->empty())
-	{
-		list_node *cells;
-		uint32_t* neighbors =cells->getNeighbors();
-		while(off!=0)
-		{
-			cells=buffer->getListNode(off);
-			for(int i=0;i<cells.getLastNeighbor();i++) //na ginei sinartisulitsa
-			{
-				bool t=oura->find();
-				if(t) return count;
-				else oura->push(neighbors[i]);
-			}
-			off=cells.getOffset();
-		}
-
-		count++;
-	}*/
 
 }
 

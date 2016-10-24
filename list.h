@@ -3,10 +3,10 @@
 
 class Node
 {
-public:
-	Node* next;
-	int  id;
-	Node(Node* next, int id);
+	public:
+		Node* next;
+		int  id;
+		Node(int id);
 };
 
 class List
