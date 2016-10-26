@@ -26,3 +26,9 @@ list.o: list.cpp
 main.o: main.cpp
 	$(CC) $(FLAGS) main.cpp
 
+clean :
+	rm -f $(OBJS) $(OUT)
+
+count :
+	wc $(SOURCE) $(HEADER)
+
