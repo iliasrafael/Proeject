@@ -69,12 +69,12 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 {
 	List out_oura;
 	List inc_oura;
+	int count=0;
+	bool result;
+	//na kanume malloc to megalitero metaksi out k in
 	int * visited=(int *)malloc(sizeof(int)*out_index.getSize());
 	for(int i=0;i<out_index.getSize();i++)
 		visited[i]=-1;
-	int count=0;
-	list_node * cells;
-	uint32_t* neigh;
 	if(start==target)
 	{
 		free (visited);
@@ -82,76 +82,52 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	}
 	out_oura.push(start);
 	inc_oura.push(target);
-
-	unsigned int off;
-	int id;
-	unsigned int off2;
 	while(!out_oura.empty() && !inc_oura.empty())
 	{
-		//cout<<out_oura->get_size() << " <====> "<<inc_oura->get_size()<<endl;;
-		if(!out_oura.empty())
+		if(Update(out_index,out_buffer,count,out_oura,visited,0) || Update(inc_index,inc_buffer,count,inc_oura,visited,1))
 		{
-			int size=out_oura.get_size();
-			count++;
-			for(int i=0;i<size;i++)
-			{
-				id=out_oura.remove();
-				off=out_index.getPosition(id);
-				while(off!=-1)
-				{
-					cells=out_buffer.getListNode(off);
-					neigh=cells->getNeighbors();
-					for(int i=0;i<cells->getLastNeighbor();i++)
-					{
-						if(visited[neigh[i]]==0)
-						{	
-							free (visited);
-							return count;
-						}
-						if(visited[neigh[i]]!=1)
-						{
-							out_oura.push(neigh[i]);
-							visited[neigh[i]]=1;
-						}
-					}
-					off=cells->getOffset();
-				}
-			}
-		}
-		if(!inc_oura.empty())
-		{
-			int size=inc_oura.get_size();
-			count++;
-			for(int i=0;i<size;i++)
-			{
-				id=inc_oura.remove();
-				off2=inc_index.getPosition(id);
-				while(off2!=-1)
-				{
-					cells=inc_buffer.getListNode(off2);
-					neigh=cells->getNeighbors();
-					for(int i=0;i<cells->getLastNeighbor();i++)
-					{
-						if(visited[neigh[i]]==1)
-						{
-							free (visited);
-							return count;
-						}
-						if(visited[neigh[i]]!=0)
-						{
-							inc_oura.push(neigh[i]);
-							visited[neigh[i]]=0;
-						}
-					}
-					off2=cells->getOffset();
-				}
-			}
+			free(visited);
+			return count;
 		}
 	}	
 	free (visited);
 	return -1;
 }
 
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int *visited,int situation)
+{
+	unsigned int off;
+	list_node * cells;
+	uint32_t* neigh;
+	int id;
+	if(!oura.empty())
+	{
+		int size=oura.get_size();
+		count++;
+		for(int i=0;i<size;i++)
+		{
+			id=oura.remove();
+			off=index.getPosition(id);
+			while(off!=-1)
+			{
+				cells=buffer.getListNode(off);
+				neigh=cells->getNeighbors();
+				for(int i=0;i<cells->getLastNeighbor();i++)
+				{
+						if(visited[neigh[i]]==situation)
+							return true;
+						if(visited[neigh[i]]!=1-situation)
+						{
+							oura.push(neigh[i]);
+							visited[neigh[i]]=1-situation;
+						}
+				}
+				off=cells->getOffset();
+			}
+		}
+	}
+	return false;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

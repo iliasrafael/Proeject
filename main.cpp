@@ -22,7 +22,6 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	cout<<"Isagwgi telos "<<endl;	
 	myReadFile.open("smallWorkload_FINAL.txt");
 	char com;
 	if(myReadFile.is_open()){
@@ -36,9 +35,7 @@ int main(void)
 				graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 			}
 			if(com=='Q')
-			{
 				cout<<graph.BBFS(node,edge)<<endl;
-			}
 		}
 	}
 	/*
