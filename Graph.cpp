@@ -71,8 +71,12 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	List inc_oura;
 	int count=0;
 	bool result;
-	//na kanume malloc to megalitero metaksi out k in
-	int * visited=(int *)malloc(sizeof(int)*out_index.getSize());
+	int bigger;
+	if(out_index.getSize()>inc_index.getSize())
+		bigger=out_index.getSize();
+	else
+		bigger=inc_index.getSize();
+	int * visited=(int *)malloc(sizeof(int)*bigger);
 	for(int i=0;i<out_index.getSize();i++)
 		visited[i]=-1;
 	if(start==target)
