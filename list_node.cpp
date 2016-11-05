@@ -12,7 +12,7 @@ uint32_t* list_node::getProperties()
 	return edgeProperty;
 }
 ////////////////////////////////////////////////////
-unsigned int list_node::getOffset()
+int list_node::getOffset()
 {
 	return offset;
 }
@@ -22,7 +22,7 @@ unsigned int list_node::getLastNeighbor()
 	return last_neighbor;
 }
 ////////////////////////////////////////////////////
-void list_node::setOffset(unsigned int off)
+void list_node::setOffset(int off)
 {
 	offset=off;
 }

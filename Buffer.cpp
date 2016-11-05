@@ -58,7 +58,7 @@ int Buffer::InsertFirstNode(uint32_t id)
 void Buffer::reallocation()
 {
 	size*=2;
-	cells=(list_node *)realloc(cells, sizeof(list_node)*size);       	           
+	cells=(list_node *)realloc(cells, sizeof(list_node)*size);      	           
 	for(int i=(size/2); i<size; i++)
 	{
 		cells[i].setOffset(-1);
