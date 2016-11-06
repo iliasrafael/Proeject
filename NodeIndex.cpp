@@ -37,8 +37,6 @@ unsigned int* NodeIndex::getNodes()
 ////////////////////////////////////////////////////
 unsigned int NodeIndex::getPosition(unsigned int i)
 {
-	//cout<<"i "<<i<<endl;
-	//cout<<"nodes "<<nodes[i]<<endl;
 	return nodes[i];
 }
 ////////////////////////////////////////////////////

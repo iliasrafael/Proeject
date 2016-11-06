@@ -62,6 +62,7 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 			buffer->setLast(last+1);
 		}
 	}
+	return true;
 }
 
 

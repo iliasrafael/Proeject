@@ -6,8 +6,34 @@ using namespace std;
 
 int main(void)
 {
-	Graph graph;
 
+	Graph graph_test;
+	List lista;
+	if(!graph_test.Insert(graph_test.getOutIndex(),graph_test.getOutBuffer(),1,0))
+		cerr<<"Wrong on Insert"<<endl;
+	else
+		cout<<"Insert successfull"<<endl;
+	lista.push(2);
+	lista.push(3);
+	if(lista.get_size()!=2)
+		cerr<<"Wrong on Size of List"<<endl;
+	else
+		cout<<"Size of list successfull"<<endl;
+	if(lista.remove()!=2)
+		cerr<<"Wrong on List"<<endl;
+	else
+		cout<<"Remove successfull"<<endl;
+	if(graph_test.getOutIndex()->getPosition(1)==0)
+		cout<<"Positon ok"<<endl;
+	else 
+		cerr<<"Wrong position"<<endl;
+
+	getchar();
+
+
+
+
+	Graph graph;
 	ifstream myReadFile;
 	myReadFile.open("smallGraph.txt");
 	unsigned int node;
