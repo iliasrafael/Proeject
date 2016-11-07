@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
+#include <assert.h>
+
 #define NodeIndexSize 10
 using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
