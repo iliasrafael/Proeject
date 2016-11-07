@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
-#define NodeIndexSize 100
+#define NodeIndexSize 10
 using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 /* NODE INDEX */
