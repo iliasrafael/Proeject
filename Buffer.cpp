@@ -4,7 +4,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer()                                         
 {                                                       
-	cells=(list_node *)malloc(sizeof(list_node)*BufferSize);       	           
+	cells=(list_node *)malloc(sizeof(list_node)*BufferSize);
+	assert(cells!=NULL);       	           
 	for(int i=0;i<BufferSize;i++)
 	{
 		cells[i].setOffset(-1);
@@ -58,7 +59,8 @@ int Buffer::InsertFirstNode(uint32_t id)
 void Buffer::reallocation()
 {
 	size*=2;
-	cells=(list_node *)realloc(cells, sizeof(list_node)*size);      	           
+	cells=(list_node *)realloc(cells, sizeof(list_node)*size);  
+	assert(cells!=NULL);    	           
 	for(int i=(size/2); i<size; i++)
 	{
 		cells[i].setOffset(-1);

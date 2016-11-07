@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
+#include <assert.h>
 using namespace std;
 #define N 100
 ///////////////////////////////////////////////////////////////////////////////
