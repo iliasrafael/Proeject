@@ -65,55 +65,43 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	return true;
 }
 
-bool Graph::search(uint32_t id,uint32_t id2)
+bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
 	int count2=inc_index.getCount(id2);
+	NodeIndex *index;
+	Buffer *buffer;
 	if(count1<count2)
 	{
-		int offset = out_index.getPosition(id);
-		if(offset==-1)
-			return false;
-		uint32_t* neighbors = out_buffer.getListNode(offset)->getNeighbors();
-		int offset2 = out_buffer.getListNode(offset)->getOffset();		
-		for(int j = 0; j<out_buffer.getListNode(offset)->getLastNeighbor(); j++)
-		{
-			if(neighbors[j]==id2)
-				return true;
-		}
-		while(offset2!=-1) {
-			neighbors = out_buffer.getListNode(offset2)->getNeighbors();
-			for(int j = 0; j<out_buffer.getListNode(offset2)->getLastNeighbor(); j++)
-			{
-				if(neighbors[j]==id2)
-					return true;
-			}
-			offset2 = out_buffer.getListNode(offset2)->getOffset();
-		}
-
+		index = &out_index;
+		buffer = &out_buffer;
 	}
 	else
 	{
-		int offset = inc_index.getPosition(id);
-		if(offset==-1)
-			return false;
-		uint32_t* neighbors = inc_buffer.getListNode(offset)->getNeighbors();
-		int offset2 = inc_buffer.getListNode(offset)->getOffset();		
-		for(int j = 0; j<inc_buffer.getListNode(offset)->getLastNeighbor(); j++)
+		index = &inc_index;
+		buffer = &inc_buffer;
+	}
+
+	int offset = index->getPosition(id);
+	if(offset==-1)
+		return false;
+	uint32_t* neighbors = buffer->getListNode(offset)->getNeighbors();
+	int offset2 = buffer->getListNode(offset)->getOffset();		
+	for(int j = 0; j<buffer->getListNode(offset)->getLastNeighbor(); j++)
+	{
+		if(neighbors[j]==id)
+			return true;
+	}
+	while(offset2!=-1) {
+		neighbors = buffer->getListNode(offset2)->getNeighbors();
+		for(int j = 0; j<buffer->getListNode(offset2)->getLastNeighbor(); j++)
 		{
 			if(neighbors[j]==id)
 				return true;
 		}
-		while(offset2!=-1) {
-			neighbors = inc_buffer.getListNode(offset2)->getNeighbors();
-			for(int j = 0; j<inc_buffer.getListNode(offset2)->getLastNeighbor(); j++)
-			{
-				if(neighbors[j]==id)
-					return true;
-			}
-			offset2 = inc_buffer.getListNode(offset2)->getOffset();
-		}
+		offset2 = buffer->getListNode(offset2)->getOffset();
 	}
+	
 	return false;
 }
 
