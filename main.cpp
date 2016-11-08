@@ -9,7 +9,7 @@ int main(void)
 	int option=0;
 	while(option<1 || option>3)
 	{
-		cerr << ">Please choose Input File"<<endl;
+		cerr << ">Please choose Input File  :)"<<endl;
 		cerr << ">1 for Tiny File" << endl;
 		cerr << ">2 for Small File" << endl;
 		cerr << ">3 for Medium File" << endl;
