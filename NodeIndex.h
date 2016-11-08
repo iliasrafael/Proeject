@@ -12,6 +12,7 @@ class NodeIndex {
 	unsigned int size;
 	unsigned int* nodes;
 	unsigned int* last_bucket;
+	unsigned int* count;
 public:	
 	NodeIndex();
 	~NodeIndex();
@@ -22,7 +23,9 @@ public:
 	unsigned int getPosition(unsigned int );
 	unsigned int getLastBucket(unsigned int );
 	unsigned int getSize();
+	unsigned int getCount(unsigned int);
 	void setSize(unsigned int);
+	void setCount(unsigned int);
 	void setLastBucket(unsigned int ,unsigned int);
 	bool destroyNodeIndex();
 };

@@ -29,8 +29,8 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	while(id>=index->getSize()) {
 		index->reallocation();
 	}
-
-	unsigned int last=buffer->getLast(); //fovamai
+	index->setCount(id);
+	unsigned int last=buffer->getLast(); 
 	if(index->getPosition(id)==-1)
 	{
 		if(last>=buffer->getSize())
@@ -65,6 +65,57 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	return true;
 }
 
+bool Graph::search(uint32_t id,uint32_t id2)
+{
+	int count1=out_index.getCount(id);
+	int count2=inc_index.getCount(id2);
+	if(count1<count2)
+	{
+		int offset = out_index.getPosition(id);
+		if(offset==-1)
+			return false;
+		uint32_t* neighbors = out_buffer.getListNode(offset)->getNeighbors();
+		int offset2 = out_buffer.getListNode(offset)->getOffset();		
+		for(int j = 0; j<out_buffer.getListNode(offset)->getLastNeighbor(); j++)
+		{
+			if(neighbors[j]==id2)
+				return true;
+		}
+		while(offset2!=-1) {
+			neighbors = out_buffer.getListNode(offset2)->getNeighbors();
+			for(int j = 0; j<out_buffer.getListNode(offset2)->getLastNeighbor(); j++)
+			{
+				if(neighbors[j]==id2)
+					return true;
+			}
+			offset2 = out_buffer.getListNode(offset2)->getOffset();
+		}
+
+	}
+	else
+	{
+		int offset = inc_index.getPosition(id);
+		if(offset==-1)
+			return false;
+		uint32_t* neighbors = inc_buffer.getListNode(offset)->getNeighbors();
+		int offset2 = inc_buffer.getListNode(offset)->getOffset();		
+		for(int j = 0; j<inc_buffer.getListNode(offset)->getLastNeighbor(); j++)
+		{
+			if(neighbors[j]==id)
+				return true;
+		}
+		while(offset2!=-1) {
+			neighbors = inc_buffer.getListNode(offset2)->getNeighbors();
+			for(int j = 0; j<inc_buffer.getListNode(offset2)->getLastNeighbor(); j++)
+			{
+				if(neighbors[j]==id)
+					return true;
+			}
+			offset2 = inc_buffer.getListNode(offset2)->getOffset();
+		}
+	}
+	return false;
+}
 
 int Graph::BBFS(uint32_t start , uint32_t target)
 {

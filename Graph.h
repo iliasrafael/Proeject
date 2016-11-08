@@ -17,6 +17,7 @@ public:
 	Buffer* getOutBuffer();
 	Buffer* getIncBuffer();
 	bool Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int* visited,int situation);
+	bool search(uint32_t id,uint32_t id2);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
