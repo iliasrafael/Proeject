@@ -29,7 +29,7 @@ int main(void)
 	
    	time_t now = time(0);
    	char* currtime = ctime(&now);
-   	cerr << "Starting at: " << currtime <<endl;
+   	cerr << "Starting at: " << currtime;
 
 	Graph graph;
 	unsigned int node;
@@ -72,6 +72,6 @@ int main(void)
 	myReadFile.close();
 	now = time(0);
    	currtime = ctime(&now);
-   	cerr << "End at: " << currtime <<endl;
+   	cerr << "End at: " << currtime;
 	return 0;
 }
