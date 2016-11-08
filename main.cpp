@@ -2,14 +2,36 @@
 #include "list.h"
 #include <fstream>
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 int main(void)
-{
+{	
+	int option=0;
+	while(option<1 || option>3)
+	{
+		cerr << ">Please choose Input File"<<endl;
+		cerr << ">1 for Tiny File" << endl;
+		cerr << ">2 for Small File" << endl;
+		cerr << ">3 for Medium File" << endl;
+		
+		cin >> option;	
+	}
+
+	ifstream myReadFile;
+
+	if(option==1)
+		myReadFile.open("tinyGraph.txt");
+	else if(option==2)
+		myReadFile.open("smallGraph.txt");
+	else if(option==3)
+		myReadFile.open("mediumGraph.txt");
+	
+   	time_t now = time(0);
+   	char* currtime = ctime(&now);
+   	cerr << "Starting at: " << currtime <<endl;
 
 	Graph graph;
-	ifstream myReadFile;
-	myReadFile.open("smallGraph.txt");
 	unsigned int node;
 	unsigned int edge;
 	if (myReadFile.is_open()) {
@@ -22,7 +44,12 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	myReadFile.open("smallWorkload_FINAL.txt");
+	if(option==1)
+		myReadFile.open("tinyWorkload_FINAL.txt");
+	else if(option==2)
+		myReadFile.open("smallWorkload_FINAL.txt");
+	else if(option==3)
+		myReadFile.open("mediumWorkload_FINAL.txt");
 	char com;
 	if(myReadFile.is_open()){
 		while(!myReadFile.eof()){
@@ -38,7 +65,13 @@ int main(void)
 			}
 			if(com=='Q')
 				cout<<graph.BBFS(node,edge)<<endl;
+			if (com == 'S')
+				cerr << "Teleiwse"<<endl;
 		}
 	}
+	myReadFile.close();
+	now = time(0);
+   	currtime = ctime(&now);
+   	cerr << "End at: " << currtime <<endl;
 	return 0;
 }

@@ -129,6 +129,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	else
 		bigger=inc_index.getSize();
 	int * visited=(int *)malloc(sizeof(int)*bigger);
+	assert (visited!=NULL);
 	for(int i=0;i<out_index.getSize();i++)
 		visited[i]=-1;
 	if(start==target)
