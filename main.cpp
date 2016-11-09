@@ -76,6 +76,7 @@ int main(void)
 			}
 		}
 	}
+	free(visited);
 	myReadFile.close();
 	return 0;
 }

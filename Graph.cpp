@@ -119,21 +119,14 @@ int Graph::BBFS(uint32_t start , uint32_t target,int* visited)
 	else
 		bigger=inc_index.getSize();
 	if(start==target)
-	{
-		//free (visited);
 		return 0;
-	}
 	out_oura.push(start);
 	inc_oura.push(target);
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
 		if(Update(out_index,out_buffer,count,out_oura,visited,0) || Update(inc_index,inc_buffer,count,inc_oura,visited,1))
-		{
-			//free(visited);
 			return count;
-		}
 	}	
-	//free (visited);
 	return -1;
 }
 
