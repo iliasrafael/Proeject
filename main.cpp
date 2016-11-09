@@ -34,6 +34,8 @@ int main(void)
 			myReadFile >> node >>edge;
 			if(!myReadFile.good())
 				break;
+			if(graph.search(node,edge))
+				continue;
 			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 		}
@@ -46,6 +48,14 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumWorkload_FINAL.txt");
 	char com;
+	int visited_size;
+	if(graph.getOutIndex()->getSize()>graph.getIncIndex()->getSize())
+		visited_size=graph.getOutIndex()->getSize();
+	else
+		visited_size=graph.getIncIndex()->getSize();
+	int *visited=(int*)malloc(sizeof(int)*(visited_size));
+	for(int i=0;i<visited_size;i++)
+		visited[i]= -1;
 	if(myReadFile.is_open()){
 		while(!myReadFile.eof()){
 			myReadFile>>com;
@@ -59,7 +69,11 @@ int main(void)
 				graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 			}
 			if(com=='Q')
-				cout<<graph.BBFS(node,edge)<<endl;
+			{
+				cout<<graph.BBFS(node,edge,visited)<<endl;
+				for(int i=0;i<visited_size;i++)
+					visited[i]= -1;
+			}
 		}
 	}
 	myReadFile.close();

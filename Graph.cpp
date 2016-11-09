@@ -69,6 +69,8 @@ bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
 	int count2=inc_index.getCount(id2);
+	if(count1==-2 || count2==-2 )
+		return false;
 	NodeIndex *index;
 	Buffer *buffer;
 	if(count1<count2)
@@ -105,7 +107,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 	return false;
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target)
+int Graph::BBFS(uint32_t start , uint32_t target,int* visited)
 {
 	List out_oura;
 	List inc_oura;
@@ -116,26 +118,22 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 		bigger=out_index.getSize();
 	else
 		bigger=inc_index.getSize();
-	int * visited=(int *)malloc(sizeof(int)*bigger);
-	assert (visited!=NULL);
-	for(int i=0;i<out_index.getSize();i++)
-		visited[i]=-1;
 	if(start==target)
 	{
-		free (visited);
+		//free (visited);
 		return 0;
 	}
 	out_oura.push(start);
 	inc_oura.push(target);
 	while(!out_oura.empty() && !inc_oura.empty())
-	{
+	{	
 		if(Update(out_index,out_buffer,count,out_oura,visited,0) || Update(inc_index,inc_buffer,count,inc_oura,visited,1))
 		{
-			free(visited);
+			//free(visited);
 			return count;
 		}
 	}	
-	free (visited);
+	//free (visited);
 	return -1;
 }
 

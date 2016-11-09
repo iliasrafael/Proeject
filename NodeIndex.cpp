@@ -68,7 +68,10 @@ void NodeIndex::setSize(unsigned int size_)
 }
 unsigned int NodeIndex::getCount(unsigned int id)
 {
-	return count[id];
+	if(count!=NULL &&  id < size)
+		return count[id];
+	else
+		return -2;
 }
 void NodeIndex::setCount(unsigned int id)
 {

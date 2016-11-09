@@ -11,7 +11,7 @@ class Graph{
 	Buffer out_buffer;
 public:
 	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);
-	int BBFS(uint32_t start , uint32_t target);
+	int BBFS(uint32_t start , uint32_t target,int* visited);
 	NodeIndex* getOutIndex();
 	NodeIndex* getIncIndex();
 	Buffer* getOutBuffer();
