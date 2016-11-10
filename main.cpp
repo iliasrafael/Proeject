@@ -25,6 +25,9 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumGraph.txt");
 	
+	time_t now = time(0);
+   	char* currtime = ctime(&now);
+   	cerr << "Started at: " << currtime;
 
 	Graph graph;
 	unsigned int node;
@@ -53,8 +56,8 @@ int main(void)
 		visited_size=graph.getOutIndex()->getSize();
 	else
 		visited_size=graph.getIncIndex()->getSize();
-	int *visited=(int*)malloc(sizeof(int)*(visited_size));
-	for(int i=0;i<visited_size;i++)
+	int *visited=(int*)malloc(sizeof(int)*(visited_size+100));
+	for(int i=0;i<visited_size+100;i++)
 		visited[i]= -1;
 	if(myReadFile.is_open()){
 		while(!myReadFile.eof()){
@@ -71,11 +74,15 @@ int main(void)
 			if(com=='Q')
 			{
 				cout<<graph.BBFS(node,edge,visited)<<endl;
-				for(int i=0;i<visited_size;i++)
+				for(int i=0;i<visited_size+100;i++)
 					visited[i]= -1;
 			}
 		}
 	}
 	myReadFile.close();
+	free(visited);
+	now = time(0);
+   	currtime = ctime(&now);
+   	cerr << "Finished at: " << currtime;
 	return 0;
 }
