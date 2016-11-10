@@ -24,14 +24,7 @@ int main(void)
 		myReadFile.open("smallGraph.txt");
 	else if(option==3)
 		myReadFile.open("mediumGraph.txt");
-	
-<<<<<<< HEAD
-	time_t now = time(0);
-   	char* currtime = ctime(&now);
-   	cerr << "Started at: " << currtime;
 
-=======
->>>>>>> origin/master
 	Graph graph;
 	unsigned int node;
 	unsigned int edge;
@@ -54,17 +47,6 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumWorkload_FINAL.txt");
 	char com;
-<<<<<<< HEAD
-	int visited_size;
-	if(graph.getOutIndex()->getSize()>graph.getIncIndex()->getSize())
-		visited_size=graph.getOutIndex()->getSize();
-	else
-		visited_size=graph.getIncIndex()->getSize();
-	int *visited=(int*)malloc(sizeof(int)*(visited_size+100));
-	for(int i=0;i<visited_size+100;i++)
-		visited[i]= -1;
-=======
->>>>>>> origin/master
 	if(myReadFile.is_open()){
 		while(!myReadFile.eof()){
 			myReadFile>>com;
@@ -78,16 +60,7 @@ int main(void)
 				graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 			}
 			if(com=='Q')
-<<<<<<< HEAD
-			{
-				cout<<graph.BBFS(node,edge,visited)<<endl;
-				for(int i=0;i<visited_size+100;i++)
-					visited[i]= -1;
-			}
-=======
 				cout<<graph.BBFS(node,edge)<<endl;
->>>>>>> origin/master
-		}
 	}
 	myReadFile.close();
 	free(visited);
