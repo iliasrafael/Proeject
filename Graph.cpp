@@ -171,8 +171,6 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 		if( Update(inc_index,inc_buffer,count,inc_oura,1))
 			return count;
 	}
-	free(out_oura);
-	free(inc_oura);	
 	return -1;
 }
 

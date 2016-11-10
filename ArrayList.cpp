@@ -6,10 +6,7 @@ ArrayList::ArrayList(int size)
 {
 	array=(int *)malloc(sizeof(int)*size);
 	if(array==NULL)
-	{
 		cout<<size<<endl;
-		for(int i=0;;i++) i++;
-	}
 	head=0;
 	back=0;
 }
