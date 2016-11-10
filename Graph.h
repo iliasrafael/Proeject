@@ -1,6 +1,6 @@
 #include "Buffer.h"
 #include "NodeIndex.h"
-#include "list.h"
+#include "ArrayList.h"
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ public:
 	Buffer* getIncBuffer();
 	~Graph();
 	Graph();
-	bool Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int situation);
+	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation);
 	bool search(uint32_t id,uint32_t id2);
 	void visited_creation();
 };

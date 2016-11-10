@@ -1,5 +1,5 @@
 #include "Graph.h"
-#include "list.h"
+#include "ArrayList.h"
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -149,19 +149,19 @@ bool Graph::search(uint32_t id, uint32_t id2)
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
 	visited_creation();
-	List out_oura;
-	List inc_oura;
-	int count=0;
-	bool result;
 	int bigger;
 	if(out_index.getSize()>inc_index.getSize())
 		bigger=out_index.getSize();
 	else
 		bigger=inc_index.getSize();
+	ArrayList out_oura(bigger);
+	ArrayList inc_oura(bigger);
+	int count=0;
+	bool result;
 	if(start==target)
 		return 0;
-	out_oura.push(start);
-	inc_oura.push(target);
+	out_oura.Insert(start);
+	inc_oura.Insert(target);
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
 		if(Update(out_index,out_buffer,count,out_oura,0))
@@ -170,11 +170,13 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 			return -1;
 		if( Update(inc_index,inc_buffer,count,inc_oura,1))
 			return count;
-	}	
+	}
+	free(out_oura);
+	free(inc_oura);	
 	return -1;
 }
 
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int situation)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation)
 {
 	unsigned int off;
 	list_node * cells;
@@ -207,7 +209,7 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int sit
 							return true;
 						if(visited[x][y]!=1-situation)
 						{
-							oura.push(neigh[i]);
+							oura.Insert(neigh[i]);
 							visited[x][y]=1-situation;
 						}
 				}

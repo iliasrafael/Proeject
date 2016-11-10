@@ -1,5 +1,4 @@
 #include "Graph.h"
-#include "list.h"
 #include <fstream>
 #include <iostream>
 #include <math.h>
@@ -62,10 +61,7 @@ int main(void)
 			if(com=='Q')
 				cout<<graph.BBFS(node,edge)<<endl;
 	}
+}
 	myReadFile.close();
-	free(visited);
-	now = time(0);
-   	currtime = ctime(&now);
-   	cerr << "Finished at: " << currtime;
 	return 0;
 }

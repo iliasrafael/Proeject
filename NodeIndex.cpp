@@ -38,6 +38,7 @@ NodeIndex::~NodeIndex()
 {
 	free(nodes);
 	free(last_bucket);
+	free(count);
 }
 ////////////////////////////////////////////////////
 unsigned int* NodeIndex::getNodes()

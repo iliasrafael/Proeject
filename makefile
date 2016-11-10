@@ -1,7 +1,7 @@
-OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o list.o main.o 
-OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o list.o testing.o
-SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp list.cpp main.cpp testing.cpp
-HEADER = list_node.h Buffer.h NodeIndex.h Graph.h list.h
+OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o main.o 
+OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o testing.o
+SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp main.cpp testing.cpp
+HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h
 OUT1 = out
 OUT2 = testing
 CC = g++
@@ -27,8 +27,8 @@ NodeIndex.o: NodeIndex.cpp NodeIndex.h
 Graph.o: Graph.cpp Graph.h
 	$(CC) $(FLAGS) Graph.cpp
 
-list.o: list.cpp list.h
-	$(CC) $(FLAGS) list.cpp
+ArrayList.o: ArrayList.cpp ArrayList.h
+	$(CC) $(FLAGS) ArrayList.cpp
 
 main.o: main.cpp
 	$(CC) $(FLAGS) main.cpp

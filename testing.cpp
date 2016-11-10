@@ -1,5 +1,5 @@
 #include "Graph.h"
-#include "list.h"
+#include "ArrayList.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -9,7 +9,7 @@ int main(void)
 {
 
 	Graph graph_test;
-	List lista;
+	ArrayList lista(5);
 	if(graph_test.getOutIndex()->getPosition(1)==-1)//arxikopoihsh
 		cout<<"Initialization ok "<<endl;
 	else
@@ -27,8 +27,8 @@ int main(void)
 		cout<<"Entry ok"<<endl;
 	else
 		cerr<<"Error on entry"<<endl;
-	lista.push(2);
-	lista.push(3);
+	lista.Insert(2);
+	lista.Insert(3);
 	if(lista.get_size()!=2)
 		cerr<<"Wrong on Size of List"<<endl;
 	else
