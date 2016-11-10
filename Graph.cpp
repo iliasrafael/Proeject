@@ -3,6 +3,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
+Graph::Graph()
+{
+	visited=NULL;
+	sq=0;
+}
+Graph::~Graph()
+{
+	for(int i=0;i<sq;i++)
+	{	
+		if(visited[i]!=NULL)
+			free(visited[i]);
+	}
+	free(visited);
+
+}
 NodeIndex* Graph::getOutIndex()
 {
 	return &out_index;
@@ -21,6 +36,30 @@ Buffer* Graph::getOutBuffer()
 Buffer* Graph::getIncBuffer()
 {
 	return &inc_buffer;
+}
+void Graph::visited_creation()
+{
+	int visited_size;
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
+	int sqr=visited_size/100+1;
+	if(sqr>sq)
+	{
+		visited=(int**)realloc(visited,sizeof(int*)*(sqr));
+		for(int i=sq;i<sqr;i++)
+			visited[i]=NULL;
+		sq=sqr;
+	}
+	for(int i=0;i<sq;i++)
+	{
+		if(visited[i]!=NULL)
+		{
+			for(int j=0;j<100;j++)
+				visited[i][j]=-1;
+		}
+	}
 }
 //////////////////////////////////////////////////////////////////////////////
 bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
@@ -107,8 +146,9 @@ bool Graph::search(uint32_t id, uint32_t id2)
 	return false;
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target,int* visited)
+int Graph::BBFS(uint32_t start , uint32_t target)
 {
+	visited_creation();
 	List out_oura;
 	List inc_oura;
 	int count=0;
@@ -124,13 +164,17 @@ int Graph::BBFS(uint32_t start , uint32_t target,int* visited)
 	inc_oura.push(target);
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
-		if(Update(out_index,out_buffer,count,out_oura,visited,0) || Update(inc_index,inc_buffer,count,inc_oura,visited,1))
+		if(Update(out_index,out_buffer,count,out_oura,0))
+			return count;
+		if(out_oura.empty())
+			return -1;
+		if( Update(inc_index,inc_buffer,count,inc_oura,1))
 			return count;
 	}	
 	return -1;
 }
 
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int *visited,int situation)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int situation)
 {
 	unsigned int off;
 	list_node * cells;
@@ -150,12 +194,21 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,List &oura,int *vi
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-						if(visited[neigh[i]]==situation)
+						int x=neigh[i]/100;
+						int y=neigh[i]%100;
+						if(visited[x]==NULL)
+						{
+							visited[x]=(int *)malloc(sizeof(int)*100);
+							for(int i=0;i<100;i++)
+								visited[x][i]=-1;
+						}
+
+						if(visited[x][y]==situation)
 							return true;
-						if(visited[neigh[i]]!=1-situation)
+						if(visited[x][y]!=1-situation)
 						{
 							oura.push(neigh[i]);
-							visited[neigh[i]]=1-situation;
+							visited[x][y]=1-situation;
 						}
 				}
 				off=cells->getOffset();
