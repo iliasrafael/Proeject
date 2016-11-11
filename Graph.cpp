@@ -159,15 +159,20 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
+	if(Update(out_index,out_buffer,count,out_oura,0))
+		return count;
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
-		if(Update(out_index,out_buffer,count,out_oura,0))
-			return count;
-		if(out_oura.empty())
-			return -1;
-		if( Update(inc_index,inc_buffer,count,inc_oura,1))
-			return count;
-	}
+		if(out_oura.get_size()<inc_oura.get_size())
+		{
+			if(Update(out_index,out_buffer,count,out_oura,0))
+				return count;
+		}
+		else{
+			if(Update(inc_index,inc_buffer,count,inc_oura,1))
+				return count;
+		}
+	}	
 	return -1;
 }
 
