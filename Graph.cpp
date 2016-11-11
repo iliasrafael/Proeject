@@ -108,7 +108,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
 	int count2=inc_index.getCount(id2);
-	if(count1==-2 || count2==-2 )
+	if(count1<0 || count2<0 )
 		return false;
 	NodeIndex *index;
 	Buffer *buffer;
@@ -151,16 +151,12 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 {
 	visited_creation();
 	int bigger;
-	if(out_index.getSize()>inc_index.getSize())
-		bigger=out_index.getSize();
-	else
-		bigger=inc_index.getSize();
-	ArrayList out_oura(bigger);
-	ArrayList inc_oura(bigger);
 	int count=0;
 	bool result;
 	if(start==target)
 		return 0;
+	inc_oura.Set();
+	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
 	while(!out_oura.empty() && !inc_oura.empty())
@@ -180,7 +176,7 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 	unsigned int off;
 	list_node * cells;
 	uint32_t* neigh;
-	int id;
+	uint32_t id;
 	if(!oura.empty())
 	{
 		int size=oura.get_size();

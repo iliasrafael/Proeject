@@ -9,7 +9,7 @@ int main(void)
 {
 
 	Graph graph_test;
-	ArrayList lista(5);
+	ArrayList lista;
 	if(graph_test.getOutIndex()->getPosition(1)==-1)//arxikopoihsh
 		cout<<"Initialization ok "<<endl;
 	else

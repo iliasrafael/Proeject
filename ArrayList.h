@@ -1,18 +1,24 @@
 #ifndef __ArrayList__	
 #define __ArrayList__
+#include <stdint.h>
+#include <assert.h>
 class ArrayList{
 
-	int *array;
-	int head;
-	int back;
+	uint32_t *array;
+	uint32_t head;
+	uint32_t back;
+	uint32_t elements;
+	uint32_t size;
 public:
 
-ArrayList(int );
+ArrayList();
 ~ArrayList();
-void Insert(int id);
+void Insert(uint32_t id);
 bool empty();
-int remove();
-int get_size();
+uint32_t remove();
+uint32_t get_size();
+void DoubleSize();
+void Set();
 };
 
 #endif

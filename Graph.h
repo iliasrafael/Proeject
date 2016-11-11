@@ -9,6 +9,8 @@ class Graph{
 	Buffer inc_buffer;
 	NodeIndex out_index;
 	Buffer out_buffer;
+	ArrayList inc_oura;
+	ArrayList out_oura;
 	int **visited;
 	int sq;
 public:
