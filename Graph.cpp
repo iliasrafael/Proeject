@@ -57,7 +57,7 @@ void Graph::visited_creation()
 		if(visited[i]!=NULL)
 		{
 			for(int j=0;j<100;j++)
-				visited[i][j]=-1;
+				visited[i][j]=0;
 		}
 	}
 }
@@ -159,7 +159,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
-	if(Update(out_index,out_buffer,count,out_oura,0))
+	if(Update(out_index,out_buffer,count,out_oura,1))
 		return count;
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
