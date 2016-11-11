@@ -121,6 +121,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 	{
 		index = &inc_index;
 		buffer = &inc_buffer;
+		id=id2;
 	}
 
 	int offset = index->getPosition(id);
