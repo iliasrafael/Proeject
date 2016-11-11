@@ -23,6 +23,9 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumGraph.txt");
 
+	time_t now = time(0),end;
+   	char* currtime = ctime(&now);
+   	cerr << "Started at: " << currtime;
 	Graph graph;
 	unsigned int node;
 	unsigned int edge;
@@ -62,5 +65,9 @@ int main(void)
 	}
 }
 	myReadFile.close();
+	end = time(0);
+   	currtime = ctime(&end);
+   	cerr << "Finished at: " << currtime;
+   	cerr << "After running for: "<< end-now<<"secs." <<endl;
 	return 0;
 }
