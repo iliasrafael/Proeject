@@ -1,6 +1,7 @@
 #include "Buffer.h"
 #include "NodeIndex.h"
 #include "ArrayList.h"
+#include <stdint.h>
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -11,7 +12,7 @@ class Graph{
 	Buffer out_buffer;
 	ArrayList inc_oura;
 	ArrayList out_oura;
-	int **visited;
+	uint32_t **visited;
 	int sq;
 public:
 	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);

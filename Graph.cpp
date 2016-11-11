@@ -47,7 +47,7 @@ void Graph::visited_creation()
 	int sqr=visited_size/100+1;
 	if(sqr>sq)
 	{
-		visited=(int**)realloc(visited,sizeof(int*)*(sqr));
+		visited=(uint32_t**)realloc(visited,sizeof(uint32_t*)*(sqr));
 		for(int i=sq;i<sqr;i++)
 			visited[i]=NULL;
 		sq=sqr;
@@ -165,11 +165,11 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,0))
+			if(Update(out_index,out_buffer,count,out_oura,1))
 				return count;
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,1))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2))
 				return count;
 		}
 	}	
@@ -182,6 +182,8 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 	list_node * cells;
 	uint32_t* neigh;
 	uint32_t id;
+	int x;
+	int y;
 	if(!oura.empty())
 	{
 		int size=oura.get_size();
@@ -196,21 +198,21 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-						int x=neigh[i]/100;
-						int y=neigh[i]%100;
+						x=neigh[i]/100;
+						y=neigh[i]%100;
 						if(visited[x]==NULL)
 						{
-							visited[x]=(int *)malloc(sizeof(int)*100);
+							visited[x]=(uint32_t *)malloc(sizeof(uint32_t)*100);
 							for(int i=0;i<100;i++)
-								visited[x][i]=-1;
+								visited[x][i]=0;
 						}
 
 						if(visited[x][y]==situation)
 							return true;
-						if(visited[x][y]!=1-situation)
+						if(visited[x][y]!=3-situation)
 						{
 							oura.Insert(neigh[i]);
-							visited[x][y]=1-situation;
+							visited[x][y]=3-situation;
 						}
 				}
 				off=cells->getOffset();
