@@ -139,6 +139,11 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
+	if(Update(out_index,out_buffer,count,out_oura,1,visited))
+	{
+		visited_del(visited,sqr);
+		return count;
+	}
 	while(!out_oura.empty() && !inc_oura.empty())
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
