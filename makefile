@@ -1,7 +1,7 @@
-OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o main.o 
-OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o testing.o
-SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp main.cpp testing.cpp
-HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h
+OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o main.o 
+OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o testing.o
+SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp main.cpp testing.cpp
+HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h Stack.h
 OUT1 = out
 OUT2 = testing
 CC = g++
