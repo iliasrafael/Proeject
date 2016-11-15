@@ -3,21 +3,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
-Graph::Graph()
-{
-	visited=NULL;
-	sq=0;
-}
-Graph::~Graph()
-{
-	for(int i=0;i<sq;i++)
-	{	
-		if(visited[i]!=NULL)
-			free(visited[i]);
-	}
-	free(visited);
-
-}
 NodeIndex* Graph::getOutIndex()
 {
 	return &out_index;
@@ -37,30 +22,7 @@ Buffer* Graph::getIncBuffer()
 {
 	return &inc_buffer;
 }
-void Graph::visited_creation()
-{
-	int visited_size;
-	if(out_index.getSize()>inc_index.getSize())
-		visited_size=out_index.getSize();
-	else
-		visited_size=inc_index.getSize();
-	int sqr=visited_size/100+1;
-	if(sqr>sq)
-	{
-		visited=(uint32_t**)realloc(visited,sizeof(uint32_t*)*(sqr));
-		for(int i=sq;i<sqr;i++)
-			visited[i]=NULL;
-		sq=sqr;
-	}
-	for(int i=0;i<sq;i++)
-	{
-		if(visited[i]!=NULL)
-		{
-			for(int j=0;j<100;j++)
-				visited[i][j]=0;
-		}
-	}
-}
+
 //////////////////////////////////////////////////////////////////////////////
 bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 {	
@@ -147,9 +109,27 @@ bool Graph::search(uint32_t id, uint32_t id2)
 	return false;
 }
 
+void visited_del(uint32_t **visited,int sqr)
+{
+		for(int i=0;i<sqr;i++)
+	{	
+		if(visited[i]!=NULL)
+			free(visited[i]);
+	}
+	free(visited);
+}
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
-	visited_creation();
+	int visited_size;
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
+	int sqr=visited_size/100+1;
+	uint32_t ** visited;
+	visited=(uint32_t**)malloc(sizeof(uint32_t*)*(sqr));
+	for(int i=0;i<sqr;i++)
+		visited[i]=NULL;
 	int bigger;
 	int count=0;
 	bool result;
@@ -163,18 +143,25 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,1))
+			if(Update(out_index,out_buffer,count,out_oura,1,visited))
+			{
+				visited_del(visited,sqr);
 				return count;
+			}
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,2))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited))
+			{
+				visited_del(visited,sqr);
 				return count;
+			}
 		}
-	}	
+	}
+	visited_del(visited,sqr);
 	return -1;
 }
 
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited)
 {
 	unsigned int off;
 	list_node * cells;
@@ -204,7 +191,6 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 							for(int i=0;i<100;i++)
 								visited[x][i]=0;
 						}
-
 						if(visited[x][y]==situation)
 							return true;
 						if(visited[x][y]!=3-situation)

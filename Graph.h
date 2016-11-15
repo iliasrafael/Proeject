@@ -12,8 +12,6 @@ class Graph{
 	Buffer out_buffer;
 	ArrayList inc_oura;
 	ArrayList out_oura;
-	uint32_t **visited;
-	int sq;
 public:
 	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);
 	int BBFS(uint32_t start , uint32_t target);
@@ -21,11 +19,8 @@ public:
 	NodeIndex* getIncIndex();
 	Buffer* getOutBuffer();
 	Buffer* getIncBuffer();
-	~Graph();
-	Graph();
-	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation);
+	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited);
 	bool search(uint32_t id,uint32_t id2);
-	void visited_creation();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
