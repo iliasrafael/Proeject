@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "ArrayList.h"
+#include "Stack.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -43,10 +44,30 @@ int main(void)
 		cerr<<"Wrong position"<<endl;
 	getchar();
 
-
-
-
-
+	Stack stack_test(2);
+	if(!stack_test.empty())
+		cerr<<"Wrong empty stack"<<endl;
+	else
+		cout<<"Empty stack successfull"<<endl;
+	stack_test.add(1);
+	stack_test.add(2);
+	stack_test.add(3);
+	if(stack_test.empty())
+		cerr<<"Wrong empty stack"<<endl;
+	else
+		cout<<"Empty stack successfull"<<endl;
+	if(stack_test.get_size() != 4)
+		cerr<<"Wrong on Size of stack "<<stack_test.get_size()<<endl;
+	else
+		cout<<"Size of stack successfull"<<endl;
+	if(stack_test.pop() != 3)
+		cerr<<"Wrong pop stack"<<endl;
+	else
+		cout<<"Pop stack successfull"<<endl;
+	if(stack_test.pop() != 2)
+		cerr<<"Wrong pop stack"<<endl;
+	else
+		cout<<"Pop stack successfull"<<endl;
 
 	return 0;
 }
