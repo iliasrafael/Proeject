@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "ArrayList.h"
 #include "Stack.h"
+#include "Components.h"
 #include <fstream>
 #include <iostream>
 using namespace std;

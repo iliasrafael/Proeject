@@ -24,7 +24,7 @@ list_node* Buffer::getListNode(unsigned int offset)
 {
 	if(offset > size)
 	{
-		cerr << "Offset > Size "<<endl;
+		cerr << "Offset at buffer > Size "<<endl;
 		return NULL;
 	}
 

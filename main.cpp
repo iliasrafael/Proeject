@@ -40,6 +40,8 @@ int main(void)
 			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
 		}
 	}
+	graph.CCSearch();
+	/*
 	myReadFile.close();
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
@@ -69,5 +71,6 @@ int main(void)
    	currtime = ctime(&end);
    	cerr << "Finished at: " << currtime;
    	cerr << "After running for: "<< end-now<<"secs." <<endl;
+   	*/
 	return 0;
 }

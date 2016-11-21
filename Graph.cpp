@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "ArrayList.h"
+#include "Components.h"
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -111,13 +112,14 @@ bool Graph::search(uint32_t id, uint32_t id2)
 
 void visited_del(uint32_t **visited,int sqr)
 {
-		for(int i=0;i<sqr;i++)
+	for(int i=0;i<sqr;i++)
 	{	
 		if(visited[i]!=NULL)
 			free(visited[i]);
 	}
 	free(visited);
 }
+
 int Graph::BBFS(uint32_t start , uint32_t target)
 {
 	int visited_size;
@@ -209,6 +211,76 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 		}
 	}
 	return false;
+}
+
+void Graph::CCSearch()
+{
+	int id=-1;
+	int size=256; //na vrume kali timi
+	int visited_size;
+	visited_size=out_index.getSize();
+	bool *visited;
+	visited=(bool*)malloc(sizeof(bool)*visited_size);
+	uint32_t current_node;
+	int off;
+	for(int i=0;i<visited_size;i++)
+	{
+		if(visited[i]==true)
+			continue;
+		if(out_index.getCount(i)==0 && inc_index.getCount(i)==0)
+			continue;
+		out_oura.Set();
+		id++;
+		cout<<id<< " "<<i<<endl;
+		Component comp(id,size);
+		visited[i]=true;
+		comp.Insert(i);
+		CCS_update(i,visited);
+		while(out_oura.empty()==false)
+		{
+			current_node=out_oura.remove();
+			CCS_update(current_node,visited);
+			comp.Insert(current_node);
+		}
+	}
+	cout<<"Count of Components"<<id<<endl;
+	free(visited);
+}
+
+void Graph::CCS_update(uint32_t id,bool* visited)
+{
+	int off,off2;
+	list_node * cells;
+	uint32_t* neigh;
+	off=out_index.getPosition(id);
+	while(off!=-1)
+	{
+		cells=out_buffer.getListNode(off);
+		neigh=cells->getNeighbors();
+		for(int j=0;j<cells->getLastNeighbor();j++)
+		{
+			if(visited[neigh[j]]==true)
+				continue;
+			out_oura.Insert(neigh[j]);
+			visited[neigh[j]]=true;
+		}
+		off=cells->getOffset();
+	}
+	off2=inc_index.getPosition(id);
+	while(off2!=-1)
+	{
+		cells=inc_buffer.getListNode(off2);
+		neigh=cells->getNeighbors();
+		for(int j=0;j<cells->getLastNeighbor();j++)
+		{
+			if(visited[neigh[j]]==true)
+				continue;
+			out_oura.Insert(neigh[j]);
+			visited[neigh[j]]=true;
+		}
+		off2=cells->getOffset();
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

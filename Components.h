@@ -11,11 +11,11 @@ class Component
 	uint32_t size;
 	uint32_t* node_ids;
 public:
-	Component(uint32_t size);
+	Component(uint32_t id , uint32_t size);
 	~Component();
 	
-
-	void Stack::doubleSize();
+	bool Insert(uint32_t id);
+	void doubleSize();
 };
 
 #endif

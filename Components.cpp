@@ -4,22 +4,29 @@
 
 using namespace std;
 
-Components::Component(uint32_t id, uint32_t size_)
+Component::Component(uint32_t id, uint32_t size_)
 {
-	Component_id = id;
+	component_id = id;
 	nodes_count = 0;
 	node_ids = (uint32_t*)malloc(sizeof(uint32_t)*size_);
 	size = size_;
 }
 
-Components::~Component()
+Component::~Component()
 {
 	free(node_ids);
 }
 
+bool Component::Insert(uint32_t id)
+{
+	if(nodes_count==size)
+		doubleSize();
+	node_ids[nodes_count]=id;
+	nodes_count++;
+	return true;
+}
 
-
-void Stack::doubleSize()
+void Component::doubleSize()
 {
 	size=size*2;
 	node_ids = (uint32_t*)realloc(node_ids, sizeof(uint32_t)*size);
