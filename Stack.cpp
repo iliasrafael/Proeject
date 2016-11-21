@@ -7,7 +7,7 @@ using namespace std;
 Stack::Stack(uint32_t size_)
 {
 	head = -1;
-	pinakas = (uint32_t*)malloc(sizeof(uint32_t)*size);
+	pinakas = (uint32_t*)malloc(sizeof(uint32_t)*size_);
 	size = size_;
 }
 
