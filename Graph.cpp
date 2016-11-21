@@ -221,6 +221,8 @@ void Graph::CCSearch()
 	visited_size=out_index.getSize();
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*visited_size);
+	for(int i=0;i<visited_size;i++)
+		visited[i]=false;
 	uint32_t current_node;
 	int off;
 	for(int i=0;i<visited_size;i++)
@@ -231,7 +233,6 @@ void Graph::CCSearch()
 			continue;
 		out_oura.Set();
 		id++;
-		cout<<id<< " "<<i<<endl;
 		Component comp(id,size);
 		visited[i]=true;
 		comp.Insert(i);
