@@ -217,19 +217,19 @@ void Graph::CCSearch()
 {
 	int id=-1;
 	int size=256; //na vrume kali timi
-	int visited_size;
+	uint32_t visited_size;
 	visited_size=out_index.getSize();
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*visited_size);
-	for(int i=0;i<visited_size;i++)
+	for(uint32_t i=0;i<visited_size;i++)
 		visited[i]=false;
 	uint32_t current_node;
 	int off;
-	for(int i=0;i<visited_size;i++)
+	for(uint32_t i=0;i<visited_size;i++)
 	{
 		if(visited[i]==true)
 			continue;
-		if(out_index.getCount(i)==0 && inc_index.getCount(i)==0)
+		if(out_index.getCount(i)<=0 && inc_index.getCount(i)<=0)
 			continue;
 		out_oura.Set();
 		id++;
@@ -244,7 +244,7 @@ void Graph::CCSearch()
 			comp.Insert(current_node);
 		}
 	}
-	cout<<"Count of Components"<<id<<endl;
+	cout<<"Count of Components: "<<id<<endl;
 	free(visited);
 }
 

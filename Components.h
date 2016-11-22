@@ -13,9 +13,19 @@ class Component
 public:
 	Component(uint32_t id , uint32_t size);
 	~Component();
-	
+	void SetComponent();
 	bool Insert(uint32_t id);
 	void doubleSize();
 };
 
+class SCC
+{
+	Component* components; // Components index - a vector which stores the components information
+	uint32_t components_count;
+	uint32_t* id_belongs_to_component; //inverted index 
+
+public:
+	SCC(uint32_t size_);
+	~SCC();
+};
 #endif
