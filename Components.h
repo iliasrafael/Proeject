@@ -44,6 +44,7 @@ class InfoTable
 	InfoTable();
 	bool IsDefined();
 	void stacked();
+	void do_defined();
 	void setIndex(uint32_t index);
 	void setLowLink(uint32_t low_link_);
 	void setCount();

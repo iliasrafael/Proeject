@@ -313,8 +313,7 @@ void Graph::SCC_Search()
 		table[i].setFrom(-1);
 		last=i;
 		while(1)
-		{		
-			cout<<"a :"<<stack.get_size()<<endl;	
+		{	
 			if(table[last].getCount()<out_index.getCount(last))
 			{
 				off=out_index.getPosition(last);
@@ -339,6 +338,7 @@ void Graph::SCC_Search()
 					index++;
 					stack.add(current);
 					table[current].stacked();
+					table[current].do_defined();
 					last=current;
 				}
 				else if(table[current].IsStacked())
@@ -351,11 +351,13 @@ void Graph::SCC_Search()
 			}
 			else
 			{
+				cout<<"dn benw pote"<<endl;
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					scc_id++;
 					uint32_t head=stack.pop();
 					table[head].UnStacked();
+					scc.Insert(scc_id,head);
 					while(head!=last)
 					{
 						head=stack.pop();

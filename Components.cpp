@@ -98,6 +98,10 @@ void InfoTable::stacked()
 {
 	on_stack=true;
 }
+void InfoTable::do_defined()
+{
+	defined=true;
+}
 void InfoTable::setIndex(uint32_t index_)
 {
 	index=index_;
