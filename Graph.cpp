@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "ArrayList.h"
 #include "Components.h"
+#include "Stack.h"
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -236,11 +237,11 @@ void Graph::CCSearch()
 		Component comp(id,size);
 		visited[i]=true;
 		comp.Insert(i);
-		CCS_update(i,visited);
+		CC_update(i,visited);
 		while(out_oura.empty()==false)
 		{
 			current_node=out_oura.remove();
-			CCS_update(current_node,visited);
+			CC_update(current_node,visited);
 			comp.Insert(current_node);
 		}
 	}
@@ -248,7 +249,7 @@ void Graph::CCSearch()
 	free(visited);
 }
 
-void Graph::CCS_update(uint32_t id,bool* visited)
+void Graph::CC_update(uint32_t id,bool* visited)
 {
 	int off,off2;
 	list_node * cells;
@@ -283,6 +284,104 @@ void Graph::CCS_update(uint32_t id,bool* visited)
 	}
 
 }
-
+void Graph::SCC_Search()
+{
+	uint32_t visited_size;
+	list_node * cells;
+	uint32_t* neigh;
+	uint32_t scc_id=0;
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
+	SCC scc(visited_size);
+	Stack stack(144);
+	InfoTable * table=new InfoTable[visited_size];
+	uint32_t index=0;
+	uint32_t last;
+	int off;
+	for(uint32_t i=0;i<visited_size;i++)
+	{
+		if(table[i].IsDefined())
+				continue;
+		table[i].setIndex(index);
+		table[i].setLowLink(index);
+		index++;
+		stack.add(i);
+		table[i].stacked();
+		table[i].setCount();
+		table[i].setFrom(-1);
+		last=i;
+		while(1)
+		{		
+			cout<<"a :"<<stack.get_size()<<endl;	
+			if(table[last].getCount()<out_index.getCount(last))
+			{
+				off=out_index.getPosition(last);
+				cells=out_buffer.getListNode(off);
+				int pos=table[last].getCount()/N;
+				int metr=0;
+				while(metr<pos)
+				{	
+					cells=out_buffer.getListNode(off);
+					off=cells->getOffset();
+					metr++;
+				}
+				neigh=cells->getNeighbors();
+				uint32_t current=neigh[table[last].getCount()%N];
+				table[last].AddCount();
+				if(!table[current].IsDefined())
+				{
+					table[current].setFrom((int)last);
+					table[current].setCount();
+					table[current].setIndex(index);
+					table[current].setLowLink(index);
+					index++;
+					stack.add(current);
+					table[current].stacked();
+					last=current;
+				}
+				else if(table[current].IsStacked())
+				{
+					if(table[last].getLowLink()<table[current].getIndex())
+						table[last].setLowLink(table[last].getLowLink());
+					else
+						table[last].setLowLink(table[current].getIndex());
+				}
+			}
+			else
+			{
+				if(table[last].getLowLink() == table[last].getIndex())
+				{
+					scc_id++;
+					uint32_t head=stack.pop();
+					table[head].UnStacked();
+					while(head!=last)
+					{
+						head=stack.pop();
+						table[head].UnStacked();
+						scc.Insert(scc_id,head);
+					}
+				}	
+				uint32_t from;
+				from=table[last].getFrom();
+				if(from!=-1)
+				{
+					if(table[from].getLowLink()<table[last].getLowLink())
+						table[from].setLowLink(table[from].getLowLink());
+					else
+						table[from].setLowLink(table[last].getLowLink());
+					last=from;
+				}
+				else
+				{
+					cout<<"Freeedom"<<endl;
+					break;
+				}
+			}
+		}
+	}
+	//cout<<scc.getCount()<<endl;
+}
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

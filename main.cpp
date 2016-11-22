@@ -41,6 +41,7 @@ int main(void)
 		}
 	}
 	graph.CCSearch();
+	graph.SCC_Search();
 	/*
 	myReadFile.close();
 	if(option==1)

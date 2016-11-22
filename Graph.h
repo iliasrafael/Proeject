@@ -23,7 +23,8 @@ public:
 	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited);
 	bool search(uint32_t id,uint32_t id2);
 	void CCSearch();
-	void CCS_update(uint32_t id,bool* visited);
+	void CC_update(uint32_t id,bool* visited);
+	void SCC_Search();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
