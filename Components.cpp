@@ -105,7 +105,7 @@ void SCC::Insert(uint32_t id , uint32_t element)
 void SCC::Print()
 {
 	cout<<"------------ PRINT ---------------"<<endl;
-	for(int i = 0; i < components_count; i++)
+	for(int i = 1; i <= components_count; i++)
 	{
 		cout<<"ID "<<components[i].getId()<<":"<<endl;
 		for(int j = 0; j < components[i].getNodesCount(); j++)
