@@ -294,17 +294,18 @@ void Graph::SCC_Search()
 		visited_size=out_index.getSize();
 	else
 		visited_size=inc_index.getSize();
+	cout<<"SIZE: " <<visited_size<<endl;
 	SCC scc(visited_size); // thelei free
 	Stack stack(144);
 	InfoTable * table=new InfoTable[visited_size];
-	uint32_t index=0;
+	uint32_t index=1;
 	uint32_t last;
 	int off;
 	for(uint32_t i=0;i<visited_size;i++)
 	{
-		cout<<"kombos "<<i<<endl;
-		if(table[i].IsDefined())
-				continue;
+		//cout<<"kombos "<<i<<endl;
+		if(table[i].getIndex() != 0)
+			continue;
 		table[i].setIndex(index);
 		table[i].setLowLink(index);
 		index++;
@@ -312,7 +313,7 @@ void Graph::SCC_Search()
 		table[i].stacked();
 		table[i].setCount();
 		table[i].setFrom(-1);
-		table[i].do_defined();
+		//table[i].do_defined();
 		last=i;
 		while(1)
 		{	
@@ -332,7 +333,7 @@ void Graph::SCC_Search()
 				uint32_t current=neigh[table[last].getCount()%N];
 				table[last].AddCount();
 
-				if(!table[current].IsDefined())
+				if(table[current].getIndex() == 0)
 				{
 					table[current].setFrom((int)last);
 					table[current].setCount();
@@ -341,7 +342,7 @@ void Graph::SCC_Search()
 					index++;
 					stack.add(current);
 					table[current].stacked();
-					table[current].do_defined();
+					//table[current].do_defined();
 					last=current;
 				}
 				else if(table[current].IsStacked())
@@ -365,6 +366,7 @@ void Graph::SCC_Search()
 					table[head].UnStacked();
 					scc_id++;
 					scc.Insert(scc_id,head);
+					int counter = 1;
 					//cout<<last<<" <-"<<endl;
 					while(head!=last && !stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
 					{
@@ -372,6 +374,7 @@ void Graph::SCC_Search()
 						//cout<<"kefalaki "<<head<<endl;
 						table[head].UnStacked();
 						scc.Insert(scc_id,head);
+						counter++;
 					}	
 				}	
 				uint32_t from;
@@ -386,13 +389,15 @@ void Graph::SCC_Search()
 				}
 				else
 				{
-					cout<<"Freeedom"<<endl;
+					//cout<<"Freeedom"<<endl;
 					break;
 				}
 			}
 		}
 	}
+	scc.Print();
 	cout<<scc_id<<endl;
+	cout<<scc.getComponentCount()<<endl;
 	delete []table;
 }
 ///////////////////////////////////////////////////////////////////////////////
