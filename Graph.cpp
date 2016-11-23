@@ -294,7 +294,7 @@ void Graph::SCC_Search()
 		visited_size=out_index.getSize();
 	else
 		visited_size=inc_index.getSize();
-	SCC scc(visited_size);
+	SCC scc(visited_size); // thelei free
 	Stack stack(144);
 	InfoTable * table=new InfoTable[visited_size];
 	uint32_t index=0;
@@ -302,6 +302,7 @@ void Graph::SCC_Search()
 	int off;
 	for(uint32_t i=0;i<visited_size;i++)
 	{
+		cout<<"kombos "<<i<<endl;
 		if(table[i].IsDefined())
 				continue;
 		table[i].setIndex(index);
@@ -311,6 +312,7 @@ void Graph::SCC_Search()
 		table[i].stacked();
 		table[i].setCount();
 		table[i].setFrom(-1);
+		table[i].do_defined();
 		last=i;
 		while(1)
 		{	
@@ -329,6 +331,7 @@ void Graph::SCC_Search()
 				neigh=cells->getNeighbors();
 				uint32_t current=neigh[table[last].getCount()%N];
 				table[last].AddCount();
+
 				if(!table[current].IsDefined())
 				{
 					table[current].setFrom((int)last);
@@ -351,19 +354,25 @@ void Graph::SCC_Search()
 			}
 			else
 			{
-				cout<<"dn benw pote"<<endl;
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
-					scc_id++;
-					uint32_t head=stack.pop();
+					uint32_t head;
+					if(!stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
+						head=stack.pop();
+					else
+						break;
+					//cout<<"kefalaki eksw "<<head<<endl;
 					table[head].UnStacked();
+					scc_id++;
 					scc.Insert(scc_id,head);
-					while(head!=last)
+					//cout<<last<<" <-"<<endl;
+					while(head!=last && !stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
 					{
 						head=stack.pop();
+						//cout<<"kefalaki "<<head<<endl;
 						table[head].UnStacked();
 						scc.Insert(scc_id,head);
-					}
+					}	
 				}	
 				uint32_t from;
 				from=table[last].getFrom();
@@ -383,7 +392,8 @@ void Graph::SCC_Search()
 			}
 		}
 	}
-	//cout<<scc.getCount()<<endl;
+	cout<<scc_id<<endl;
+	delete []table;
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
