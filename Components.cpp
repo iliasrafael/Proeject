@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "Components.h"
-#define SIZE 1000
+#define SIZE 20
 
 using namespace std;
 
@@ -66,12 +66,14 @@ void SCC::doubleSize()
 {
 	size=size*2;
 	components = (Component*)realloc(components, sizeof(Component)*size);
+	for(uint32_t i=size/2 ; i< size ; i ++)
+		components[i].SetComponent();
 	assert(components!=NULL);
 
 }
 void SCC::Insert(uint32_t id , uint32_t element)
 {
-	if(id>size)
+	if(id>=size)
 		doubleSize();
 	else
 	{
