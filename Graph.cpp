@@ -303,7 +303,7 @@ void Graph::SCC_Search()
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 		cout<<"kombos "<<i<<endl;
-		if(table[i].IsDefined())
+		if(table[i].IsDefined() || out_index.getPosition(i)<0 )
 				continue;
 		table[i].setIndex(index);
 		table[i].setLowLink(index);

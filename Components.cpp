@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "Components.h"
-#define SIZE 20
+#define SIZE 2
 
 using namespace std;
 
@@ -75,13 +75,11 @@ void SCC::Insert(uint32_t id , uint32_t element)
 {
 	if(id>=size)
 		doubleSize();
-	else
-	{
-		if(components_count<id)
-			components_count=id;
-		components[id].Insert(element);
-		id_belongs_to_component[element]=id;
-	}
+
+	if(components_count<id)
+		components_count=id;
+	components[id].Insert(element);
+	id_belongs_to_component[element]=id;
 
 }
 InfoTable::InfoTable()
