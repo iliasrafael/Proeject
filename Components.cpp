@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "Components.h"
-#define SIZE 1000
+#define SIZE 20
 
 using namespace std;
 

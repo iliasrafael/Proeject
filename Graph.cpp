@@ -295,7 +295,7 @@ void Graph::SCC_Search()
 	else
 		visited_size=inc_index.getSize();
 	SCC scc(visited_size); // thelei free
-	Stack stack(144);
+	Stack stack(visited_size);
 	InfoTable * table=new InfoTable[visited_size];
 	uint32_t index=0;
 	uint32_t last;
