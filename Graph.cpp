@@ -305,6 +305,7 @@ void Graph::SCC_Search()
 	{
 
 		//cout<<"kombos "<<i<<endl;
+		//cout<<" b"<<out_index.getPosition(i)<<endl;
 		if(table[i].getIndex() != 0 || out_index.getPosition(i)<0 )
 				continue;
 
@@ -366,6 +367,7 @@ void Graph::SCC_Search()
 						break;
 					//cout<<"kefalaki eksw "<<head<<endl;
 					table[head].UnStacked();
+					//cout<<"benw "<<scc_id<<" head"<<head<<endl;
 					scc.Insert(scc_id,head);
 					int counter = 1;
 					//cout<<last<<" <-"<<endl;
@@ -397,7 +399,7 @@ void Graph::SCC_Search()
 			}
 		}
 	}
-	//scc.Print();
+	scc.Print();
 	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 }

@@ -4,7 +4,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 NodeIndex::NodeIndex()
 {
-	nodes=(unsigned int*)malloc(sizeof(unsigned int)*NodeIndexSize);
+	nodes=(int*)malloc(sizeof(int)*NodeIndexSize);
 	assert(nodes!=NULL);
 	last_bucket=(unsigned int *)malloc(sizeof(unsigned int)*NodeIndexSize);
 	assert(last_bucket!=NULL);
@@ -20,7 +20,7 @@ NodeIndex::NodeIndex()
 void NodeIndex::reallocation()
 {
 	size*=2;
-	nodes = (unsigned int*) realloc(nodes, sizeof(unsigned int)*size);
+	nodes = (int*) realloc(nodes, sizeof(int)*size);
 	assert(nodes!=NULL);
 	last_bucket= (unsigned int*) realloc(last_bucket, sizeof(unsigned int)*size);
 	assert(last_bucket!=NULL);
@@ -41,12 +41,12 @@ NodeIndex::~NodeIndex()
 	free(count);
 }
 ////////////////////////////////////////////////////
-unsigned int* NodeIndex::getNodes()
+int* NodeIndex::getNodes()
 {
 	return nodes;
 }
 ////////////////////////////////////////////////////
-unsigned int NodeIndex::getPosition(unsigned int i)
+int NodeIndex::getPosition(unsigned int i)
 {
 	return nodes[i];
 }
