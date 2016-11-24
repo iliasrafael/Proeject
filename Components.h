@@ -13,9 +13,12 @@ class Component
 public:
 	Component(uint32_t id , uint32_t size);
 	~Component();
-	void SetComponent();
-	bool Insert(uint32_t id);
+	void SetComponent(uint32_t id);
+	void Insert(uint32_t id);
 	void doubleSize();
+	uint32_t getNodesCount();
+	uint32_t getNode(uint32_t id);
+	uint32_t getId();
 };
 
 class SCC
@@ -30,6 +33,8 @@ public:
 	~SCC();
 	void Insert(uint32_t id,uint32_t element);
 	void doubleSize();
+	void Print();
+	uint32_t getComponentCount();
 };
 
 class InfoTable
@@ -37,14 +42,14 @@ class InfoTable
 	uint32_t index;
 	uint32_t low_link;
 	bool on_stack;
-	bool defined;
+	//bool defined;
 	uint32_t count;
 	int from;
 	public:
 	InfoTable();
-	bool IsDefined();
+	//bool IsDefined();
 	void stacked();
-	void do_defined();
+	//void do_defined();
 	void setIndex(uint32_t index);
 	void setLowLink(uint32_t low_link_);
 	void setCount();
