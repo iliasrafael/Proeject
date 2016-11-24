@@ -17,7 +17,7 @@ int main(void)
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("tinyGraph.txt");
+		myReadFile.open("example.txt");
 	else if(option==2)
 		myReadFile.open("smallGraph.txt");
 	else if(option==3)

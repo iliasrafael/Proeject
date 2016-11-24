@@ -219,7 +219,10 @@ void Graph::CCSearch()
 	int id=-1;
 	int size=256; //na vrume kali timi
 	uint32_t visited_size;
-	visited_size=out_index.getSize();
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*visited_size);
 	for(uint32_t i=0;i<visited_size;i++)

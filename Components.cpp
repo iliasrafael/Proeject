@@ -116,20 +116,12 @@ void SCC::Print()
 	for(int i = 0; i <= components_count; i++)
 	{
 		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;
-		if(components[i].getNodesCount()==2)
-		{
-			count_monwn++;
-		}
-		else
-			continue;	
 		//cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
-		
 		for(int j = 0; j < components[i].getNodesCount(); j++)
 		{
 				cout<<components[i].getNode(j)<<" "<<endl;
 		}
 		cout<<endl;
-		
 	}
 	cout<<count_monwn<<" <-"<<endl;
 	cout<<"--------------------------------------"<<endl;
