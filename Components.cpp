@@ -111,18 +111,27 @@ void SCC::Insert(uint32_t id , uint32_t element)
 
 void SCC::Print()
 {
+	int count_monwn=0;
 	cout<<"------------ PRINT ---------------"<<endl;
 	for(int i = 0; i <= components_count; i++)
 	{
-		cout<<"components_co u"<<components[i].getNodesCount()<<endl;	
-		cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
+		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;
+		if(components[i].getNodesCount()==2)
+		{
+			count_monwn++;
+		}
+		else
+			continue;	
+		//cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
+		
 		for(int j = 0; j < components[i].getNodesCount(); j++)
 		{
-			if(components[i].getNode(j) != 0)
 				cout<<components[i].getNode(j)<<" "<<endl;
 		}
 		cout<<endl;
+		
 	}
+	cout<<count_monwn<<" <-"<<endl;
 	cout<<"--------------------------------------"<<endl;
 }
 

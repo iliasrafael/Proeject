@@ -72,7 +72,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
 	int count2=inc_index.getCount(id2);
-	if(count1<0 || count2<0 )
+	if(count1==0 || count2==0 )
 		return false;
 	NodeIndex *index;
 	Buffer *buffer;
@@ -305,9 +305,9 @@ void Graph::SCC_Search()
 	{
 
 		//cout<<"kombos "<<i<<endl;
-		//cout<<" b"<<out_index.getPosition(i)<<endl;
-		if(table[i].getIndex() != 0 || out_index.getPosition(i)<0 )
-				continue;
+		//cout<<" b"<<out_index.getCount(i)<<endl;
+		if(table[i].getIndex() != 0 || out_index.getCount(i)==0 )
+			continue;
 
 		table[i].setIndex(index);
 		table[i].setLowLink(index);
@@ -333,7 +333,7 @@ void Graph::SCC_Search()
 					metr++;
 				}
 				neigh=cells->getNeighbors();
-				uint32_t current=neigh[table[last].getCount()%N];
+				uint32_t current=neigh[table[last].getCount()%N];	
 				table[last].AddCount();
 
 				if(table[current].getIndex() == 0)
@@ -361,20 +361,15 @@ void Graph::SCC_Search()
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					uint32_t head;
-					if(!stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
-						head=stack.pop();
-					else
-						break;
-					//cout<<"kefalaki eksw "<<head<<endl;
+					head=stack.pop();
 					table[head].UnStacked();
-					//cout<<"benw "<<scc_id<<" head"<<head<<endl;
 					scc.Insert(scc_id,head);
 					int counter = 1;
 					//cout<<last<<" <-"<<endl;
 					while(head!=last && !stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
 					{
 						head=stack.pop();
-						//cout<<"kefalaki "<<head<<endl;
+						//cout<<"kefalaki "<<table[head].getFrom()<<"me head "<<head<<endl;
 						table[head].UnStacked();
 						scc.Insert(scc_id,head);
 						counter++;

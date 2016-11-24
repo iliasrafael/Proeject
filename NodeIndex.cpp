@@ -72,7 +72,7 @@ unsigned int NodeIndex::getCount(unsigned int id)
 	if(count!=NULL &&  id < size)
 		return count[id];
 	else
-		return -2;
+		return 0;
 }
 void NodeIndex::setCount(unsigned int id)
 {
