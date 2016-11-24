@@ -65,7 +65,7 @@ SCC::SCC(uint32_t size_)
 	components = (Component*) malloc(sizeof(Component)*SIZE);
 	assert(components!=NULL);
 	for(int i=0;i<SIZE;i++)
-		components[i].SetComponent(i+1);
+		components[i].SetComponent(i);
 	components_count=0;
 	id_belongs_to_component = (uint32_t*) malloc(sizeof(uint32_t)*size_);
 	assert(id_belongs_to_component!=NULL);
@@ -85,7 +85,7 @@ void SCC::doubleSize()
 	size=size*2;
 	components = (Component*)realloc(components, sizeof(Component)*size);
 	for(uint32_t i=size/2 ; i< size ; i ++)
-		components[i].SetComponent(i+1);
+		components[i].SetComponent(i);
 	assert(components!=NULL);
 
 }
@@ -98,23 +98,32 @@ void SCC::Insert(uint32_t id , uint32_t element)
 	if(components_count<id)
 		components_count=id;
 	components[id].Insert(element);
+	/*cout<<"count"<<components[id].getNodesCount()<<" "<<components[id].getId()<<endl;
+	for(int j = 0; j < components[id].getNodesCount(); j++)
+		{
+			if(components[id].getNode(j) != 0)
+				cout<<components[id].getNode(j)<<" ";
+		}
+	*/
 	id_belongs_to_component[element]=id;
 
 }
 
 void SCC::Print()
 {
+	int count_monwn=0;
 	cout<<"------------ PRINT ---------------"<<endl;
-	for(int i = 1; i <= components_count; i++)
+	for(int i = 0; i <= components_count; i++)
 	{
-		cout<<"ID "<<components[i].getId()<<":"<<endl;
+		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;
+		//cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
 		for(int j = 0; j < components[i].getNodesCount(); j++)
 		{
-			if(components[i].getNode(j) != 0)
-				cout<<components[i].getNode(j)<<" ";
+				cout<<components[i].getNode(j)<<" "<<endl;
 		}
 		cout<<endl;
 	}
+	cout<<count_monwn<<" <-"<<endl;
 	cout<<"--------------------------------------"<<endl;
 }
 

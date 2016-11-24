@@ -72,7 +72,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
 	int count2=inc_index.getCount(id2);
-	if(count1<0 || count2<0 )
+	if(count1==0 || count2==0 )
 		return false;
 	NodeIndex *index;
 	Buffer *buffer;
@@ -219,7 +219,10 @@ void Graph::CCSearch()
 	int id=-1;
 	int size=256; //na vrume kali timi
 	uint32_t visited_size;
-	visited_size=out_index.getSize();
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*visited_size);
 	for(uint32_t i=0;i<visited_size;i++)
@@ -245,7 +248,7 @@ void Graph::CCSearch()
 			comp.Insert(current_node);
 		}
 	}
-	cout<<"Count of Components: "<<id<<endl;
+	cout<<"Count of Components: "<<id+1<<endl;
 	free(visited);
 }
 
@@ -304,9 +307,10 @@ void Graph::SCC_Search()
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 
-		cout<<"kombos "<<i<<endl;
-		if(table[i].getIndex() != 0 || out_index.getPosition(i)<0 )
-				continue;
+		//cout<<"kombos "<<i<<endl;
+		//cout<<" b"<<out_index.getCount(i)<<endl;
+		if(table[i].getIndex() != 0 || out_index.getCount(i)==0 )
+			continue;
 
 		table[i].setIndex(index);
 		table[i].setLowLink(index);
@@ -332,7 +336,7 @@ void Graph::SCC_Search()
 					metr++;
 				}
 				neigh=cells->getNeighbors();
-				uint32_t current=neigh[table[last].getCount()%N];
+				uint32_t current=neigh[table[last].getCount()%N];	
 				table[last].AddCount();
 
 				if(table[current].getIndex() == 0)
@@ -360,24 +364,20 @@ void Graph::SCC_Search()
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					uint32_t head;
-					if(!stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
-						head=stack.pop();
-					else
-						break;
-					//cout<<"kefalaki eksw "<<head<<endl;
+					head=stack.pop();
 					table[head].UnStacked();
-					scc_id++;
 					scc.Insert(scc_id,head);
 					int counter = 1;
 					//cout<<last<<" <-"<<endl;
 					while(head!=last && !stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
 					{
 						head=stack.pop();
-						//cout<<"kefalaki "<<head<<endl;
+						//cout<<"kefalaki "<<table[head].getFrom()<<"me head "<<head<<endl;
 						table[head].UnStacked();
 						scc.Insert(scc_id,head);
 						counter++;
-					}	
+					}
+					scc_id++;	
 				}	
 				uint32_t from;
 				from=table[last].getFrom();
@@ -398,8 +398,7 @@ void Graph::SCC_Search()
 		}
 	}
 	scc.Print();
-	cout<<scc_id<<endl;
-	cout<<scc.getComponentCount()<<endl;
+	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 }
 ///////////////////////////////////////////////////////////////////////////////

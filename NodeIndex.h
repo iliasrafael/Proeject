@@ -10,7 +10,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
 	unsigned int size;
-	unsigned int* nodes;
+	int* nodes;
 	unsigned int* last_bucket;
 	unsigned int* count;
 public:	
@@ -19,8 +19,8 @@ public:
 	bool InsertNode(uint32_t id,uint32_t offset);
 	void reallocation();
 	unsigned int getListHead(uint32_t id);
-	unsigned int* getNodes();
-	unsigned int getPosition(unsigned int );
+	int* getNodes();
+	int getPosition(unsigned int );
 	unsigned int getLastBucket(unsigned int );
 	unsigned int getSize();
 	unsigned int getCount(unsigned int);
