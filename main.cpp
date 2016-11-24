@@ -42,8 +42,9 @@ int main(void)
 	}
 	graph.CCSearch();
 	graph.SCC_Search();
-	/*
+	
 	myReadFile.close();
+	/*
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
@@ -68,10 +69,10 @@ int main(void)
 	}
 }
 	myReadFile.close();
+	*/
 	end = time(0);
    	currtime = ctime(&end);
    	cerr << "Finished at: " << currtime;
    	cerr << "After running for: "<< end-now<<"secs." <<endl;
-   	*/
 	return 0;
 }
