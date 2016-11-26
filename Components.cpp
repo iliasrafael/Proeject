@@ -105,8 +105,8 @@ void SCC::Insert(uint32_t id , uint32_t element)
 				cout<<components[id].getNode(j)<<" ";
 		}
 	*/
+	cout<<"el "<<element<< " "<<endl;
 	id_belongs_to_component[element]=id;
-
 }
 
 void SCC::Print()

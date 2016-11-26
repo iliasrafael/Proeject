@@ -364,19 +364,16 @@ void Graph::SCC_Search()
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					uint32_t head;
-					head=stack.pop();
-					table[head].UnStacked();
-					scc.Insert(scc_id,head);
 					int counter = 1;
 					//cout<<last<<" <-"<<endl;
-					while(head!=last && !stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
+					do
 					{
 						head=stack.pop();
 						//cout<<"kefalaki "<<table[head].getFrom()<<"me head "<<head<<endl;
 						table[head].UnStacked();
 						scc.Insert(scc_id,head);
 						counter++;
-					}
+					}while(head!=last && !stack.empty()); //isws dn xriazetai elegxos to evala gia to segm
 					scc_id++;	
 				}	
 				uint32_t from;

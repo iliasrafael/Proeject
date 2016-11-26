@@ -6,7 +6,7 @@ using namespace std;
 
 Stack::Stack(uint32_t size_)
 {
-	head = -1;
+	head = 0;
 	pinakas = (uint32_t*)malloc(sizeof(uint32_t)*size_);
 	size = size_;
 }
@@ -18,13 +18,13 @@ Stack::~Stack()
 
 bool Stack::empty()
 {
-	return (head == -1);
+	return (head == 0);
 }
 
 uint32_t Stack::pop() 
 {
-	uint32_t stoixeio = pinakas[head];
-	head--;
+	assert(head!=0);
+	uint32_t stoixeio = pinakas[--head];
 	return stoixeio;
 }
 
@@ -35,8 +35,8 @@ void Stack::add(uint32_t stoixeio)
 		doubleSize();
 	}
 
-	head++;
 	pinakas[head] = stoixeio;
+	head++;
 }
 
 uint32_t Stack::get_size()
