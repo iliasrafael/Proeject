@@ -105,25 +105,32 @@ void SCC::Insert(uint32_t id , uint32_t element)
 				cout<<components[id].getNode(j)<<" ";
 		}
 	*/
-	cout<<"el "<<element<< " "<<endl;
 	id_belongs_to_component[element]=id;
+
 }
 
 void SCC::Print()
 {
-	int count_monwn=0;
 	cout<<"------------ PRINT ---------------"<<endl;
+	int count=0;
 	for(int i = 0; i <= components_count; i++)
 	{
-		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;
+		//if(components[i].getNodesCount() <= 1)
+			//c++;
+		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;	
 		//cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
-		for(int j = 0; j < components[i].getNodesCount(); j++)
-		{
-				cout<<components[i].getNode(j)<<" "<<endl;
+		//for(int j = 0; j < components[i].getNodesCount(); j++)
+		//{
+			//if(components[i].getNode(j) != 0)
+			//cout<<components[i].getNode(j)<<" ";
+		//}
+		//cout<<endl;
+
+		if(components[i].getNodesCount()>1) {
+			count++;
 		}
-		cout<<endl;
 	}
-	cout<<count_monwn<<" <-"<<endl;
+	cout<<"---> "<<count<<endl;
 	cout<<"--------------------------------------"<<endl;
 }
 

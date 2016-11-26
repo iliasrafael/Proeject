@@ -19,6 +19,7 @@ NodeIndex::NodeIndex()
 }
 void NodeIndex::reallocation()
 {
+	//cout<<"REALLOCED"<<endl;
 	size*=2;
 	nodes = (int*) realloc(nodes, sizeof(int)*size);
 	assert(nodes!=NULL);
@@ -48,8 +49,6 @@ int* NodeIndex::getNodes()
 ////////////////////////////////////////////////////
 int NodeIndex::getPosition(unsigned int i)
 {
-	if(i>=size)
-		return -1;
 	return nodes[i];
 }
 ////////////////////////////////////////////////////
@@ -71,10 +70,16 @@ void NodeIndex::setSize(unsigned int size_)
 }
 unsigned int NodeIndex::getCount(unsigned int id)
 {
-	if(count!=NULL &&  id < size)
+	//cout<<"Size: "<<size<<" id: "<<id<<endl;
+	//cout<<"Count: "<<count[id]<<endl;
+	if(count!=NULL &&  id < size){
+		//cout<<"---->1"<<endl;
 		return count[id];
-	else
+	}
+	else {
+		//cout<<"---->2"<<endl;
 		return 0;
+	}
 }
 void NodeIndex::setCount(unsigned int id)
 {

@@ -45,7 +45,7 @@ int main(void)
 		cerr<<"Wrong position"<<endl;
 	getchar();
 
-	Stack stack_test(2);
+	Stack stack_test;
 	if(!stack_test.empty())
 		cerr<<"Wrong empty stack"<<endl;
 	else

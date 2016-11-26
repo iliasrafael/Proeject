@@ -10,7 +10,7 @@ class Stack
 	uint32_t size;
 	uint32_t* pinakas;
 public:
-	Stack(uint32_t size);
+	Stack();
 	~Stack();
 	bool empty();
 	uint32_t pop();

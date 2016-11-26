@@ -2,13 +2,15 @@
 #include <cstdlib>
 #include "Stack.h"
 
+#define STACK_SIZE 100
 using namespace std;
 
-Stack::Stack(uint32_t size_)
+Stack::Stack()
 {
 	head = 0;
-	pinakas = (uint32_t*)malloc(sizeof(uint32_t)*size_);
-	size = size_;
+	pinakas = (uint32_t*)malloc(sizeof(uint32_t)*STACK_SIZE);
+	assert(pinakas!=NULL);
+	size = STACK_SIZE;
 }
 
 Stack::~Stack()
@@ -23,7 +25,6 @@ bool Stack::empty()
 
 uint32_t Stack::pop() 
 {
-	assert(head!=0);
 	uint32_t stoixeio = pinakas[--head];
 	return stoixeio;
 }
@@ -34,9 +35,7 @@ void Stack::add(uint32_t stoixeio)
 	{
 		doubleSize();
 	}
-
-	pinakas[head] = stoixeio;
-	head++;
+	pinakas[head++] = stoixeio;
 }
 
 uint32_t Stack::get_size()
