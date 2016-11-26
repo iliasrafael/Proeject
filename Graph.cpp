@@ -220,7 +220,10 @@ void Graph::CCSearch()
 	int id=-1;
 	int size=256; //na vrume kali timi
 	uint32_t visited_size;
-	visited_size=out_index.getSize();
+	if(out_index.getSize()>inc_index.getSize())
+		visited_size=out_index.getSize();
+	else
+		visited_size=inc_index.getSize();
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*visited_size);
 	for(uint32_t i=0;i<visited_size;i++)
@@ -291,10 +294,10 @@ void Graph::SCC_Search()
 	list_node * cells;
 	uint32_t* neigh;
 	uint32_t scc_id=0;
-	//if(out_index.getSize()>inc_index.getSize())
+	if(out_index.getSize()>inc_index.getSize())
 		visited_size=out_index.getSize();
-	//else
-		//visited_size=inc_index.getSize();
+	else
+		visited_size=inc_index.getSize();
 	//cout<<"SIZE: " <<visited_size<<endl;
 	SCC scc(visited_size); // thelei free
 	Stack stack;
@@ -307,7 +310,7 @@ void Graph::SCC_Search()
 
 		////cout<<"kombos "<<i<<endl;
 		////cout<<" b"<<out_index.getPosition(i)<<endl;
-		if(table[i].getIndex() != 0)
+		if(table[i].getIndex() != 0 || out_index.getCount(i)==0)
 				continue;
 
 		table[i].setIndex(index);

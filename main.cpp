@@ -43,7 +43,7 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	//graph.CCSearch();
+	graph.CCSearch();
 	cout<<"SCC_Search: "<<endl;
 	graph.SCC_Search();
 	
