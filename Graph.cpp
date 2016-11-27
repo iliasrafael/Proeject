@@ -311,7 +311,7 @@ void Graph::SCC_Search()
 		////cout<<"kombos "<<i<<endl;
 		////cout<<" b"<<out_index.getPosition(i)<<endl;
 		if(table[i].getIndex() != 0 || out_index.getCount(i)==0)
-				continue;
+			continue;
 
 		table[i].setIndex(index);
 		table[i].setLowLink(index);

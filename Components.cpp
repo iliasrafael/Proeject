@@ -148,6 +148,7 @@ InfoTable::InfoTable()
 	on_stack=false;
 	//defined=false;
 	count=0;
+	from=-1;
 }
 /*bool InfoTable::IsDefined()
 {
