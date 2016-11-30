@@ -65,7 +65,7 @@ SCC::SCC(uint32_t size_)
 	components = (Component*) malloc(sizeof(Component)*SIZE);
 	assert(components!=NULL);
 	for(int i=0;i<SIZE;i++)
-		components[i].SetComponent(i);
+		components[i].SetComponent(i);	// Isws na arxizei apo to 1
 	components_count=0;
 	id_belongs_to_component = (uint32_t*) malloc(sizeof(uint32_t)*size_);
 	assert(id_belongs_to_component!=NULL);

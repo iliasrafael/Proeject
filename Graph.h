@@ -24,7 +24,7 @@ public:
 	bool search(uint32_t id,uint32_t id2);
 	void CCSearch();
 	void CC_update(uint32_t id,bool* visited);
-	void SCC_Search();
+	SCC SCC_Search();
 };
 
 ///////////////////////////////////////////////////////////////////////////////

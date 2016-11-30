@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "Components.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -45,7 +46,8 @@ int main(void)
 	myReadFile.close();
 	graph.CCSearch();
 	cout<<"SCC_Search: "<<endl;
-	graph.SCC_Search();
+	SCC scc = graph.SCC_Search();
+	scc.Print();
 	
 	
 	/*

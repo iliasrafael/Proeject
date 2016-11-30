@@ -288,7 +288,7 @@ void Graph::CC_update(uint32_t id,bool* visited)
 	}
 
 }
-void Graph::SCC_Search()
+SCC Graph::SCC_Search()
 {
 	uint32_t visited_size;
 	list_node * cells;
@@ -310,7 +310,7 @@ void Graph::SCC_Search()
 
 		////cout<<"kombos "<<i<<endl;
 		////cout<<" b"<<out_index.getPosition(i)<<endl;
-		if(table[i].getIndex() != 0 || out_index.getCount(i)==0)
+		if(table[i].getIndex() != 0 || out_index.getPosition(i)==-1)
 			continue;
 
 		table[i].setIndex(index);
@@ -412,6 +412,7 @@ void Graph::SCC_Search()
 	scc.Print();
 	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
+	return scc;
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
