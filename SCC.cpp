@@ -89,6 +89,43 @@ uint32_t SCC::getComponentCount()
 	return components_count;
 }
 
+uint32_t SCC::findNodeStronglyConnectedComponentID(uint32_t nodeId)
+{
+	return id_belongs_to_component[nodeId];
+}
+
+bool SCC::iterateStronglyConnectedComponentID(ComponentCursor* cursor)
+{
+	cursor = (ComponentCursor*) malloc(sizeof(ComponentCursor));
+	cursor->setCursor(0);
+	cursor->setCurrentComponent(&components[0]);
+}
+
+bool SCC::next_StronglyConnectedComponentID(ComponentCursor* cursor)
+{
+	cursor->setCursor(cursor->getCursor()+1);
+	cursor->setCurrentComponent(&components[cursor->getCursor()]);
+}
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+uint32_t ComponentCursor::getCursor()
+{
+	return Cursor;
+}
+Component* ComponentCursor::getCurrentComponent()
+{
+	return CurrentComponent;
+}
+void ComponentCursor::setCursor(uint32_t i)
+{
+	Cursor = i;
+}
+void ComponentCursor::setCurrentComponent(Component * component)
+{
+	CurrentComponent = component;
+}
+
+/////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
 InfoTable::InfoTable()
