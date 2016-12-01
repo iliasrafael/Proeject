@@ -310,7 +310,7 @@ SCC Graph::SCC_Search()
 
 		////cout<<"kombos "<<i<<endl;
 		////cout<<" b"<<out_index.getPosition(i)<<endl;
-		if(table[i].getIndex() != 0 || out_index.getPosition(i)==-1)
+		if(table[i].getIndex() != 0 || out_index.getPosition(i)<=0)
 			continue;
 
 		table[i].setIndex(index);
@@ -332,6 +332,7 @@ SCC Graph::SCC_Search()
 				//cout<<"Last: "<<last<<"Offset: "<<off<<endl;
 				cells=out_buffer.getListNode(off);
 				int pos=table[last].getCount()/N;
+				off=cells->getOffset();
 				int metr=0;
 				while(metr<pos)
 				{	
