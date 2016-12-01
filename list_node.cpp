@@ -17,7 +17,7 @@ int list_node::getOffset()
 	return offset;
 }
 ////////////////////////////////////////////////////
-unsigned int list_node::getLastNeighbor()
+uint32_t list_node::getLastNeighbor()
 {
 	return last_neighbor;
 }
@@ -27,7 +27,7 @@ void list_node::setOffset(int off)
 	offset=off;
 }
 ////////////////////////////////////////////////////
-void list_node::setLastNeighbor(unsigned int neighbor){
+void list_node::setLastNeighbor(uint32_t neighbor){
 	last_neighbor=neighbor;
 }
 ////////////////////////////////////////////////////
