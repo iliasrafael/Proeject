@@ -33,6 +33,7 @@ public:
 	~SCC();
 	void Insert(uint32_t id,uint32_t element);
 	void doubleSize();
+	uint32_t findSCCid(uint32_t nodeId);
 	void Print();
 	uint32_t getComponentCount();
 };

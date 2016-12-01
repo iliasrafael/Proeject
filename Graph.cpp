@@ -380,16 +380,21 @@ SCC Graph::SCC_Search()
 					int counter = 1;
 					//cout<<last<<" <-"<<endl;
 					*/
-					
-					do {
+					//if(!stack.empty())
+					//{
 						head=stack.pop();
-						//cout<<"kefalaki "<<table[head].getFrom()<<" apo "<<head<<endl;
 						table[head].UnStacked();
+
 						scc.Insert(scc_id,head);
-						//counter++;
-					} while(head!=last); //isws dn xriazetai elegxos to evala gia to segm
-					scc_id++;	
-					//cout<<"NEW SCC"<<endl;
+						while(head!=last) {
+							head=stack.pop();
+							//cout<<"kefalaki "<<table[head].getFrom()<<" apo "<<head<<endl;
+							table[head].UnStacked();
+							scc.Insert(scc_id,head);
+							//counter++;
+						}  //isws dn xriazetai elegxos to evala gia to segm
+						scc_id++;	
+					//}
 				}	
 				uint32_t from;
 				from=table[last].getFrom();
@@ -409,7 +414,7 @@ SCC Graph::SCC_Search()
 			}
 		}
 	}
-	scc.Print();
+	//scc.Print();
 	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 	return scc;

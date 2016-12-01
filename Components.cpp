@@ -109,6 +109,11 @@ void SCC::Insert(uint32_t id , uint32_t element)
 
 }
 
+uint32_t SCC::findSCCid(uint32_t nodeId)
+{
+	return id_belongs_to_component[nodeId];
+}
+
 void SCC::Print()
 {
 	cout<<"------------ PRINT ---------------"<<endl;
@@ -128,6 +133,7 @@ void SCC::Print()
 
 		if(components[i].getNodesCount()>1) {
 			count++;
+			cout<<"ID "<<i<<": "<<components[i].getNodesCount()<<endl;
 		}
 	}
 	cout<<"---> "<<count<<endl;

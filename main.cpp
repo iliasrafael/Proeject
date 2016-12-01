@@ -48,7 +48,7 @@ int main(void)
 	cout<<"SCC_Search: "<<endl;
 	SCC scc = graph.SCC_Search();
 	scc.Print();
-	
+	cout<<"Find: "<<scc.findSCCid(0)<<endl;
 	
 	/*
 	if(option==1)
