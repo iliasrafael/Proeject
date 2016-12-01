@@ -9,23 +9,23 @@ using namespace std;
 /* NODE INDEX */
 ///////////////////////////////////////////////////////////////////////////////
 class NodeIndex {
-	unsigned int size;
+	uint32_t size;
 	int* nodes;
-	unsigned int* last_bucket;
-	unsigned int* count;
+	uint32_t* last_bucket;
+	uint32_t* count;
 public:	
 	NodeIndex();
 	~NodeIndex();
 	bool InsertNode(uint32_t id,uint32_t offset);
 	void reallocation();
-	unsigned int getListHead(uint32_t id);
+	uint32_t getListHead(uint32_t id);
 	int* getNodes();
-	int getPosition(unsigned int );
-	unsigned int getLastBucket(unsigned int );
-	unsigned int getSize();
-	unsigned int getCount(unsigned int);
-	void setSize(unsigned int);
-	void setCount(unsigned int);
-	void setLastBucket(unsigned int ,unsigned int);
+	int getPosition(uint32_t );
+	uint32_t getLastBucket(uint32_t );
+	uint32_t getSize();
+	uint32_t getCount(uint32_t);
+	void setSize(uint32_t);
+	void setCount(uint32_t);
+	void setLastBucket(uint32_t ,uint32_t);
 	bool destroyNodeIndex();
 };

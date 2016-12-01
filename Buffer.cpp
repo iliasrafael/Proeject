@@ -20,7 +20,7 @@ Buffer::~Buffer()
 	free(cells);
 }
 ////////////////////////////////////////////////////
-list_node* Buffer::getListNode(unsigned int offset)
+list_node* Buffer::getListNode(uint32_t offset)
 {
 	if(offset > size)
 	{
@@ -31,21 +31,21 @@ list_node* Buffer::getListNode(unsigned int offset)
 	return &cells[offset];		
 }
 ////////////////////////////////////////////////////
-unsigned int Buffer::getLast()
+uint32_t Buffer::getLast()
 {
 	return last;
 }
-void Buffer::setLast(unsigned int last_)
+void Buffer::setLast(uint32_t last_)
 {
 	last=last_;
 }
 ////////////////////////////////////////////////////
-unsigned int Buffer::getSize()
+uint32_t Buffer::getSize()
 {
 	return size;
 }
 ////////////////////////////////////////////////////
-void Buffer::setSize(unsigned int size_)
+void Buffer::setSize(uint32_t size_)
 {
 	size=size_;
 }

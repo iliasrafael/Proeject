@@ -4,19 +4,19 @@
 /* BUFFER */
 ///////////////////////////////////////////////////////////////////////////////
 class Buffer{
-	unsigned int last;
-	unsigned int size;
+	uint32_t last;
+	uint32_t size;
 	list_node *cells;
 public:
 	Buffer();
 	~Buffer();
-	unsigned int allocNewNode();
+	uint32_t allocNewNode();
 	int InsertFirstNode(uint32_t id);
-	list_node* getListNode(unsigned int);
-	unsigned int getLast();
-	void setLast(unsigned int);
-	unsigned int getSize();
-	void setSize(unsigned int);
+	list_node* getListNode(uint32_t);
+	uint32_t getLast();
+	void setLast(uint32_t);
+	uint32_t getSize();
+	void setSize(uint32_t);
 	void reallocation();
 	bool destroyBuffer();
 };

@@ -34,7 +34,7 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 		index->reallocation();
 	}
 	index->setCount(id);
-	unsigned int last=buffer->getLast(); 
+	uint32_t last=buffer->getLast(); 
 	if(index->getPosition(id)==-1)
 	{
 		if(last>=buffer->getSize())
@@ -172,7 +172,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 
 bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited)
 {
-	unsigned int off;
+	uint32_t off;
 	list_node * cells;
 	uint32_t* neigh;
 	uint32_t id;

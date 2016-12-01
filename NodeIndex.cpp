@@ -6,9 +6,9 @@ NodeIndex::NodeIndex()
 {
 	nodes=(int*)malloc(sizeof(int)*NodeIndexSize);
 	assert(nodes!=NULL);
-	last_bucket=(unsigned int *)malloc(sizeof(unsigned int)*NodeIndexSize);
+	last_bucket=(uint32_t *)malloc(sizeof(uint32_t)*NodeIndexSize);
 	assert(last_bucket!=NULL);
-	count=(unsigned int *)malloc(sizeof(unsigned int)*NodeIndexSize);
+	count=(uint32_t *)malloc(sizeof(uint32_t)*NodeIndexSize);
 	assert(count!=NULL);
 	for(int i=0;i<NodeIndexSize;i++){
 		nodes[i]=-1;
@@ -23,9 +23,9 @@ void NodeIndex::reallocation()
 	size*=2;
 	nodes = (int*) realloc(nodes, sizeof(int)*size);
 	assert(nodes!=NULL);
-	last_bucket= (unsigned int*) realloc(last_bucket, sizeof(unsigned int)*size);
+	last_bucket= (uint32_t*) realloc(last_bucket, sizeof(uint32_t)*size);
 	assert(last_bucket!=NULL);
-	count= (unsigned int*) realloc(count, sizeof(unsigned int)*size);
+	count= (uint32_t*) realloc(count, sizeof(uint32_t)*size);
 	assert(count!=NULL);
 	for(int i =size/2; i<size; i++)
 	{
@@ -47,30 +47,30 @@ int* NodeIndex::getNodes()
 	return nodes;
 }
 ////////////////////////////////////////////////////
-int NodeIndex::getPosition(unsigned int i)
+int NodeIndex::getPosition(uint32_t i)
 {
 	if(i>=size)
 		return -1;
 	return nodes[i];
 }
 ////////////////////////////////////////////////////
-unsigned int NodeIndex::getLastBucket(unsigned int i)
+uint32_t NodeIndex::getLastBucket(uint32_t i)
 {
 	return last_bucket[i];
 }
 ////////////////////////////////////////////////////
-unsigned int NodeIndex::getSize()
+uint32_t NodeIndex::getSize()
 {
 	return size;
 }
 ////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////
-void NodeIndex::setSize(unsigned int size_)
+void NodeIndex::setSize(uint32_t size_)
 {
 	size=size_;
 }
-unsigned int NodeIndex::getCount(unsigned int id)
+uint32_t NodeIndex::getCount(uint32_t id)
 {
 	//cout<<"Size: "<<size<<" id: "<<id<<endl;
 	//cout<<"Count: "<<count[id]<<endl;
@@ -83,12 +83,12 @@ unsigned int NodeIndex::getCount(unsigned int id)
 		return 0;
 	}
 }
-void NodeIndex::setCount(unsigned int id)
+void NodeIndex::setCount(uint32_t id)
 {
 	count[id]++;
 }
 ////////////////////////////////////////////////////
-void NodeIndex::setLastBucket(unsigned int i,unsigned int last)
+void NodeIndex::setLastBucket(uint32_t i,uint32_t last)
 {
 	last_bucket[i]=last;
 }
