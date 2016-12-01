@@ -2,6 +2,7 @@
 #include "ArrayList.h"
 #include "Stack.h"
 #include "Components.h"
+#include "SCC.h"
 #include <fstream>
 #include <iostream>
 using namespace std;

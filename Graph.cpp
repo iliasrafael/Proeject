@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "ArrayList.h"
 #include "Components.h"
+#include "SCC.h"
 #include "Stack.h"
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
@@ -69,6 +70,7 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////
 bool Graph::search(uint32_t id, uint32_t id2)
 {
 	int count1=out_index.getCount(id);
@@ -112,6 +114,7 @@ bool Graph::search(uint32_t id, uint32_t id2)
 	return false;
 }
 
+//////////////////////////////////////////////////////////////////////////////
 void visited_del(uint32_t **visited,int sqr)
 {
 	for(int i=0;i<sqr;i++)
@@ -170,6 +173,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	return -1;
 }
 
+//////////////////////////////////////////////////////////////////////////////
 bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited)
 {
 	uint32_t off;
@@ -214,6 +218,9 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 	}
 	return false;
 }
+//////////////////////////////////////////////////////////////////////////////
+//                        END OF PART 1                                     //
+//////////////////////////////////////////////////////////////////////////////
 
 void Graph::CCSearch()
 {
@@ -253,6 +260,7 @@ void Graph::CCSearch()
 	free(visited);
 }
 
+//////////////////////////////////////////////////////////////////////////////
 void Graph::CC_update(uint32_t id,bool* visited)
 {
 	int off,off2;
@@ -288,6 +296,8 @@ void Graph::CC_update(uint32_t id,bool* visited)
 	}
 
 }
+
+//////////////////////////////////////////////////////////////////////////////
 SCC Graph::SCC_Search()
 {
 	uint32_t visited_size;

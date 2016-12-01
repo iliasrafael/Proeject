@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include "Components.h"
+#include "SCC.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
