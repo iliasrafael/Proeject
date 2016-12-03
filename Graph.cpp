@@ -203,7 +203,7 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-					if(scc->findSCCid(neigh[i])!=scc_target)
+					if(scc!=NULL && scc->findSCCid(neigh[i])!=scc_target)
 						continue;
 					x=neigh[i]/100;
 					y=neigh[i]%100;
