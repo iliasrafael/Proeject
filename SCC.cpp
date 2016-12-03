@@ -68,12 +68,12 @@ void SCC::Print()
 			//c++;
 		//cout<<"components_co u"<<components[i].getNodesCount()<<endl;	
 		//cout<<"ID "<<components[i].getId()<<" i "<<i<<" :"<<endl;
-		//for(int j = 0; j < components[i].getNodesCount(); j++)
-		//{
+		for(int j = 0; j < components[i].getNodesCount(); j++)
+		{
 			//if(components[i].getNode(j) != 0)
-			//cout<<components[i].getNode(j)<<" ";
-		//}
-		//cout<<endl;
+			cout<<components[i].getNode(j)<<" ";
+		}
+		cout<<endl;
 
 		if(components[i].getNodesCount()>1) {
 			count++;

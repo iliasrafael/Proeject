@@ -125,9 +125,15 @@ void visited_del(uint32_t **visited,int sqr)
 	free(visited);
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target)
+int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc)
 {
 	int visited_size;
+
+	int scc_target;
+	if(scc!=NULL)
+		scc_target=scc->findSCCid(start);
+	else
+		scc_target=-1;
 	if(out_index.getSize()>inc_index.getSize())
 		visited_size=out_index.getSize();
 	else
@@ -146,7 +152,7 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
-	if(Update(out_index,out_buffer,count,out_oura,1,visited))
+	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target))
 	{
 		visited_del(visited,sqr);
 		return count;
@@ -155,14 +161,14 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,1,visited))
+			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target))
 			{
 				visited_del(visited,sqr);
 				return count;
 			}
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_target))
 			{
 				visited_del(visited,sqr);
 				return count;
@@ -174,8 +180,9 @@ int Graph::BBFS(uint32_t start , uint32_t target)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,int scc_target)
 {
+
 	uint32_t off;
 	list_node * cells;
 	uint32_t* neigh;
@@ -196,21 +203,23 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-						x=neigh[i]/100;
-						y=neigh[i]%100;
-						if(visited[x]==NULL)
-						{
-							visited[x]=(uint32_t *)malloc(sizeof(uint32_t)*100);
-							for(int i=0;i<100;i++)
-								visited[x][i]=0;
-						}
-						if(visited[x][y]==situation)
-							return true;
-						if(visited[x][y]!=3-situation)
-						{
-							oura.Insert(neigh[i]);
-							visited[x][y]=3-situation;
-						}
+					if(scc->findSCCid(neigh[i])!=scc_target)
+						continue;
+					x=neigh[i]/100;
+					y=neigh[i]%100;
+					if(visited[x]==NULL)
+					{
+						visited[x]=(uint32_t *)malloc(sizeof(uint32_t)*100);
+						for(int i=0;i<100;i++)
+							visited[x][i]=0;
+					}
+					if(visited[x][y]==situation)
+						return true;
+					if(visited[x][y]!=3-situation)
+					{
+						oura.Insert(neigh[i]);
+						visited[x][y]=3-situation;
+					}
 				}
 				off=cells->getOffset();
 			}
@@ -429,6 +438,13 @@ SCC Graph::SCC_Search()
 	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 	return scc;
+}
+int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node)
+{
+	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
+		return -1;
+	else
+		return BBFS(source_node,target_node,scc);
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

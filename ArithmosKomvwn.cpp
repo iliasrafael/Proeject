@@ -10,7 +10,6 @@ using namespace std;
 int main(void)
 {
 
-
 	int option=0;
 	while(option<1 || option>4)
 	{

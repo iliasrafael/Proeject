@@ -19,7 +19,7 @@ int main(void)
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("tinyGraph.txt");
+		myReadFile.open("example.txt");
 	else if(option==2)
 		myReadFile.open("smallGraph.txt");
 	else if(option==3)
@@ -50,6 +50,9 @@ int main(void)
 	SCC scc = graph.SCC_Search();
 	scc.Print();
 	cout<<"Find: "<<scc.findSCCid(0)<<endl;
+	uint32_t s=1;
+	uint32_t t=3;
+	cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
 	
 	/*
 	if(option==1)
@@ -82,6 +85,7 @@ int main(void)
 	
 	end = time(0);
    	currtime = ctime(&end);
+
    	cerr << "Finished at: " << currtime;
    	cerr << "After running for: "<< end-now<<"secs." <<endl;
 	return 0;
