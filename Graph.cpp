@@ -443,7 +443,7 @@ void Graph::creation(SCC *scc,Graph * graph)
 	uint32_t off;
 	NodeIndex * index =graph->getOutIndex();
 	Buffer * buffer=graph->getOutBuffer();
-	for(int i=0;i<scc->getComponentCount();i++)
+	for(int i=0;i<=scc->getComponentCount();i++)
 	{
 		Component *comp=scc->getComponent(i);
 		for(uint32_t j=0;j<comp->getNodesCount();j++)
@@ -456,7 +456,7 @@ void Graph::creation(SCC *scc,Graph * graph)
 				neigh=cells->getNeighbors();
 				for(int y=0;y<cells->getLastNeighbor();y++)
 				{
-					uint32_t target=scc->findSCCid(y);
+					uint32_t target=scc->findSCCid(neigh[y]);
 					if(target!=i)
 					{
 						Insert(getOutIndex(),getOutBuffer(),i,target);

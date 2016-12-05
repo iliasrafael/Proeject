@@ -56,7 +56,8 @@ int main(void)
 
 	Graph hypergraph;
 	hypergraph.creation(&scc,&graph);
-	
+
+
 	/*
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
