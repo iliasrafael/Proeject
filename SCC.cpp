@@ -88,7 +88,10 @@ uint32_t SCC::getComponentCount()
 {
 	return components_count;
 }
-
+Component *SCC::getComponent(int id)
+{
+	return &components[id];
+}
 uint32_t SCC::findNodeStronglyConnectedComponentID(uint32_t nodeId)
 {
 	return id_belongs_to_component[nodeId];

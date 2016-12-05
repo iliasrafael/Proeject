@@ -389,19 +389,6 @@ SCC Graph::SCC_Search()
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					uint32_t head;
-					/*if(!stack.empty()) //isws dn xriazetai elegxos to evala gia to segm
-						head=stack.pop();
-					else
-						break;
-					//cout<<"kefalaki eksw "<<head<<endl;
-					table[head].UnStacked();
-					//cout<<"benw "<<scc_id<<" head"<<head<<endl;
-					scc.Insert(scc_id,head);
-					int counter = 1;
-					//cout<<last<<" <-"<<endl;
-					*/
-					//if(!stack.empty())
-					//{
 						head=stack.pop();
 						table[head].UnStacked();
 
@@ -445,6 +432,42 @@ int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t sou
 		return -1;
 	else
 		return BBFS(source_node,target_node,scc);
+}
+
+
+void Graph::creation(SCC *scc,Graph * graph)
+{
+	uint32_t current;
+	list_node * cells;
+	uint32_t* neigh;
+	uint32_t off;
+	NodeIndex * index =graph->getOutIndex();
+	Buffer * buffer=graph->getOutBuffer();
+	for(int i=0;i<scc->getComponentCount();i++)
+	{
+		Component *comp=scc->getComponent(i);
+		for(uint32_t j=0;j<comp->getNodesCount();j++)
+		{
+			current=comp->getNode(j);
+			off=index->getPosition(current);
+			while(off!=-1)
+			{
+				cells=buffer->getListNode(off);
+				neigh=cells->getNeighbors();
+				for(int y=0;y<cells->getLastNeighbor();y++)
+				{
+					uint32_t target=scc->findSCCid(y);
+					if(target!=i)
+					{
+						Insert(getOutIndex(),getOutBuffer(),i,target);
+						Insert(getIncIndex(),getIncBuffer(),target,i);
+					}
+				}
+				off=cells->getOffset();
+			}
+		}
+	}
+
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

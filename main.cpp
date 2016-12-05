@@ -48,11 +48,14 @@ int main(void)
 	graph.CCSearch();
 	cout<<"SCC_Search: "<<endl;
 	SCC scc = graph.SCC_Search();
-	scc.Print();
+	//scc.Print();
 	cout<<"Find: "<<scc.findSCCid(0)<<endl;
 	uint32_t s=1;
 	uint32_t t=3;
 	cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
+
+	Graph hypergraph;
+	hypergraph.creation(&scc,&graph);
 	
 	/*
 	if(option==1)

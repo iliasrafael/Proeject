@@ -31,6 +31,7 @@ public:
 	void doubleSize();
 	uint32_t findSCCid(uint32_t nodeId);
 	void Print();
+	Component *getComponent(int id);
 	uint32_t getComponentCount();
 	uint32_t findNodeStronglyConnectedComponentID(uint32_t nodeId);
 	bool iterateStronglyConnectedComponentID(ComponentCursor* _cursor);

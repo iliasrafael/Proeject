@@ -27,6 +27,7 @@ public:
 	void CC_update(uint32_t id,bool* visited);
 	SCC SCC_Search();
 	int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
+	void creation(SCC *scc,Graph *graph);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
