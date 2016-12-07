@@ -1,9 +1,8 @@
 #include "GrailIndex.h"
+#include "Stack.h"
 
 GrailIndex::GrailIndex::GrailIndex(uint32_t size)
 {
-	id = (uint32_t *)malloc(sizeof(uint32_t)*size);
-	assert(id!=NULL);
 	rank = (uint32_t *)malloc(sizeof(uint32_t)*size);
 	assert(rank!=NULL);
 	min_rank = (uint32_t *)malloc(sizeof(uint32_t)*size);
@@ -11,15 +10,89 @@ GrailIndex::GrailIndex::GrailIndex(uint32_t size)
 
 	for(int i=0; i<size; i++)
 	{
-		id[i]=0;
 		rank[i]=0;
 		min_rank[i]=0;
 	}
 }
 
-GrailIndex::buildGrailIndex(SCC* scc)
+void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 {
-	// to be continued ...
+	uint32_t size = scc->getComponentCount();
+	int offset;
+	uint32_t curr = 0;
+	uint32_t last;
+	Stack stack;
+	bool *visited;
+	visited=(bool*)malloc(sizeof(bool)*size);
+	uint32_t r = 1;
+	uint32_t mr = 1;
+	uint32_t* neigh;
+	int* from;
+	uint32_t* count;
+	from=(int*)malloc(sizeof(int)*size);
+	count=(uint32_t*)malloc(sizeof(uint32_t)*size);
+	for(int i=0; i<size; i++)
+	{
+		visited[i]=false;
+		from[i]=-1;
+		count[i]=0;
+	}
+	list_node * cells;
+	uint32_t head;
+	uint32_t prev;
+
+	cout<<"SIZE :"<<size<<endl;
+	for(int j=0; j<=size; j++)
+	{
+		if(visited[j] == true)
+			continue;
+
+		stack.add(j);
+		last=j;
+
+		while(1)
+		{
+			cout<<"LAST: "<<last<<endl;
+			if(count[last] < graph->getOutIndex()->getCount(last))
+			{
+				offset = graph->getOutIndex()->getPosition(last);
+				cells=graph->getOutBuffer()->getListNode(offset);
+				int pos=count[last]/N;
+				offset=cells->getOffset();
+				int metr=0;
+				while(metr<pos)
+				{	
+					cells=graph->getOutBuffer()->getListNode(offset);
+					offset=cells->getOffset();
+					metr++;
+				}
+				neigh=cells->getNeighbors();
+				curr=neigh[count[last]%N];
+				count[last]++;
+
+				if(visited[curr] == false)
+				{
+					stack.add(curr);
+					visited[curr] = true;
+					from[curr]=last;
+					last=curr;
+				}
+			}
+			else
+			{
+				head = stack.pop();
+				rank[head] = r;
+				min_rank[head] = r;	//min me neighs
+				r++;
+				prev=head;
+				last = from[head];
+
+				if(from[last] == -1)
+					break;
+			}
+
+		}
+	}
 }
 
 int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target)
@@ -27,16 +100,6 @@ int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target)
 	if(min_rank[target] <= min_rank[source] && rank[target] <= rank[source]) //??
 		return 1;	//Maybe baby
 	return 0;
-}
-
-void GrailIndex::setid(uint32_t id, uint32_t i)
-{
-	id[i] = id;
-}
-
-uint32_t GrailIndex::getid(uint32_t i)
-{
- return id[i];
 }
 
 void GrailIndex::setrank(uint32_t r, uint32_t i)
@@ -61,7 +124,6 @@ uint32_t GrailIndex::getminrank(uint32_t i)
 
 GrailIndex::~GrailIndex()
 {
-	free(id);
 	free(rank);
 	free(min_rank);
 }

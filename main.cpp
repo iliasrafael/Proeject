@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "Components.h"
 #include "SCC.h"
+#include "GrailIndex.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -49,14 +50,15 @@ int main(void)
 	cout<<"SCC_Search: "<<endl;
 	SCC scc = graph.SCC_Search();
 	//scc.Print();
-	cout<<"Find: "<<scc.findSCCid(0)<<endl;
-	uint32_t s=1;
-	uint32_t t=3;
-	cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
+	//cout<<"Find: "<<scc.findSCCid(0)<<endl;
+	//uint32_t s=1;
+	//uint32_t t=3;
+	//cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
 
 	Graph hypergraph;
 	hypergraph.creation(&scc,&graph);
-
+	GrailIndex grailindex(scc.getComponentCount()+1);
+	grailindex.buildGrailIndex(&hypergraph, &scc);
 
 	/*
 	if(option==1)

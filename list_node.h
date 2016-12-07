@@ -1,3 +1,6 @@
+#ifndef __LIST_NODE__ 
+#define __LIST_NODE__
+
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
@@ -26,3 +29,5 @@ public:
 	void setLastOffset(uint32_t off);
 	void setLastNeighbor(uint32_t neighbor);         
 };			
+
+#endif

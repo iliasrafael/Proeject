@@ -1,3 +1,6 @@
+#ifndef __BUFFER__ 
+#define __BUFFER__
+
 #include "list_node.h"
 #define BufferSize 20
 ///////////////////////////////////////////////////////////////////////////////
@@ -20,3 +23,5 @@ public:
 	void reallocation();
 	bool destroyBuffer();
 };
+
+#endif

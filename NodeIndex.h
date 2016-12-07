@@ -1,3 +1,6 @@
+#ifndef __NODEINDEX__ 
+#define __NODEINDEX__
+
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
@@ -29,3 +32,5 @@ public:
 	void setLastBucket(uint32_t ,uint32_t);
 	bool destroyNodeIndex();
 };
+
+#endif
