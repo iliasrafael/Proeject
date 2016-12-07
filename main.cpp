@@ -56,9 +56,44 @@ int main(void)
 	//cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
 
 	Graph hypergraph;
-	hypergraph.creation(&scc,&graph);
-	GrailIndex grailindex(scc.getComponentCount()+1);
+
+	//hypergraph.creation(&scc,&graph);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,1);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,0);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,2);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),2,0);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),1,3);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),3,1);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),1,4);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),4,1);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),3,4);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),4,3);
+	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),5,1);
+	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,5);
+
+/*
+	cout<<"SIZE: "<<hypergraph.getOutIndex()->getSize()<<endl;
+  for(int i = 0; i<hypergraph.getOutIndex()->getSize(); i++) {
+   cout<<"Node "<<i<<" :"<<endl;
+   int offset = hypergraph.getOutIndex()->getPosition(i);
+    if(offset == -1)
+      continue;
+   uint32_t* neighbors = hypergraph.getOutBuffer()->getListNode(offset)->getNeighbors();
+   while(offset!=-1) {
+    neighbors = hypergraph.getOutBuffer()->getListNode(offset)->getNeighbors();
+    for(int j = 0; j<hypergraph.getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
+      cout<<neighbors[j]<<"  ";
+    offset = hypergraph.getOutBuffer()->getListNode(offset)->getOffset();
+   }
+   
+   cout<<endl;
+  }
+  */
+
+	GrailIndex grailindex(6);
 	grailindex.buildGrailIndex(&hypergraph, &scc);
+
+
 
 	/*
 	if(option==1)

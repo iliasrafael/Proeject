@@ -17,10 +17,10 @@ GrailIndex::GrailIndex::GrailIndex(uint32_t size)
 
 void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 {
-	uint32_t size = scc->getComponentCount();
+	uint32_t size = 5;
 	int offset;
 	uint32_t curr = 0;
-	uint32_t last;
+	int last;
 	Stack stack;
 	bool *visited;
 	visited=(bool*)malloc(sizeof(bool)*size);
@@ -52,7 +52,10 @@ void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 
 		while(1)
 		{
+
 			cout<<"LAST: "<<last<<endl;
+			cout<<"COUNT :"<<count[last]<<endl;
+			cout<<"COUNT@ :"<<graph->getOutIndex()->getCount(last)<<endl;
 			if(count[last] < graph->getOutIndex()->getCount(last))
 			{
 				offset = graph->getOutIndex()->getPosition(last);
@@ -69,9 +72,11 @@ void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 				neigh=cells->getNeighbors();
 				curr=neigh[count[last]%N];
 				count[last]++;
+				cout<<"neig :"<<curr<<endl;
 
 				if(visited[curr] == false)
 				{
+					cout<<"Adding "<<curr<<endl;
 					stack.add(curr);
 					visited[curr] = true;
 					from[curr]=last;
@@ -80,6 +85,9 @@ void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 			}
 			else
 			{
+				cout<<"ELSE"<<endl;
+				if(stack.empty())
+					break;
 				head = stack.pop();
 				rank[head] = r;
 				min_rank[head] = r;	//min me neighs
@@ -87,7 +95,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, SCC* scc)
 				prev=head;
 				last = from[head];
 
-				if(from[last] == -1)
+				if(last == -1)
 					break;
 			}
 
