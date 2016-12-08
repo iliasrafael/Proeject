@@ -57,7 +57,8 @@ int main(void)
 
 	Graph hypergraph;
 
-	//hypergraph.creation(&scc,&graph);
+	hypergraph.creation(&scc,&graph);
+	/*
 	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,1);
 	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,0);
 	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,2);
@@ -70,6 +71,7 @@ int main(void)
 	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),4,3);
 	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),5,1);
 	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,5);
+	*/
 
 /*
 	cout<<"SIZE: "<<hypergraph.getOutIndex()->getSize()<<endl;
@@ -90,8 +92,8 @@ int main(void)
   }
   */
 
-	GrailIndex grailindex(6);
-	grailindex.buildGrailIndex(&hypergraph, &scc);
+	GrailIndex grailindex(scc.getComponentCount()+1);
+	grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 
 
 
