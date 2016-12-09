@@ -19,7 +19,9 @@ SCC::SCC(uint32_t size_)
 }
 
 SCC::~SCC()
-{
+{	
+	for(int i=0;i<size;i++)
+		components[i].Deset();
 	free(components);
 	free(id_belongs_to_component);
 }

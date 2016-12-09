@@ -17,7 +17,10 @@ Component::~Component()
 {
 	free(node_ids);
 }
-
+void Component::Deset()
+{
+	free(node_ids);
+}
 void Component::SetComponent(uint32_t id)
 {
 	component_id = id;

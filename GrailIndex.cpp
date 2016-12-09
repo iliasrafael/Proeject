@@ -98,6 +98,9 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 
 		}
 	}
+	free(visited);
+	free(from);
+	free(count);
 }
 
 uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)

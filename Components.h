@@ -15,6 +15,7 @@ class Component
 public:
 	Component(uint32_t id , uint32_t size);
 	~Component();
+	void Deset();
 	void SetComponent(uint32_t id);
 	void Insert(uint32_t id);
 	void doubleSize();

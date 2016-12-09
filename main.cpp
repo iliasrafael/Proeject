@@ -95,8 +95,6 @@ int main(void)
 	GrailIndex grailindex(scc.getComponentCount()+1);
 	grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 
-
-
 	/*
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
