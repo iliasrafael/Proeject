@@ -2,6 +2,7 @@
 #include "Components.h"
 #include "SCC.h"
 #include "GrailIndex.h"
+#include "CC.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -46,7 +47,13 @@ int main(void)
 		}
 	}
 	myReadFile.close();
-	graph.CCSearch();
+	uint32_t size;
+	if(graph.getOutIndex()->getSize() > graph.getIncIndex()->getSize())
+		size=graph.getOutIndex()->getSize();
+	else
+		size=graph.getIncIndex()->getSize();
+	CC cc(size);
+	cc.CCSearch(&graph);
 	cout<<"SCC_Search: "<<endl;
 	SCC scc = graph.SCC_Search();
 	//scc.Print();

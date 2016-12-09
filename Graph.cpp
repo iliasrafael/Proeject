@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "SCC.h"
 #include "Stack.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -231,10 +232,9 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 //                        END OF PART 1                                     //
 //////////////////////////////////////////////////////////////////////////////
 
-void Graph::CCSearch()
+/*CC Graph::CCSearch()
 {
-	int id=-1;
-	int size=256; //na vrume kali timi
+	int componentId=-1;
 	uint32_t visited_size;
 	if(out_index.getSize()>inc_index.getSize())
 		visited_size=out_index.getSize();
@@ -246,6 +246,7 @@ void Graph::CCSearch()
 		visited[i]=false;
 	uint32_t current_node;
 	int off;
+	CC cc(visited_size);
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 		if(visited[i]==true)
@@ -253,23 +254,23 @@ void Graph::CCSearch()
 		if(out_index.getCount(i)<=0 && inc_index.getCount(i)<=0)
 			continue;
 		out_oura.Set();
-		id++;
-		Component comp(id,size);
+		componentId++;
 		visited[i]=true;
-		comp.Insert(i);
+		cc.Insert(i,componentId);
 		CC_update(i,visited);
 		while(out_oura.empty()==false)
 		{
 			current_node=out_oura.remove();
 			CC_update(current_node,visited);
-			comp.Insert(current_node);
+			cc.Insert(current_node,componentId);
 		}
 	}
-	cout<<"Count of Components: "<<id+1<<endl;
+	cout<<"Count of Components: "<<componentId+1<<endl;
 	free(visited);
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
 void Graph::CC_update(uint32_t id,bool* visited)
 {
 	int off,off2;
@@ -304,7 +305,7 @@ void Graph::CC_update(uint32_t id,bool* visited)
 		off2=cells->getOffset();
 	}
 
-}
+}*/
 
 //////////////////////////////////////////////////////////////////////////////
 SCC Graph::SCC_Search()

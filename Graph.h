@@ -26,8 +26,6 @@ public:
 	Buffer* getIncBuffer();
 	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited,SCC *scc,int scc_target);
 	bool search(uint32_t id,uint32_t id2);
-	void CCSearch();
-	void CC_update(uint32_t id,bool* visited);
 	SCC SCC_Search();
 	int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
 	void creation(SCC *scc,Graph *graph);

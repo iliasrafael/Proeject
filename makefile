@@ -1,7 +1,7 @@
-OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o main.o SCC.o GrailIndex.o
-OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o
-SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main.cpp testing.cpp SCC.cpp GrailIndex.cpp
-HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h
+OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o main.o SCC.o GrailIndex.o CC.o
+OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o CC.o
+SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp
+HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h CC.h
 OUT1 = out
 OUT2 = testing
 CC = g++
@@ -36,6 +36,9 @@ Stack.o: Stack.cpp Stack.h
 SCC.o: SCC.cpp SCC.h
 	$(CC) $(FLAGS) SCC.cpp
 
+CC.o: CC.cpp CC.h
+	$(CC) $(FLAGS) CC.cpp
+
 GrailIndex.o: GrailIndex.cpp GrailIndex.h
 	$(CC) $(FLAGS) GrailIndex.cpp
 
@@ -49,7 +52,7 @@ testing.o: testing.cpp
 	$(CC) $(FLAGS) testing.cpp
 
 clean :
-	rm -f $(OBJS1) testing.o $(OUT1) $(OUT1)
+	rm -f $(OBJS1) testing.o $(OUT1) $(OUT2)
 
 count :
 	wc $(SOURCE) $(HEADER)
