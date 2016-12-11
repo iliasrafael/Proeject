@@ -7,10 +7,11 @@
 
 class CC{
 
-	uint32_t* ccindex; //CCIndex
+	int* ccindex; //CCIndex
 	int* updateIndex;
 	uint32_t metricVal;
-	uint32_t size;
+	uint32_t size_cc;
+	uint32_t size_update;
 	uint32_t counter;
 public:
 	CC(uint32_t size_);
@@ -21,6 +22,9 @@ public:
 	void CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura);
 	bool check(uint32_t id,uint32_t id2);
 	void rebuild();
+	void UpdatedoubleSize();
+	void CCDoubleSize();
+	void InsertNewEdge(uint32_t id,uint32_t id2);
 };
 
 

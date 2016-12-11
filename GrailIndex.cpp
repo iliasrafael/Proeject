@@ -67,8 +67,6 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 				neigh=cells->getNeighbors();
 				curr=neigh[count[last]%N];
 				count[last]++;
-
-				cout<<"Curr: "<<curr<<endl;
 				if(visited[curr] == false)
 				{
 					stack.add(curr);
@@ -87,11 +85,11 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 				r++;
 				prev=head;
 				last = from[head];
-
+				/*
 				cout<<"~~~~~~~~~~~~~~~~~~"<<endl;
 				cout<<"ID :"<<head<<" [ "<<min_rank[head]<<" , "<<rank[head]<<" ]"<<endl;
 				cout<<"~~~~~~~~~~~~~~~~~~"<<endl;
-
+				*/
 				if(last == -1)
 					break;
 			}
@@ -107,7 +105,7 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 {
 	uint32_t min=rank[node_id];
 	int offset = graph->getOutIndex()->getPosition(node_id);
-	cout<<"OFFSET: "<<offset<<endl;
+	//cout<<"OFFSET: "<<offset<<endl;
 	if(offset == -1)
 		return min;
 	list_node * cells = graph->getOutBuffer()->getListNode(offset);

@@ -1,10 +1,12 @@
 #include "CC.h"
 CC::CC(uint32_t size_)
 {
-	ccindex=(uint32_t*)malloc(size_*sizeof(uint32_t));
+	ccindex=(int*)malloc(size_*sizeof(int));
 	assert(ccindex!=NULL);
+	for(int i=0;i<size_;i++)
+		ccindex[i]=-1;
 	metricVal=0;
-	size=size_;
+	size_cc=size_;
 }
 CC::~CC()
 {
@@ -16,12 +18,45 @@ void CC::Insert(uint32_t nodeId,uint32_t componentId)
 }
 int CC::UpdateIndex(uint32_t componentId1,uint32_t componentId2)
 {
-	//if(componentId1>size || componentId2>size)
-		//doubleSize();
+	if(componentId1>size_update || componentId2>size_update)
+		UpdatedoubleSize();
 	updateIndex[ccindex[componentId2]]=ccindex[componentId1];
 }
 
-
+void CC::UpdatedoubleSize()
+{
+	int temp=size_update;
+	size_update*=2;
+	updateIndex=(int*)realloc(updateIndex,size_update*sizeof(int));
+	assert(updateIndex!=NULL);
+	for(int i=temp;i<size_update;i++)
+		updateIndex[i]=-1;
+}
+void CC::InsertNewEdge(uint32_t id,uint32_t id2)
+{
+	if(id>size_cc || id2>size_cc)
+		CCDoubleSize();
+	if(ccindex[id]==-1 && ccindex[id2]==-1)
+	{
+		if(counter>size_update)
+			UpdatedoubleSize();
+		ccindex[id]=counter;
+		ccindex[id2]=counter;
+		counter++;//isws lathos
+	}
+	else if(ccindex[id]==-1)
+		ccindex[id]=ccindex[id2];
+	else if(ccindex[id2]==-1)
+		ccindex[id2]==ccindex[id];
+}
+void CC::CCDoubleSize()
+{
+	int temp=size_cc;
+	size_cc*=2;
+	ccindex=(int*)realloc(ccindex,size_cc*sizeof(int));
+	for(int i=temp;i<size_cc;i++)
+		ccindex[i]=-1;
+}
 void CC::CCSearch(Graph* graph)
 {
 	ArrayList out_oura;
@@ -57,10 +92,11 @@ void CC::CCSearch(Graph* graph)
 		}
 	}
 	cout<<"Count of Components: "<<componentId+1<<endl;
-	size=componentId+1;
-	updateIndex=(int*)malloc(size*sizeof(int));
+	size_update=componentId+1;
+	counter=size_update;
+	updateIndex=(int*)malloc(size_update*sizeof(int));
 	assert(updateIndex!=NULL);
-	for(int i=0;i<size;i++)
+	for(int i=0;i<size_update;i++)
 		updateIndex[i]=-1;
 	free(visited);
 }
@@ -113,7 +149,7 @@ bool CC::check(uint32_t id,uint32_t id2)
 
 void CC::rebuild()
 {
-	for(int i=0;i<size;i++)
+	for(int i=0;i<size_update;i++)
 	{
 		if(updateIndex[ccindex[i]]!=-1)
 			ccindex[i]=updateIndex[ccindex[i]];

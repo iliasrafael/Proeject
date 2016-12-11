@@ -22,7 +22,7 @@ int main(void)
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("example.txt");
+		myReadFile.open("tinyGraph.txt");
 	else if(option==2)
 		myReadFile.open("smallGraph.txt");
 	else if(option==3)
@@ -63,8 +63,6 @@ int main(void)
 
 	Graph hypergraph;
 	hypergraph.creation(&scc,&graph);
-	GrailIndex grailindex(scc.getComponentCount()+1);
-	grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 
 	
 	if(option==1)
@@ -75,10 +73,11 @@ int main(void)
 		myReadFile.open("mediumWorkload_FINAL.txt");
 
 	char com;
-	char * r;
+	char r[8];
 	bool kind;
 	if(myReadFile.is_open()){
 		myReadFile>>r;
+		cout<<r<<endl;
 		if(strcmp(r,"DYNAMIC")==0)
 		{
 			kind=1;
@@ -98,6 +97,7 @@ int main(void)
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+					cc.InsertNewEdge(node,edge);
 					if(cc.check(node,edge))
 					{
 						int k=cc.UpdateIndex(node,edge);
@@ -108,14 +108,14 @@ int main(void)
 				if(com=='Q')
 				{	
 					queriesnum++;
-					if(grailindex.isReachableGrailIndex(node,edge)==1)
+					if(cc.check(node,edge))
 						cout<<graph.BBFS(node,edge,NULL)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
-				if(((double)updatenum/queriesnum)>0.4)
+				if(((double)updatenum/queriesnum)>0.7)
 				{
-					cout<<"rebuilding.."<<endl;
+					cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 					cc.rebuild();
 					updatenum=0;
 					queriesnum=0;
@@ -124,6 +124,8 @@ int main(void)
 		}
 		else
 		{
+			GrailIndex grailindex(scc.getComponentCount()+1);
+			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			while(!myReadFile.eof())
 			{
 				myReadFile>>com;
