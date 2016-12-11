@@ -5,6 +5,7 @@
 #include "CC.h"
 #include <fstream>
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 int main(void)
@@ -52,8 +53,6 @@ int main(void)
 		size=graph.getOutIndex()->getSize();
 	else
 		size=graph.getIncIndex()->getSize();
-	CC cc(size);
-	cc.CCSearch(&graph);
 	cout<<"SCC_Search: "<<endl;
 	SCC scc = graph.SCC_Search();
 	//scc.Print();
@@ -63,73 +62,84 @@ int main(void)
 	//cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
 
 	Graph hypergraph;
-
 	hypergraph.creation(&scc,&graph);
-	/*
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,1);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,0);
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),0,2);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),2,0);
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),1,3);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),3,1);
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),1,4);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),4,1);
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),3,4);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),4,3);
-	hypergraph.Insert(hypergraph.getOutIndex(),hypergraph.getOutBuffer(),5,1);
-	hypergraph.Insert(hypergraph.getIncIndex(),hypergraph.getIncBuffer(),1,5);
-	*/
-
-/*
-	cout<<"SIZE: "<<hypergraph.getOutIndex()->getSize()<<endl;
-  for(int i = 0; i<hypergraph.getOutIndex()->getSize(); i++) {
-   cout<<"Node "<<i<<" :"<<endl;
-   int offset = hypergraph.getOutIndex()->getPosition(i);
-    if(offset == -1)
-      continue;
-   uint32_t* neighbors = hypergraph.getOutBuffer()->getListNode(offset)->getNeighbors();
-   while(offset!=-1) {
-    neighbors = hypergraph.getOutBuffer()->getListNode(offset)->getNeighbors();
-    for(int j = 0; j<hypergraph.getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
-      cout<<neighbors[j]<<"  ";
-    offset = hypergraph.getOutBuffer()->getListNode(offset)->getOffset();
-   }
-   
-   cout<<endl;
-  }
-  */
-
 	GrailIndex grailindex(scc.getComponentCount()+1);
 	grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 
-	/*
+	
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
 		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
 		myReadFile.open("mediumWorkload_FINAL.txt");
+
 	char com;
+	char * r;
+	bool kind;
 	if(myReadFile.is_open()){
-		while(!myReadFile.eof()){
-			myReadFile>>com;
-			if(com!='F')
-				myReadFile>>node>>edge;
-			if(com=='A')
+		myReadFile>>r;
+		if(strcmp(r,"DYNAMIC")==0)
+		{
+			kind=1;
+			uint32_t queriesnum=0;
+			uint32_t updatenum=0;
+			CC cc(size);
+			cc.CCSearch(&graph);
+			while(!myReadFile.eof())
 			{
-				if(graph.search(node,edge))
-					continue;
-				graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-				graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+				myReadFile>>com;
+				if(com!='F')
+					myReadFile>>node>>edge;
+				if(com=='A')
+				{
+					queriesnum++;
+					if(graph.search(node,edge))
+						continue;
+					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
+					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+					if(cc.check(node,edge))
+					{
+						int k=cc.UpdateIndex(node,edge);
+						if(k!=-1)
+							updatenum++;
+					}
+				}
+				if(com=='Q')
+				{	
+					queriesnum++;
+					if(grailindex.isReachableGrailIndex(node,edge)==1)
+						cout<<graph.BBFS(node,edge,NULL)<<endl;
+					else 
+						cout<<"-1"<<endl;
+				}
+				if(((double)updatenum/queriesnum)>0.4)
+				{
+					cout<<"rebuilding.."<<endl;
+					cc.rebuild();
+					updatenum=0;
+					queriesnum=0;
+				}
 			}
-			if(com=='Q')
-				cout<<graph.BBFS(node,edge)<<endl;
+		}
+		else
+		{
+			while(!myReadFile.eof())
+			{
+				myReadFile>>com;
+				if(com!='F')
+					myReadFile>>node>>edge;
+				if(com=='Q')
+				{
+					if(grailindex.isReachableGrailIndex(node,edge)==1)
+						cout<<graph.BBFS(node,edge,NULL)<<endl;
+					else 
+						cout<<"-1"<<endl;
+				}
+			}
 		}
 	}
 	myReadFile.close();
-	cout<<"SCC_Search: "<<endl;
-	graph.SCC_Search();
-	*/
 	
 	end = time(0);
    	currtime = ctime(&end);

@@ -4,6 +4,7 @@ CC::CC(uint32_t size_)
 	ccindex=(uint32_t*)malloc(size_*sizeof(uint32_t));
 	assert(ccindex!=NULL);
 	metricVal=0;
+	size=size_;
 }
 CC::~CC()
 {
@@ -13,10 +14,11 @@ void CC::Insert(uint32_t nodeId,uint32_t componentId)
 {
 	ccindex[nodeId]=componentId;
 }
-void CC::Update(uint32_t componentId1,uint32_t componentId2)
+int CC::UpdateIndex(uint32_t componentId1,uint32_t componentId2)
 {
-	updateIndex.Insert(updateIndex.getOutIndex(),updateIndex.getOutBuffer(),componentId1,componentId2);
-	updateIndex.Insert(updateIndex.getOutIndex(),updateIndex.getOutBuffer(),componentId2,componentId1);
+	//if(componentId1>size || componentId2>size)
+		//doubleSize();
+	updateIndex[ccindex[componentId2]]=ccindex[componentId1];
 }
 
 
@@ -55,6 +57,11 @@ void CC::CCSearch(Graph* graph)
 		}
 	}
 	cout<<"Count of Components: "<<componentId+1<<endl;
+	size=componentId+1;
+	updateIndex=(int*)malloc(size*sizeof(int));
+	assert(updateIndex!=NULL);
+	for(int i=0;i<size;i++)
+		updateIndex[i]=-1;
 	free(visited);
 }
 
@@ -94,4 +101,21 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 		off2=cells->getOffset();
 	}
 
+}
+bool CC::check(uint32_t id,uint32_t id2)
+{
+	if(ccindex[id]==ccindex[id2])
+		return true;
+	else if(updateIndex[ccindex[id2]]==ccindex[id])
+		return true;
+	return false;
+}
+
+void CC::rebuild()
+{
+	for(int i=0;i<size;i++)
+	{
+		if(updateIndex[ccindex[i]]!=-1)
+			ccindex[i]=updateIndex[ccindex[i]];
+	}
 }
