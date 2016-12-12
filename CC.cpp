@@ -37,7 +37,7 @@ void CC::UpdatedoubleSize()
 	for(int i=temp;i<size_update;i++)
 		updateIndex[i]=-1;
 }
-void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t count)
+void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count)
 {
 	if(id>size_cc || id2>size_cc)
 		CCDoubleSize();
@@ -54,10 +54,13 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t count)
 		ccindex[id]=ccindex[id2];
 	else if(ccindex[id2]==-1)
 		ccindex[id2]=ccindex[id];
-	else if(updateIndex[ccindex[id]]!=-1 && updateIndex[ccindex[id2]]!=-1 && updateIndex[ccindex[id]]!=updateIndex[ccindex[id2]])
+	else if(ccindex[id]!=ccindex[id2])
 	{
-		UpdateIndex(id, id2);
-		count++;
+		if(updateIndex[ccindex[id]]!=updateIndex[ccindex[id2]] || (updateIndex[ccindex[id]]==-1 && updateIndex[ccindex[id2]]==-1))
+		{	
+			UpdateIndex(id, id2);
+			(*count)++;
+		}
 	}
 	
 }
@@ -154,7 +157,7 @@ bool CC::check(uint32_t id,uint32_t id2)
 {	
 	if(ccindex[id]==ccindex[id2])
 		return true;
-	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=-1)
+	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=1)
 		return true;
 	else if(updateIndex[ccindex[id2]]==ccindex[id] || updateIndex[ccindex[id]]==ccindex[id2])
 		return true;

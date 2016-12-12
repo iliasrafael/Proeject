@@ -97,26 +97,23 @@ int main(void)
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-					cc.InsertNewEdge(node,edge, updatenum);
-
+					cc.InsertNewEdge(node,edge, &updatenum);
 				}
 				if(com=='Q')
 				{	
 					queriesnum++;
-					//if(node==290998	&& edge==87927)
-						//cout<<"che "<<cc.check(node,edge)<<endl;
 					if(cc.check(node,edge))
 						cout<<graph.BBFS(node,edge,NULL)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
-				/*if((double)(updatenum/queriesnum)>0.7)
+				if((double)(updatenum/queriesnum)>0.05)
 				{
-					//cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
+					cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 					cc.rebuild();
 					updatenum=0;
 					queriesnum=0;
-				}*/
+				}
 			}
 		}
 		else
