@@ -16,10 +16,15 @@ void CC::Insert(uint32_t nodeId,uint32_t componentId)
 {
 	ccindex[nodeId]=componentId;
 }
+
 int CC::UpdateIndex(uint32_t componentId1,uint32_t componentId2)
 {
 	if(componentId1>size_update || componentId2>size_update)
 		UpdatedoubleSize();
+
+	//if(ccindex[componentId2]==0)
+		//cout<<" s "<<ccindex[componentId1]<<endl;
+	
 	updateIndex[ccindex[componentId2]]=ccindex[componentId1];
 }
 
@@ -49,7 +54,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t count)
 		ccindex[id]=ccindex[id2];
 	else if(ccindex[id2]==-1)
 		ccindex[id2]=ccindex[id];
-	else
+	else if(updateIndex[ccindex[id]]!=-1 && updateIndex[ccindex[id2]]!=-1 && updateIndex[ccindex[id]]!=updateIndex[ccindex[id2]])
 	{
 		UpdateIndex(id, id2);
 		count++;
@@ -146,8 +151,10 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 
 }
 bool CC::check(uint32_t id,uint32_t id2)
-{
+{	
 	if(ccindex[id]==ccindex[id2])
+		return true;
+	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=-1)
 		return true;
 	else if(updateIndex[ccindex[id2]]==ccindex[id] || updateIndex[ccindex[id]]==ccindex[id2])
 		return true;

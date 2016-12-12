@@ -103,18 +103,20 @@ int main(void)
 				if(com=='Q')
 				{	
 					queriesnum++;
+					//if(node==290998	&& edge==87927)
+						//cout<<"che "<<cc.check(node,edge)<<endl;
 					if(cc.check(node,edge))
 						cout<<graph.BBFS(node,edge,NULL)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
-				if((double)(updatenum/queriesnum)>0.7)
+				/*if((double)(updatenum/queriesnum)>0.7)
 				{
 					//cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 					cc.rebuild();
 					updatenum=0;
 					queriesnum=0;
-				}
+				}*/
 			}
 		}
 		else
