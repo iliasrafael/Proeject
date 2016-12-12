@@ -32,7 +32,7 @@ void CC::UpdatedoubleSize()
 	for(int i=temp;i<size_update;i++)
 		updateIndex[i]=-1;
 }
-void CC::InsertNewEdge(uint32_t id,uint32_t id2)
+void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t count)
 {
 	if(id>size_cc || id2>size_cc)
 		CCDoubleSize();
@@ -40,6 +40,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2)
 	{
 		if(counter>size_update)
 			UpdatedoubleSize();
+		
 		ccindex[id]=counter;
 		ccindex[id2]=counter;
 		counter++;//isws lathos
@@ -47,7 +48,13 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2)
 	else if(ccindex[id]==-1)
 		ccindex[id]=ccindex[id2];
 	else if(ccindex[id2]==-1)
-		ccindex[id2]==ccindex[id];
+		ccindex[id2]=ccindex[id];
+	else
+	{
+		UpdateIndex(id, id2);
+		count++;
+	}
+	
 }
 void CC::CCDoubleSize()
 {
@@ -91,7 +98,7 @@ void CC::CCSearch(Graph* graph)
 			Insert(current_node,componentId);
 		}
 	}
-	cout<<"Count of Components: "<<componentId+1<<endl;
+	//cout<<"Count of Components: "<<componentId+1<<endl;
 	size_update=componentId+1;
 	counter=size_update;
 	updateIndex=(int*)malloc(size_update*sizeof(int));
@@ -142,15 +149,17 @@ bool CC::check(uint32_t id,uint32_t id2)
 {
 	if(ccindex[id]==ccindex[id2])
 		return true;
-	else if(updateIndex[ccindex[id2]]==ccindex[id])
+	else if(updateIndex[ccindex[id2]]==ccindex[id] || updateIndex[ccindex[id]]==ccindex[id2])
 		return true;
 	return false;
 }
 
 void CC::rebuild()
 {
-	for(int i=0;i<size_update;i++)
+	for(int i=0;i<size_cc;i++)
 	{
+		if(ccindex[i]==-1)
+			continue;
 		if(updateIndex[ccindex[i]]!=-1)
 			ccindex[i]=updateIndex[ccindex[i]];
 	}

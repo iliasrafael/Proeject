@@ -17,6 +17,7 @@ int main(void)
 		cerr << ">1 for Tiny File" << endl;
 		cerr << ">2 for Small File" << endl;
 		cerr << ">3 for Medium File" << endl;
+		cerr << ">4 for Large File" << endl;
 		cin >> option;	
 	}
 
@@ -28,7 +29,7 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumGraph.txt");
 	else if(option==4)
-		myReadFile.open("input.txt");
+		myReadFile.open("large.txt");
 
 	time_t now = time(0),end;
    	char* currtime = ctime(&now);
@@ -53,16 +54,14 @@ int main(void)
 		size=graph.getOutIndex()->getSize();
 	else
 		size=graph.getIncIndex()->getSize();
-	cout<<"SCC_Search: "<<endl;
-	SCC scc = graph.SCC_Search();
+	
 	//scc.Print();
 	//cout<<"Find: "<<scc.findSCCid(0)<<endl;
 	//uint32_t s=1;
 	//uint32_t t=3;
 	//cout<<graph.estimateShortestPathStronglyConnectedComponents(&scc,s,t)<<endl;
 
-	Graph hypergraph;
-	hypergraph.creation(&scc,&graph);
+	
 
 	
 	if(option==1)
@@ -70,14 +69,15 @@ int main(void)
 	else if(option==2)
 		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
-		myReadFile.open("mediumWorkload_FINAL.txt");
+		myReadFile.open("mediumWorkload_static_FINAL.txt");
+	else if(option==4)
+		myReadFile.open("largeWorkload_48000_40.txt");
 
 	char com;
 	char r[8];
 	bool kind;
 	if(myReadFile.is_open()){
 		myReadFile>>r;
-		cout<<r<<endl;
 		if(strcmp(r,"DYNAMIC")==0)
 		{
 			kind=1;
@@ -97,13 +97,8 @@ int main(void)
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-					cc.InsertNewEdge(node,edge);
-					if(cc.check(node,edge))
-					{
-						int k=cc.UpdateIndex(node,edge);
-						if(k!=-1)
-							updatenum++;
-					}
+					cc.InsertNewEdge(node,edge, updatenum);
+
 				}
 				if(com=='Q')
 				{	
@@ -113,9 +108,9 @@ int main(void)
 					else 
 						cout<<"-1"<<endl;
 				}
-				if(((double)updatenum/queriesnum)>0.7)
+				if((double)(updatenum/queriesnum)>0.7)
 				{
-					cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
+					//cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 					cc.rebuild();
 					updatenum=0;
 					queriesnum=0;
@@ -124,6 +119,10 @@ int main(void)
 		}
 		else
 		{
+			cout<<"SCC_Search: "<<endl;
+			SCC scc = graph.SCC_Search();
+			Graph hypergraph;
+			hypergraph.creation(&scc,&graph);
 			GrailIndex grailindex(scc.getComponentCount()+1);
 			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			while(!myReadFile.eof())

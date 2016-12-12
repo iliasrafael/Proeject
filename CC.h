@@ -24,7 +24,7 @@ public:
 	void rebuild();
 	void UpdatedoubleSize();
 	void CCDoubleSize();
-	void InsertNewEdge(uint32_t id,uint32_t id2);
+	void InsertNewEdge(uint32_t id,uint32_t id2, uint32_t count);
 };
 
 

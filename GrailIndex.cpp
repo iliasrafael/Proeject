@@ -132,7 +132,7 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 
 int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target)
 {
-	if(min_rank[target] <= min_rank[source] && rank[target] <= rank[source]) //??
+	if(min_rank[target] >= min_rank[source] && rank[target] <= rank[source]) //??
 		return 1;	//Maybe baby
 	return 0;
 }
