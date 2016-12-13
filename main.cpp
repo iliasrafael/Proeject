@@ -71,7 +71,7 @@ int main(void)
 	else if(option==3)
 		myReadFile.open("mediumWorkload_static_FINAL.txt");
 	else if(option==4)
-		myReadFile.open("largeWorkload_48000_40.txt");
+		myReadFile.open("largeWorkload_6000_20.txt");
 
 	char com;
 	char r[8];
@@ -92,6 +92,7 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='A')
 				{
+					//cout<<"NEW : "<<node<<" "<<edge<<endl;
 					queriesnum++;
 					if(graph.search(node,edge))
 						continue;
@@ -107,13 +108,13 @@ int main(void)
 					else 
 						cout<<"-1"<<endl;
 				}
-				if((double)(updatenum/queriesnum)>0.05)
+				/*if((double)(updatenum/queriesnum)>0.05)
 				{
 					cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 					cc.rebuild();
 					updatenum=0;
 					queriesnum=0;
-				}
+				}*/
 			}
 		}
 		else
@@ -131,8 +132,14 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='Q')
 				{
-					if(grailindex.isReachableGrailIndex(node,edge)==1)
+					int a=scc.findSCCid(node);
+					int b=scc.findSCCid(edge);
+					//if(scc.getComponent(a)->getNodesCount() <= 1 || scc.getComponent(b)->getNodesCount() <= 1)
+						//cout<<graph.BBFS(node,edge,&scc)<<endl;
+					if(grailindex.isReachableGrailIndex(a,b)==1)
 						cout<<graph.BBFS(node,edge,NULL)<<endl;
+					else if(grailindex.isReachableGrailIndex(a,b)==2)
+						cout<<graph.BBFS(node,edge,&scc)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
@@ -141,7 +148,7 @@ int main(void)
 	}
 	myReadFile.close();
 	
-	end = time(0);
+	end = time(0);  //<--------- Polu wraios kwdikas
    	currtime = ctime(&end);
 
    	cerr << "Finished at: " << currtime;

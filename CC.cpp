@@ -33,13 +33,15 @@ int CC::UpdateIndex(uint32_t id,uint32_t id2)
 		int next=updateIndex[ccindex[id2]];
 		int value=updateIndex[ccindex[id]];
 		updateIndex[ccindex[id2]]=value;
-		cout<<"Val "<<value << "Next "<<next<<endl;
-		while(next!=-1)
+		//cout<<"Val "<<value << " Next "<<next<<endl;
+		while(next!=-1 && next!=value)
 		{
-			int temp=updateIndex[ccindex[next]];
-			updateIndex[ccindex[next]]=value;
+			int temp=updateIndex[next];
+			updateIndex[next]=value;
 			next=temp;
-			cout<<"Val "<<value << "Next "<<next<<endl;
+			//cout<<"Val "<<value << " Next "<<next<<endl;
+			//char a;
+			//cin>>a;
 		}
 	}
 }
@@ -72,7 +74,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t &count)
 		ccindex[id2]=ccindex[id];
 	else if(ccindex[id]!=ccindex[id2])
 	{
-		if(updateIndex[ccindex[id]]!=updateIndex[ccindex[id2]] || (updateIndex[ccindex[id]]==-1 && updateIndex[ccindex[id2]]==-1))
+		if(!check(id, id2))
 		{	
 			UpdateIndex(id, id2);
 			count++;
@@ -171,13 +173,53 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 }
 bool CC::check(uint32_t id,uint32_t id2)
 {	
+
 	if(ccindex[id]==ccindex[id2])
 		return true;
 	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=-1)
 		return true;
 	else if(updateIndex[ccindex[id2]]==ccindex[id] || updateIndex[ccindex[id]]==ccindex[id2])
 		return true;
-	return false;
+	else
+	{
+
+		int source = ccindex[id];
+		int target = ccindex[id2];
+		int next = updateIndex[source];
+		int prev = source;
+
+		/*if(id == 224130	&& id2 == 1413549) {
+				cout<<"Source : "<<source<<" target: "<<target<<" , "<<updateIndex[source]<<" , "<<updateIndex[target]<<endl;
+				char a;
+				cin>>a;
+			}*/
+
+		while(next!=-1)
+		{
+			/*if(id == 224130	&& id2 == 1413549) {
+				cout<<next<<" , "<<prev<<" < "<<updateIndex[next]<<endl;
+				char a;
+				cin>>a;
+			}*/
+			if(prev == updateIndex[next])
+			{
+				//cout<<"break"<<endl;
+				break;
+			}	
+			if(next == target){
+				//cout<<"tr"<<endl;
+				return true;
+			}
+
+			prev=next;
+			next=updateIndex[next];
+			
+			//cout<<"Next: "<<next<<" Update: "<<updateIndex[next]<<endl;
+			//cout<<"~~~~~~~~~~~~~~"<<endl;
+
+		}
+		return false;
+	}
 }
 
 void CC::rebuild()
