@@ -97,9 +97,9 @@ int main(void)
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-					cc.InsertNewEdge(node,edge, &updatenum);
+					cc.InsertNewEdge(node,edge,updatenum);
 				}
-				if(com=='Q')
+				else if(com=='Q')
 				{	
 					queriesnum++;
 					if(cc.check(node,edge))

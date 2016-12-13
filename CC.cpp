@@ -17,15 +17,31 @@ void CC::Insert(uint32_t nodeId,uint32_t componentId)
 	ccindex[nodeId]=componentId;
 }
 
-int CC::UpdateIndex(uint32_t componentId1,uint32_t componentId2)
+int CC::UpdateIndex(uint32_t id,uint32_t id2)
 {
-	if(componentId1>size_update || componentId2>size_update)
+	//cout<<"1 :"<<updateIndex[ccindex[id]]<<" 2 "<<updateIndex[ccindex[id2]]<<endl;
+	if(id>size_update || id2>size_update)
 		UpdatedoubleSize();
-
-	//if(ccindex[componentId2]==0)
-		//cout<<" s "<<ccindex[componentId1]<<endl;
-	
-	updateIndex[ccindex[componentId2]]=ccindex[componentId1];
+	if(updateIndex[ccindex[id]]==-1 && updateIndex[ccindex[id2]]==-1)//kai ta 2 
+		updateIndex[ccindex[id]]=ccindex[id2];
+	else if(updateIndex[ccindex[id]]==-1)//to 1o
+		updateIndex[ccindex[id]]=updateIndex[ccindex[id2]];
+	else if(updateIndex[ccindex[id2]]==-1)//to 2o
+		updateIndex[ccindex[id2]]=updateIndex[ccindex[id]];
+	else//kanena
+	{
+		int next=updateIndex[ccindex[id2]];
+		int value=updateIndex[ccindex[id]];
+		updateIndex[ccindex[id2]]=value;
+		cout<<"Val "<<value << "Next "<<next<<endl;
+		while(next!=-1)
+		{
+			int temp=updateIndex[ccindex[next]];
+			updateIndex[ccindex[next]]=value;
+			next=temp;
+			cout<<"Val "<<value << "Next "<<next<<endl;
+		}
+	}
 }
 
 void CC::UpdatedoubleSize()
@@ -37,7 +53,7 @@ void CC::UpdatedoubleSize()
 	for(int i=temp;i<size_update;i++)
 		updateIndex[i]=-1;
 }
-void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count)
+void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t &count)
 {
 	if(id>size_cc || id2>size_cc)
 		CCDoubleSize();
@@ -59,7 +75,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count)
 		if(updateIndex[ccindex[id]]!=updateIndex[ccindex[id2]] || (updateIndex[ccindex[id]]==-1 && updateIndex[ccindex[id2]]==-1))
 		{	
 			UpdateIndex(id, id2);
-			(*count)++;
+			count++;
 		}
 	}
 	
@@ -157,7 +173,7 @@ bool CC::check(uint32_t id,uint32_t id2)
 {	
 	if(ccindex[id]==ccindex[id2])
 		return true;
-	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=1)
+	else if(updateIndex[ccindex[id]]==updateIndex[ccindex[id2]] && updateIndex[ccindex[id]]!=-1)
 		return true;
 	else if(updateIndex[ccindex[id2]]==ccindex[id] || updateIndex[ccindex[id]]==ccindex[id2])
 		return true;
