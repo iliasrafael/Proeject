@@ -98,7 +98,7 @@ int main(void)
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-					cc.InsertNewEdge(node,edge,updatenum);
+					cc.InsertNewEdge(node,edge,&updatenum);
 				}
 				else if(com=='Q')
 				{	
@@ -108,13 +108,13 @@ int main(void)
 					else 
 						cout<<"-1"<<endl;
 				}
-				/*if((double)(updatenum/queriesnum)>0.05)
+				if(((float)updatenum/queriesnum)>0.357 && queriesnum>100)
 				{
-					cout<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
-					cc.rebuild();
+					cerr<<"rebuilding.. -----------------------------"<<updatenum<<" "<<queriesnum<<endl;
+					cc.rebuild(&graph);
 					updatenum=0;
 					queriesnum=0;
-				}*/
+				}
 			}
 		}
 		else
