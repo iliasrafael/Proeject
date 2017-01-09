@@ -5,6 +5,7 @@
 #include "SCC.h"
 #include "Graph.h"
 
+class Graph;
 class GrailIndex
 {	
 	uint32_t* rank;

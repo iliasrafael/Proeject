@@ -104,7 +104,7 @@ int main(void)
 				{	
 					queriesnum++;
 					if(cc.check(node,edge))
-						cout<<graph.BBFS(node,edge,NULL)<<endl;
+						cout<<graph.BBFS(node,edge,NULL,NULL)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
@@ -137,9 +137,9 @@ int main(void)
 					//if(scc.getComponent(a)->getNodesCount() <= 1 || scc.getComponent(b)->getNodesCount() <= 1)
 						//cout<<graph.BBFS(node,edge,&scc)<<endl;
 					if(grailindex.isReachableGrailIndex(a,b)==1)
-						cout<<graph.BBFS(node,edge,NULL)<<endl;
+						cout<<graph.BBFS(node,edge,NULL,&grailindex)<<endl;
 					else if(grailindex.isReachableGrailIndex(a,b)==2)
-						cout<<graph.BBFS(node,edge,&scc)<<endl;
+						cout<<graph.BBFS(node,edge,&scc,NULL)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}

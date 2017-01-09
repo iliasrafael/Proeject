@@ -1,7 +1,7 @@
 #include "GrailIndex.h"
 #include "Stack.h"
 
-GrailIndex::GrailIndex::GrailIndex(uint32_t size)
+GrailIndex::GrailIndex(uint32_t size)
 {
 	rank = (uint32_t *)malloc(sizeof(uint32_t)*size);
 	assert(rank!=NULL);

@@ -126,7 +126,7 @@ void visited_del(uint32_t **visited,int sqr)
 	free(visited);
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc)
+int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,GrailIndex * grailindex)
 {
 	int visited_size;
 
@@ -153,7 +153,7 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc)
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
-	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target))
+	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target,grailindex,target))
 	{
 		visited_del(visited,sqr);
 		return count;
@@ -162,14 +162,14 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc)
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target))
+			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target,grailindex,target))
 			{
 				visited_del(visited,sqr);
 				return count;
 			}
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_target))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_target,grailindex,start))
 			{
 				visited_del(visited,sqr);
 				return count;
@@ -181,7 +181,7 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,int scc_target)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,int scc_target,GrailIndex * grailindex,int target)
 {
 
 	uint32_t off;
@@ -205,6 +205,8 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
 					if(scc!=NULL && scc->findSCCid(neigh[i])!=scc_target)
+						continue;
+					if(grailindex!=NULL && grailindex->isReachableGrailIndex(neigh[i],target)==0)
 						continue;
 					x=neigh[i]/100;
 					y=neigh[i]%100;
@@ -432,7 +434,7 @@ int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t sou
 	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
 		return -1;
 	else
-		return BBFS(source_node,target_node,scc);
+		return BBFS(source_node,target_node,scc,NULL);
 }
 
 
