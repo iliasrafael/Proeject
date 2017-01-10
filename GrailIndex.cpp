@@ -130,11 +130,13 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 	return min;
 }
 
-int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target)
+int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target,SCC* scc)
 {
-	if(source == target)
+	int sourceSccId = scc->findSCCid(source);
+	int targetSccId = scc->findSCCid(target);
+	if( sourceSccId == targetSccId )
 		return 2;
-	if(min_rank[target] >= min_rank[source] && rank[target] <= rank[source]) //??
+	if(min_rank[targetSccId] >= min_rank[sourceSccId] && rank[targetSccId] <= rank[sourceSccId]) //??
 		return 1;	//Maybe baby
 	return 0;
 }

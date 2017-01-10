@@ -144,7 +144,7 @@ int CC::check(uint32_t id,uint32_t id2)
 	if(ccindex[id]==ccindex[id2])
 		return 1;
 	else  
-		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,NULL);
+		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL);
 }
 
 void CC::rebuild(Graph * graph)

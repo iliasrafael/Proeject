@@ -126,10 +126,10 @@ void visited_del(uint32_t **visited,int sqr)
 	free(visited);
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,GrailIndex * grailindex)
+int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailIndex * grailindex)
 {
 	int visited_size;
-
+	uint32_t x1,y1;
 	int scc_target;
 	if(scc!=NULL)
 		scc_target=scc->findSCCid(start);
@@ -153,7 +153,25 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,GrailIndex * grailinde
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
-	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target,grailindex,target))
+	x1=start/100;
+	y1=start%100;
+	if(visited[x1]==NULL)
+	{
+		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*100);
+		for(int i=0;i<100;i++)
+			visited[x1][i]=0;
+	}
+	visited[x1][y1]=2;
+	x1=target/100;
+	y1=target%100;
+	if(visited[x1]==NULL)
+	{
+		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*100);
+		for(int i=0;i<100;i++)
+			visited[x1][i]=0;
+	}
+	visited[x1][y1]=1;
+	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target))
 	{
 		visited_del(visited,sqr);
 		return count;
@@ -162,14 +180,14 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,GrailIndex * grailinde
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_target,grailindex,target))
+			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target))
 			{
 				visited_del(visited,sqr);
 				return count;
 			}
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_target,grailindex,start))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_flag,scc_target,grailindex,start))
 			{
 				visited_del(visited,sqr);
 				return count;
@@ -181,7 +199,7 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,GrailIndex * grailinde
 }
 
 //////////////////////////////////////////////////////////////////////////////
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,int scc_target,GrailIndex * grailindex,int target)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex * grailindex,int target)
 {
 
 	uint32_t off;
@@ -204,10 +222,22 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-					if(scc!=NULL && scc->findSCCid(neigh[i])!=scc_target)
+					if(scc_flag && scc->findSCCid(neigh[i])!=scc_target)
 						continue;
-					if(grailindex!=NULL && grailindex->isReachableGrailIndex(neigh[i],target)==0)
-						continue;
+					if(grailindex!=NULL)
+					{
+						if(situation == 1)
+						{
+							if(grailindex->isReachableGrailIndex(neigh[i],target,scc)==0)
+								continue;
+						}
+						else
+						{
+							if(grailindex->isReachableGrailIndex(target,neigh[i],scc)==0)
+								continue;
+						}
+						
+					}
 					x=neigh[i]/100;
 					y=neigh[i]%100;
 					if(visited[x]==NULL)
@@ -434,7 +464,7 @@ int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t sou
 	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
 		return -1;
 	else
-		return BBFS(source_node,target_node,scc,NULL);
+		return BBFS(source_node,target_node,scc,true,NULL);
 }
 
 

@@ -1,6 +1,6 @@
-OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o main.o SCC.o GrailIndex.o CC.o
+OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o main2.o SCC.o GrailIndex.o CC.o
 OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o CC.o
-SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp
+SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main2.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp
 HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h CC.h
 OUT1 = out
 OUT2 = testing
@@ -45,8 +45,8 @@ GrailIndex.o: GrailIndex.cpp GrailIndex.h
 Components.o: Components.cpp Components.h
 	$(CC) $(FLAGS) Components.cpp
 
-main.o: main.cpp
-	$(CC) $(FLAGS) main.cpp
+main2.o: main2.cpp
+	$(CC) $(FLAGS) main2.cpp
 
 testing.o: testing.cpp
 	$(CC) $(FLAGS) testing.cpp
