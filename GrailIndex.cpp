@@ -30,7 +30,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 	uint32_t* count;
 	from=(int*)malloc(sizeof(int)*size);
 	count=(uint32_t*)malloc(sizeof(uint32_t)*size);
-	for(int i=0; i<size; i++)
+	for(uint32_t i=0; i<size; i++)
 	{
 		visited[i]=false;
 		from[i]=-1;
@@ -40,7 +40,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 	uint32_t head;
 	uint32_t prev;
 
-	for(int j=0; j<size; j++)
+	for(uint32_t j=0; j<size; j++)
 	{
 		if(visited[j] == true)
 			continue;
@@ -108,7 +108,14 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 	//cout<<"OFFSET: "<<offset<<endl;
 	if(offset == -1)
 		return min;
-	list_node * cells = graph->getOutBuffer()->getListNode(offset);
+	else
+	{
+		list_node * cells = graph->getOutBuffer()->getListNode(offset);
+		uint32_t* neighbors = cells->getNeighbors();
+		if(min_rank[neighbors[0]] < min)
+			min = min_rank[neighbors[0]];
+	}
+	/*list_node * cells = graph->getOutBuffer()->getListNode(offset);
 	uint32_t* neighbors = cells->getNeighbors();
 
 	
@@ -126,7 +133,7 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 				min = min_rank[neighbors[j]];
 		}
 		offset = graph->getOutBuffer()->getListNode(offset)->getOffset();
-	}
+	}*/
 	return min;
 }
 
