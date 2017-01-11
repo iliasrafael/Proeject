@@ -1,6 +1,7 @@
 #ifndef __Job__	
 #define __Job__
 
+#include <stdint.h>
 
 class Job
 {
@@ -9,5 +10,7 @@ class Job
 	bool kind;
 public:
 	Job(uint32_t source_ , uint32_t target_,bool k);
-	
+	void run();
 };
+
+#endif

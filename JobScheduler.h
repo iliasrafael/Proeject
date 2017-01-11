@@ -1,8 +1,11 @@
 #ifndef __JobScheduler__ 
 #define __JobScheduler__
+
 #include <pthread.h>
-#include "ArrayList.h"
+#include <stdlib.h>
+#include "JobList.h"
 #include "Job.h"
+
 class JobScheduler{
 
 	uint32_t size;
@@ -11,14 +14,19 @@ class JobScheduler{
 	pthread_cond_t cond_nonempty ;
 	pthread_cond_t out;
 	pthread_t * workers; 
-	ArrayList queue;
+	JobList queue;
 public:
 	JobScheduler(uint32_t size);
 	~JobScheduler();
-	void submit_job(Job * job);
-	void execute_all_jobs();
+
+	void submit_job(Job job);
+	void* execute_all_jobs();
+
+	static void* send_wrapper(void* object)
+	{
+	    reinterpret_cast<JobScheduler*>(object)->execute_all_jobs();
+	    return 0;
+	}
 };
-
-
 
 #endif
