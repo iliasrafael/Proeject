@@ -10,8 +10,8 @@ class JobScheduler{
 
 	uint32_t size;
 	pthread_mutex_t  mtx ;
-	pthread_mutex_t * mut ;
-	pthread_cond_t cond_nonempty ;
+	//pthread_mutex_t * mut ;
+	pthread_cond_t cond_nonempty;
 	pthread_cond_t out;
 	pthread_t * workers; 
 	JobList queue;

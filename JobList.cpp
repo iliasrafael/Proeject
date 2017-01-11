@@ -27,6 +27,7 @@ void JobList::Insert(Job job)
 	}
 	//memcpy((Job)array[back], (Job)job, sizeof(Job));
 	array[back]=job;
+	cout<<"Insert: "<<array[back].source<<endl;
 	back++;
 	elements++;
 }
@@ -34,7 +35,9 @@ void JobList::Insert(Job job)
 Job* JobList::remove()
 {
 	Job* job;
-	memcpy((Job *)&array[back], (Job *)&job, sizeof(Job));
+	memcpy((Job *)&array[head], (Job *)&job, sizeof(Job));
+	//job=array[head];
+	cout<<"Remove: "<<job->source<<endl;
 	head++;
 	elements--;
 	return job;
