@@ -15,6 +15,9 @@ class JobScheduler{
 	pthread_cond_t out;
 	pthread_t * workers; 
 	JobList queue;
+	int* results;
+	uint32_t results_size;
+
 public:
 	JobScheduler(uint32_t size);
 	~JobScheduler();

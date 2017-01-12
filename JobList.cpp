@@ -32,16 +32,25 @@ void JobList::Insert(Job job)
 	elements++;
 }
 
-Job* JobList::remove()
+Job* JobList::pop()
 {
 	//Job* job;
-	//memcpy((Job *)&array[head], (Job *)&job, sizeof(Job));
+	//job->source = array[head].source;
+	//job->target = array[head].target;
+	//job->kind = array[head].kind;
+	//memcpy(&array[head], &job, sizeof(Job));
 	//job=array[head];
-	cout<<"Remove: "<<array[head].source<<endl;
-	head++;
-	elements--;
+	//Job job(array[head].source, array[head].target, array[head].kind);
+	//cout<<"Remove: "<<job->source<<endl;
 	return &array[head];
 }
+
+void JobList::remove()
+{
+	head++;
+	elements--;
+}
+
 bool JobList::empty()
 {
 	return head==back;
