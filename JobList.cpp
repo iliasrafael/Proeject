@@ -34,13 +34,13 @@ void JobList::Insert(Job job)
 
 Job* JobList::remove()
 {
-	Job* job;
-	memcpy((Job *)&array[head], (Job *)&job, sizeof(Job));
+	//Job* job;
+	//memcpy((Job *)&array[head], (Job *)&job, sizeof(Job));
 	//job=array[head];
-	cout<<"Remove: "<<job->source<<endl;
+	cout<<"Remove: "<<array[head].source<<endl;
 	head++;
 	elements--;
-	return job;
+	return &array[head];
 }
 bool JobList::empty()
 {

@@ -13,6 +13,7 @@ JobScheduler::JobScheduler(uint32_t size_)
         //pthread_mutex_init(&mut[i],0);	//attribute?
 	//mtx = (pthread_mutex_t)malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&mtx,0);
+	pthread_mutex_init(&mut,0);
     for(int i=0;i<size;i++)
     {   
     	cout<<"Creating worker "<<i<<endl;
@@ -31,10 +32,11 @@ JobScheduler::~JobScheduler()
 
 void JobScheduler::submit_job(Job job)
 {
-	pthread_mutex_lock (& mtx); 
+	pthread_mutex_lock(&mut); 
+	cout<<"b"<<endl;
     queue.Insert(job);
     pthread_cond_broadcast(&cond_nonempty);
-    pthread_mutex_unlock(& mtx);
+    pthread_mutex_unlock(&mut);
 }
 
 
@@ -45,14 +47,17 @@ void* JobScheduler::execute_all_jobs()
 	cout<<"execute_all_jobs"<<endl;
 	while(1)
 	{
-		pthread_mutex_lock (& mtx );
+		pthread_mutex_lock(&mtx);
 	    while (queue.get_size() <= 0) 
 	    {
-	        pthread_cond_wait (&cond_nonempty ,&mtx );//perimenei mexri na ginei broadcoast oti iparxei stoixeio stin oura
+	    	if(queue.get_size()==1)
+	    		cout<<"o"<<endl;
+	        pthread_cond_wait(&cond_nonempty ,&mut);//perimenei mexri na ginei broadcoast oti iparxei stoixeio stin oura
 	    }
+	    cout<<"eftasa"<<endl;
 	    job=queue.remove();
 	    job->run();
-	    pthread_mutex_unlock (& mtx );
+	    pthread_mutex_unlock(&mtx );
    	}
    	pthread_exit(0);
 }	

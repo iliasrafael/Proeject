@@ -10,7 +10,7 @@ class JobScheduler{
 
 	uint32_t size;
 	pthread_mutex_t  mtx ;
-	//pthread_mutex_t * mut ;
+	pthread_mutex_t mut ;
 	pthread_cond_t cond_nonempty;
 	pthread_cond_t out;
 	pthread_t * workers; 
@@ -24,7 +24,7 @@ public:
 
 	static void* send_wrapper(void* object)
 	{
-	    reinterpret_cast<JobScheduler*>(object)->execute_all_jobs();
+	    static_cast<JobScheduler*>(object)->execute_all_jobs();
 	    return 0;
 	}
 };
