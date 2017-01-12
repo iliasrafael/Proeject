@@ -17,6 +17,7 @@ Job::Job(Graph* graph_, SCC* scc_, GrailIndex* grailindex_, uint32_t source_ , u
 	graph = graph_;
 	scc = scc_;
 	grailindex = grailindex_;
+	cout<<"Create job "<<source<<endl;
 }
 
 int Job::run()

@@ -69,13 +69,13 @@ int main(int argc, char const *argv[])
 
 	
 	if(option==1)
-		myReadFile.open("tiny/tinyWorkload_FINAL.txt");
+		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("small/exampleWorkload.txt");
+		myReadFile.open("exampleWorkload.txt");
 	else if(option==3)
-		myReadFile.open("medium/mediumWorkload_FINAL.txt");
+		myReadFile.open("mediumWorkload_FINAL.txt");
 	else if(option==4)
-		myReadFile.open("medium/mediumWorkload_static_FINAL.txt");
+		myReadFile.open("mediumWorkload_static_FINAL.txt");
 	else if(option==5)
 		myReadFile.open("largeWorkload_6000_20.txt");
 	else if(option==6)
@@ -113,23 +113,37 @@ int main(int argc, char const *argv[])
 			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			cerr<<"Grail Ready"<<endl;
 
+			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
-				myReadFile>>com;
 				while(com != 'F')
 				{
+					
 					if(com == 'A')
 					{
 						myReadFile>>node>>edge;
+						myReadFile>>com;
 						continue;
 					}
 					myReadFile>>node>>edge;
 					cout<<com;
 					cout<<" Input: "<<node<<" "<<edge<<endl;
 					Job job(&graph, &scc, &grailindex, node, edge, 1, order, isstatic);
+					if(job.order >= js.get_resultsize())
+						js.increase();
 					js.submit_job(job);
 					order++;
+					myReadFile>>com;
 				}
+				cout<<"edw"<<endl;
+				for(int i=0; i< js.get_resultsize(); i++)
+				{
+					//if(js.get_results(i)!=-2)
+						cout<<js.get_results(i)<<endl;
+				}
+				js.reset_results();
+				order=0;
+				return 0;
 			}
 
 		}

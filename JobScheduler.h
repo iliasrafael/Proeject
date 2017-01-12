@@ -30,6 +30,11 @@ public:
 	    static_cast<JobScheduler*>(object)->execute_all_jobs();
 	    return 0;
 	}
+
+	uint32_t get_resultsize();
+	int get_results(uint32_t i);
+	void reset_results();
+	void increase();
 };
 
 #endif
