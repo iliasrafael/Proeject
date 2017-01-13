@@ -69,9 +69,9 @@ int main(int argc, char const *argv[])
 
 	
 	if(option==1)
-		myReadFile.open("tinyWorkload_FINAL.txt");
+		myReadFile.open("tiny/tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("exampleWorkload.txt");
+		myReadFile.open("small/exampleWorkload.txt");
 	else if(option==3)
 		myReadFile.open("mediumWorkload_FINAL.txt");
 	else if(option==4)
@@ -133,17 +133,18 @@ int main(int argc, char const *argv[])
 						js.increase();
 					js.submit_job(job);
 					order++;
+
 					myReadFile>>com;
 				}
-				cout<<"edw"<<endl;
+				myReadFile>>com;
+				sleep(1);
 				for(int i=0; i< js.get_resultsize(); i++)
 				{
-					//if(js.get_results(i)!=-2)
+					if(js.get_results(i)!=-2)
 						cout<<js.get_results(i)<<endl;
 				}
 				js.reset_results();
 				order=0;
-				return 0;
 			}
 
 		}

@@ -28,7 +28,7 @@ JobScheduler::JobScheduler(uint32_t size_)
     	results[i] = -2;
     }
     results_size = size;
-
+    //cond_nonempty=PTHREAD_COND_INITIALIZER;
     pthread_cond_init(&cond_nonempty, 0);
 }
 
@@ -42,13 +42,7 @@ void JobScheduler::increase()
 	results=(int*)realloc(results,sizeof(int)*results_size);
 	assert(results!=NULL);
 }
-void JobScheduler::submit_job(Job job)
-{
-	pthread_mutex_lock(&mtx); 
-    queue.Insert(job);
-    pthread_cond_broadcast(&cond_nonempty);
-    pthread_mutex_unlock(&mtx);
-}
+
 
 uint32_t JobScheduler::get_resultsize()
 {
@@ -67,19 +61,31 @@ void JobScheduler::reset_results()
     }
 }
 
+void JobScheduler::submit_job(Job job)
+{
+	pthread_mutex_lock(&mtx); 
+    queue.Insert(job);
+    cerr<<"QueuSizeInsert"<<queue.get_size() <<endl;
+    pthread_cond_broadcast(&cond_nonempty);
+    pthread_mutex_unlock(&mtx);
+}
+
 void* JobScheduler::execute_all_jobs()
 {
 	Job* job;
 	cout<<"execute_all_jobs"<<endl;
+	int i=0;
+	while(queue.get_size()==0)
+	{
+
+	}	
 	while(1)
 	{
-		pthread_cond_wait(&cond_nonempty,&mtx);
+
 		pthread_mutex_lock(&mtx);
-	    if(queue.get_size()<=0)
-	    {
-	    	pthread_mutex_unlock(&mtx);
-	    	continue;
-	    }
+		cerr<<"QueuSize"<<queue.get_size() <<endl;
+		while(queue.get_size()<=0)
+			pthread_cond_wait(&cond_nonempty,&mtx);
 	    job=queue.pop();
 	    queue.remove();
 	    pthread_mutex_unlock(&mtx);
