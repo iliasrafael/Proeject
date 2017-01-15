@@ -9,10 +9,10 @@
 class JobScheduler{
 
 	uint32_t size;
-	pthread_mutex_t  mtx ;
-	pthread_mutex_t mut ;
+	pthread_mutex_t  mtx;
+	//pthread_mutex_t mut;
 	pthread_cond_t cond_nonempty;
-	pthread_cond_t out;
+	pthread_cond_t cond_empty;
 	pthread_t * workers; 
 	JobList queue;
 	int* results;
@@ -27,13 +27,15 @@ public:
 
 	static void* send_wrapper(void* object)
 	{
-	    static_cast<JobScheduler*>(object)->execute_all_jobs();
-	    return 0;
+		return ((JobScheduler*)object)->execute_all_jobs();
+	    //static_cast<JobScheduler*>(object)->execute_all_jobs();
+	    //return 0;
 	}
 
 	uint32_t get_resultsize();
 	int get_results(uint32_t i);
 	void reset_results();
+	void print_results();
 	void increase();
 };
 

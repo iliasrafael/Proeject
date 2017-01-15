@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
 #include "JobScheduler.h"
 #include "Graph.h"
 #include "Components.h"
@@ -35,7 +36,7 @@ int main(int argc, char const *argv[])
 		myReadFile.open("medium/mediumGraph.txt");
 	else if(option==6 || option==5)
 		myReadFile.open("large.txt");
-	time_t now = time(0),end;
+	time_t now = time(NULL),end;
    	char* currtime = ctime(&now);
    	cerr << "Started at: " << currtime;
 	Graph graph;
@@ -126,8 +127,8 @@ int main(int argc, char const *argv[])
 						continue;
 					}
 					myReadFile>>node>>edge;
-					cout<<com;
-					cout<<" Input: "<<node<<" "<<edge<<endl;
+					//cout<<com;
+					//cout<<" Input: "<<node<<" "<<edge<<endl;
 					Job job(&graph, &scc, &grailindex, node, edge, 1, order, isstatic);
 					if(job.order >= js.get_resultsize())
 						js.increase();
@@ -137,12 +138,8 @@ int main(int argc, char const *argv[])
 					myReadFile>>com;
 				}
 				myReadFile>>com;
-				sleep(1);
-				for(int i=0; i< js.get_resultsize(); i++)
-				{
-					if(js.get_results(i)!=-2)
-						cout<<js.get_results(i)<<endl;
-				}
+				//sleep(1);
+				js.print_results();
 				js.reset_results();
 				order=0;
 			}
@@ -150,5 +147,11 @@ int main(int argc, char const *argv[])
 		}
 
 	}
+
+	end = time(NULL);
+   	currtime = ctime(&end);
+
+   	cerr << "Finished at: " << currtime;
+   	cerr << "After running for: "<< end-now<<"secs." <<endl;
 	return 0;
 }

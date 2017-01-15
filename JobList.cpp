@@ -27,7 +27,7 @@ void JobList::Insert(Job job)
 	}
 	//memcpy((Job)array[back], (Job)job, sizeof(Job));
 	array[back]=job;
-	cout<<"Insert: "<<array[back].source<<endl;
+	//cout<<"Insert: "<<array[back].source<<endl;
 	back++;
 	elements++;
 }

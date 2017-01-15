@@ -108,14 +108,8 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 	//cout<<"OFFSET: "<<offset<<endl;
 	if(offset == -1)
 		return min;
-	else
-	{
-		list_node * cells = graph->getOutBuffer()->getListNode(offset);
-		uint32_t* neighbors = cells->getNeighbors();
-		if(min_rank[neighbors[0]] < min)
-			min = min_rank[neighbors[0]];
-	}
-	/*list_node * cells = graph->getOutBuffer()->getListNode(offset);
+
+	list_node * cells = graph->getOutBuffer()->getListNode(offset);
 	uint32_t* neighbors = cells->getNeighbors();
 
 	
@@ -133,7 +127,7 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 				min = min_rank[neighbors[j]];
 		}
 		offset = graph->getOutBuffer()->getListNode(offset)->getOffset();
-	}*/
+	}
 	return min;
 }
 

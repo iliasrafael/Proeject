@@ -362,7 +362,7 @@ SCC Graph::SCC_Search()
 
 		////cout<<"kombos "<<i<<endl;
 		////cout<<" b"<<out_index.getPosition(i)<<endl;
-		if(table[i].getIndex() != 0)
+		if(table[i].getIndex() != 0 || (out_index.getPosition(i)<0 && inc_index.getPosition(i)<0))
 			continue;
 
 		table[i].setIndex(index);
