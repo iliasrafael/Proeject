@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Job::Job(Graph* graph_, SCC* scc_, GrailIndex* grailindex_, uint32_t source_ , uint32_t target_ ,bool k, int ord, bool st)
+Job::Job(Graph* graph_, SCC* scc_, GrailIndex* grailindex_, CC* cc_, uint32_t source_ , uint32_t target_ ,bool k, int ord, bool st)
 {
 	source = source_;
 	target = target_;
@@ -17,6 +17,7 @@ Job::Job(Graph* graph_, SCC* scc_, GrailIndex* grailindex_, uint32_t source_ , u
 	graph = graph_;
 	scc = scc_;
 	grailindex = grailindex_;
+	cc = cc_;
 	//cout<<"Create job "<<source<<endl;
 }
 
@@ -25,40 +26,11 @@ int Job::run()
 	//cout<<"Runnig ..."<<endl;
 	if(!isstatic)
 	{
-		/*
-		uint32_t queriesnum=0;
-		uint32_t updatenum=0;
-		CC cc(size);
-		cc.CCSearch(&graph);
-
-		if(!kind)
-		{
-			queriesnum++;
-			if(graph.search(source,target))
-				continue;
-			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),source,target);
-			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),target,source);
-			cc.InsertNewEdge(source,target, &updatenum);
-		}
-		if(kind)
-		{	 
-			queriesnum++;
-			check = cc.check(source,target);
-			if( check >= 0)
-				//cout<<graph.BBFS(source,target,NULL,false,NULL)<<endl;
-				return graph.BBFS(source,target,NULL,false,NULL);
-			else
-				//cout<<"-1"<<endl;
-				return -1;		
-		}
-		if(updatenum > 500)
-		{
-			cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
-			cc.rebuild(&graph);
-			updatenum=0;
-			queriesnum=0;
-		}
-		*/
+		int check = cc->check(source,target);
+		if( check >= 0)
+			return graph->BBFS(source,target,NULL,false,NULL);
+		else
+			return -1;		
 	}
 	else
 	{

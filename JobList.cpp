@@ -42,6 +42,11 @@ Job* JobList::pop()
 	//job=array[head];
 	//Job job(array[head].source, array[head].target, array[head].kind);
 	//cout<<"Remove: "<<job->source<<endl;
+	if(empty())
+	{
+		cerr<<"Queue is empty!"<<endl;
+		return NULL;
+	}
 	return &array[head];
 }
 

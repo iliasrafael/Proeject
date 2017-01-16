@@ -12,7 +12,12 @@ JobScheduler::JobScheduler(uint32_t size_)
     //for(int i=0;i<size;i++)
         //pthread_mutex_init(&mut[i],0);	//attribute?
 	//mtx = (pthread_mutex_t)malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(&mtx,NULL);
+
+	pthread_mutexattr_t Attr;
+	pthread_mutexattr_init(&Attr);
+	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
+
+	pthread_mutex_init(&mtx, &Attr);
 	//pthread_mutex_init(&mut,NULL);
     for(int i=0;i<size;i++)
     {   
@@ -22,12 +27,12 @@ JobScheduler::JobScheduler(uint32_t size_)
 
     JobList queue;
 
-    results = (int*)malloc(sizeof(int)*size);
-    for(int i=0;i<size;i++)
+    results = (int*)malloc(sizeof(int)*64);
+    for(int i=0;i<64;i++)
     { 
     	results[i] = -2;
     }
-    results_size = size;
+    results_size = 64;
     //cond_nonempty=PTHREAD_COND_INITIALIZER;
     pthread_cond_init(&cond_nonempty, 0);
     pthread_cond_init(&cond_empty, 0);
@@ -41,6 +46,7 @@ JobScheduler::~JobScheduler()
 }
 void JobScheduler::increase()
 {
+	//pthread_mutex_lock(&mtx);
 	uint32_t s = results_size;
 	results_size *= 2;
 	results=(int*)realloc(results,sizeof(int)*results_size);
@@ -49,6 +55,7 @@ void JobScheduler::increase()
     	results[i] = -2;
     }
 	assert(results!=NULL);
+	//pthread_mutex_unlock(&mtx);
 }
 
 
@@ -96,6 +103,8 @@ void* JobScheduler::execute_all_jobs()
 	    pthread_mutex_unlock(&mtx);
 	    //cout<<"Job: "<<job->source<<endl;
 	    //cout<<"wtf"<<endl;
+	    //cout<<"->"<<job->order<<endl;
+	    //cout<<"-->"<<results_size<<endl;
 	    results[job->order] = job->run();	    
    	}
    	pthread_exit(0);
@@ -108,8 +117,10 @@ void JobScheduler::print_results()
 		pthread_cond_wait(&cond_empty,&mtx);
 	for(int i=0; i< results_size; i++)
 	{
-		if(results[i]!=-2)
-			cout<<results[i]<<endl;
+		//cout<<"i="<<i<<" size="<<results_size<<endl;
+		if(results[i]==-2)
+			break;
+		cout<<results[i]<<endl;
 	}
 	pthread_mutex_unlock(&mtx);
 }
