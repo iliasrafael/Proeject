@@ -85,23 +85,23 @@ void* JobScheduler::execute_all_jobs()
 {
 	Job* job;
 	//cout<<"execute_all_jobs"<<endl;
+	while(queue.get_size()==0){}
 	while(1)
 	{
-		while(queue.get_size()==0){}
 		pthread_mutex_lock(&mtx);
 		//cerr<<"QueuSize"<<queue.get_size() <<endl;
 		while(queue.get_size()<=0)
 			pthread_cond_wait(&cond_nonempty,&mtx);
 	    job=queue.pop();
 	    queue.remove();
-	    if(queue.empty())
-	    	pthread_cond_broadcast(&cond_empty);
 	    pthread_mutex_unlock(&mtx);
 	    //cout<<"Job: "<<job->source<<endl;
 	    //cout<<"wtf"<<endl;
 	    //cout<<"->"<<job->order<<endl;
 	    //cout<<"-->"<<results_size<<endl;
-	    results[job->order] = job->run();	    
+	    results[job->order] = job->run();
+	    if(queue.empty())
+	    	pthread_cond_broadcast(&cond_empty);	    
    	}
    	pthread_exit(0);
 }	
