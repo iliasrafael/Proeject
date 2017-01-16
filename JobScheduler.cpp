@@ -13,19 +13,17 @@ JobScheduler::JobScheduler(uint32_t size_)
         //pthread_mutex_init(&mut[i],0);	//attribute?
 	//mtx = (pthread_mutex_t)malloc(sizeof(pthread_mutex_t));
 
-	pthread_mutexattr_t Attr;
-	pthread_mutexattr_init(&Attr);
-	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
+	//pthread_mutexattr_t Attr;
+	//pthread_mutexattr_init(&Attr);
+	//pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
 
-	pthread_mutex_init(&mtx, &Attr);
+	pthread_mutex_init(&mtx, NULL);
 	//pthread_mutex_init(&mut,NULL);
     for(int i=0;i<size;i++)
     {   
     	//cout<<"Creating worker "<<i<<endl;
         pthread_create(&workers[i], NULL, &JobScheduler::send_wrapper, this);  //dimiourgeia threads
     }
-
-    JobList queue;
 
     results = (int*)malloc(sizeof(int)*64);
     for(int i=0;i<64;i++)
@@ -42,11 +40,10 @@ JobScheduler::~JobScheduler()
 {
 	free(workers);
 	free(results);
-	pthread_mutex_destroy(&mtx);
+	//pthread_mutex_destroy(&mtx);
 }
 void JobScheduler::increase()
 {
-	//pthread_mutex_lock(&mtx);
 	uint32_t s = results_size;
 	results_size *= 2;
 	results=(int*)realloc(results,sizeof(int)*results_size);
@@ -55,7 +52,6 @@ void JobScheduler::increase()
     	results[i] = -2;
     }
 	assert(results!=NULL);
-	//pthread_mutex_unlock(&mtx);
 }
 
 
@@ -91,7 +87,7 @@ void* JobScheduler::execute_all_jobs()
 	//cout<<"execute_all_jobs"<<endl;
 	while(1)
 	{
-
+		while(queue.get_size()==0){}
 		pthread_mutex_lock(&mtx);
 		//cerr<<"QueuSize"<<queue.get_size() <<endl;
 		while(queue.get_size()<=0)

@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
 {
 
 	int option=0;
-	while(option<1 || option>6)
+	while(option<1 || option>7)
 	{
 		cerr << ">Please choose Input File  :)"<<endl;
 		cerr << ">1 for Tiny File" << endl;
@@ -29,13 +29,15 @@ int main(int argc, char const *argv[])
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("tiny/tinyGraph.txt");
+		myReadFile.open("tinyGraph.txt");
 	else if(option==2)
-		myReadFile.open("small/smallGraph.txt");
+		myReadFile.open("smallGraph.txt");
 	else if(option==3 || option==4)
 		myReadFile.open("medium/mediumGraph.txt");
 	else if(option==6 || option==5)
 		myReadFile.open("large.txt");
+	else if(option==7)
+		myReadFile.open("example.txt");
 	time_t now = time(NULL),end;
    	char* currtime = ctime(&now);
    	cerr << "Started at: " << currtime;
@@ -70,9 +72,9 @@ int main(int argc, char const *argv[])
 
 	
 	if(option==1)
-		myReadFile.open("tiny/tinyWorkload_FINAL.txt");
+		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("small/smallWorkload_FINAL.txt");
+		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
 		myReadFile.open("mediumWorkload_FINAL.txt");
 	else if(option==4)
@@ -81,12 +83,14 @@ int main(int argc, char const *argv[])
 		myReadFile.open("largeWorkload_6000_20.txt");
 	else if(option==6)
 		myReadFile.open("largeWorkload_48000_40.txt");
+	else if(option==7)
+		myReadFile.open("exampleWorkload.txt");
 		
 	char com;
 	char r[9];
 
 	//Job job(1,2,0);
-	JobScheduler js(5);
+	//JobScheduler js(5);
 	//js.submit_job(job);
 
 
@@ -102,10 +106,11 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-
+			JobScheduler js(5);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
+				cout<<"A"<<endl;
 				while(com != 'F')
 				{
 					myReadFile>>node>>edge;
@@ -139,7 +144,7 @@ int main(int argc, char const *argv[])
 
 					myReadFile>>com;
 				}
-
+				cout<<"B"<<endl;
 				myReadFile>>com;
 				//sleep(1);
 				js.print_results();
@@ -160,7 +165,7 @@ int main(int argc, char const *argv[])
 			GrailIndex grailindex(scc.getComponentCount()+1);
 			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			cerr<<"Grail Ready"<<endl;
-
+			JobScheduler js(5);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
@@ -182,6 +187,7 @@ int main(int argc, char const *argv[])
 						//cout<<job.order<<" < "<<js.get_resultsize()<<endl;
 						js.increase();
 					}
+					//cout<<"a"<<endl;
 					js.submit_job(job);
 					order++;
 					//cout<<"Order: "<<order<<endl;

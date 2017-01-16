@@ -10,9 +10,10 @@ JobList::JobList()
 	if(array==NULL)
 		cout<<ALSIZE<<endl;
 	head=0;
-	back=0;
 	elements=0;
 	size=ALSIZE;
+	back=0;
+	//cout<<"S"<<back<<endl;
 }
 
 JobList::~JobList()
@@ -21,6 +22,9 @@ JobList::~JobList()
 }
 void JobList::Insert(Job job)
 {
+	//cout<<"olo"<<endl;
+	///cout<<"S1"<<back<<endl;
+	//cout<<size<<""<<back<<endl;
 	if(back==size)
 	{
 		DoubleSize();
