@@ -9,13 +9,15 @@
 class JobScheduler{
 
 	uint32_t size;
-	pthread_mutex_t  mtx;
+	pthread_mutex_t mtx;
 	pthread_mutex_t mut;
+	pthread_mutex_t mylock;
 	pthread_cond_t cond_nonempty;
-	pthread_cond_t cond_empty;
+	pthread_cond_t non_done;
 	pthread_t * workers; 
 	JobList queue;
 	int* results;
+	int counter;
 	uint32_t results_size;
 
 public:
