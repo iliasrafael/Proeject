@@ -78,7 +78,7 @@ void JobScheduler::submit_job(Job job)
     counter++;
     //cout<<"auksisa "<<counter<<endl;
     pthread_mutex_unlock(&mylock);
-    pthread_cond_broadcast(&cond_nonempty);
+    pthread_cond_signal(&cond_nonempty);
     pthread_mutex_unlock(&mtx);
 }
 
