@@ -14,7 +14,7 @@ public:
 	Buffer();
 	~Buffer();
 	uint32_t allocNewNode();
-	int InsertFirstNode(uint32_t id);
+	int InsertFirstNode(uint32_t id, int vers);
 	list_node* getListNode(uint32_t);
 	uint32_t getLast();
 	void setLast(uint32_t);

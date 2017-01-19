@@ -22,18 +22,18 @@ void CC::Insert(uint32_t nodeId,uint32_t componentId)
 	ccindex[nodeId]=componentId;
 }
 
-int CC::UpdateIndex(int componentId1,int componentId2)
+int CC::UpdateIndex(int componentId1,int componentId2, int vers)
 {
 	if(updateIndex->search(componentId1,componentId2))
 		return 0;
-	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId1,componentId2);
-	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId2,componentId1);
-	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId1,componentId2);
-	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId2,componentId1);
+	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId1,componentId2,vers);
+	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId2,componentId1,vers);
+	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId1,componentId2,vers);
+	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId2,componentId1,vers);
 	return 1;
 }
 
-void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count)
+void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count, int vers)
 {
 	if(id>size_cc || id2>size_cc)
 		CCDoubleSize();
@@ -49,7 +49,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count)
 		ccindex[id2]=ccindex[id];
 	else if(ccindex[id]!=ccindex[id2])
 	{
-			if(UpdateIndex(ccindex[id], ccindex[id2]))
+			if(UpdateIndex(ccindex[id], ccindex[id2], vers))
 				(*count)++;
 	}
 	
@@ -138,14 +138,14 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 	}
 
 }
-int CC::check(uint32_t id,uint32_t id2)
+int CC::check(uint32_t id,uint32_t id2, int vers)
 {	
 	//cerr << "NodeId1 = " << id << "ComponentId1 = " << ccindex[id] << endl;
 	//cerr << "NodeId2 = " << id2 << "ComponentId2 = " << ccindex[id2] << endl;
 	if(ccindex[id]==ccindex[id2])
 		return 1;
 	else  
-		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL);
+		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL,vers);
 }
 
 void CC::rebuild(Graph * graph)

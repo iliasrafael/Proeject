@@ -15,7 +15,7 @@ class JobScheduler{
 	pthread_cond_t cond_nonempty;
 	pthread_cond_t non_done;
 	pthread_t * workers; 
-	JobList queue;
+	JobList* queue;
 	int* results;
 	int counter;
 	uint32_t results_size;
@@ -39,6 +39,7 @@ public:
 	void reset_results();
 	void print_results();
 	void increase();
+	void wait_all_jobs();
 };
 
 #endif

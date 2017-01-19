@@ -50,9 +50,9 @@ void Buffer::setSize(uint32_t size_)
 	size=size_;
 }
 ////////////////////////////////////////////////////
-int Buffer::InsertFirstNode(uint32_t id)
+int Buffer::InsertFirstNode(uint32_t id, int vers)
 {
-	cells[last++].Insert(id);
+	cells[last++].Insert(id, vers);
 	return last-1;
 }
 ////////////////////////////////////////////////////

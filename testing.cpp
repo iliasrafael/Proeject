@@ -21,11 +21,11 @@ int main(void)
 		cout<<"Initialization on last bucket ok "<<endl;
 	else
 		cerr<<"Wrong initialization last bucket value"<<endl;
-	if(!graph_test.Insert(graph_test.getOutIndex(),graph_test.getOutBuffer(),1,0))
+	if(!graph_test.Insert(graph_test.getOutIndex(),graph_test.getOutBuffer(),1,0,0))
 		cerr<<"Wrong on Insert"<<endl;
 	else
 		cout<<"Insert successfull"<<endl;
-	graph_test.Insert(graph_test.getOutIndex(),graph_test.getOutBuffer(),2,0);
+	graph_test.Insert(graph_test.getOutIndex(),graph_test.getOutBuffer(),2,0,0);
 	if(graph_test.getOutIndex()->getPosition(2)==1)
 		cout<<"Entry ok"<<endl;
 	else

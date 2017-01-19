@@ -20,16 +20,16 @@ class Graph{
 	ArrayList inc_oura;
 	ArrayList out_oura;
 public:
-	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2);
-	int BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailIndex * grailindex);
+	bool Insert(NodeIndex *index ,Buffer *buffer,uint32_t id,uint32_t id2, int vers);
+	int BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailIndex * grailindex, int version);
 	NodeIndex* getOutIndex();
 	NodeIndex* getIncIndex();
 	Buffer* getOutBuffer();
 	Buffer* getIncBuffer();
-	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex *grailindex,int target);
+	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex *grailindex,int target, int version);
 	bool search(uint32_t id,uint32_t id2);
 	SCC SCC_Search();
-	int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
+	//int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
 	void creation(SCC *scc,Graph *graph);
 };
 

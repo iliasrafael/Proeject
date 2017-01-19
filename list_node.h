@@ -19,7 +19,7 @@ class list_node {
 	int offset;
 	uint32_t last_neighbor;                       
 public:
-	bool Insert(uint32_t id);
+	bool Insert(uint32_t id, int vers);
 	uint32_t* getNeighbors();
 	uint32_t* getProperties();
 	int getOffset();
