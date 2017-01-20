@@ -225,8 +225,10 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
-					if(version < cells->getProperties()[i])
+					if(version < cells->getProperties()[i]){
+						//cerr<<version<<" "<<cells->getProperties()[i]<<endl;
 						continue;
+					}
 					if(scc_flag && scc->findSCCid(neigh[i])!=scc_target)
 						continue;
 					if(grailindex!=NULL)

@@ -75,33 +75,34 @@ int Job::run()
 	//cout<<"Runnig ..."<<endl;
 	if(!isstatic)
 	{
-		int check = cc->check(source,target,version);
-		if( check >= 0)
+		//int check = cc->check(source,target);
+		//if( check >= 0)
 			return graph->BBFS(source,target,NULL,false,NULL,version);
-		else
-			return -1;		
+		//else
+		//	return -1;		
 	}
 	else
 	{
 		
 		//uint32_t a = scc->findSCCid(source);
 		//uint32_t b = scc->findSCCid(target);
-		/*if(grailindex->isReachableGrailIndex(source,target,scc)==1)
+		//cerr<<"--> SCC: "<<scc->findSCCid(1)<<endl;
+		if(grailindex->isReachableGrailIndex(source,target,scc)==1)
 		{
 			//cout<<graph->BBFS(source,target,&scc,false,&grailindex)<<endl;
-			return graph->BBFS(source,target,scc,false,grailindex);
+			return graph->BBFS(source,target,scc,false,grailindex,0);
 		}
 		else if(grailindex->isReachableGrailIndex(source,target,scc)==2)
 		{
 			//cout<<graph->BBFS(source,target,&scc,true,NULL)<<endl;
-			return graph->BBFS(source,target,scc,true,NULL);
+			return graph->BBFS(source,target,scc,true,NULL,0);
 		}
 		else
 		{
 			//cout<<"-1"<<endl;
 			return -1;
-		}*/
-		return graph->BBFS(source,target,NULL,false,NULL,0);
+		}
+		//return graph->BBFS(source,target,NULL,false,NULL,0);
 	}
 	//cerr << "RunResult = "<< my_resultt << endl;
 }

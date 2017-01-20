@@ -57,7 +57,8 @@ void SCC::Insert(uint32_t id , uint32_t element)
 
 uint32_t SCC::findSCCid(uint32_t nodeId)
 {
-	cerr<<"NODE: "<<nodeId<<" "<<id_belongs_to_component[nodeId]<<endl;
+	//cerr<<"NODE: "<<nodeId<<" "<<endl;
+	//cerr<<id_belongs_to_component[nodeId]<<endl;
 	return id_belongs_to_component[nodeId];
 }
 
