@@ -9,7 +9,10 @@
 #include "GrailIndex.h"
 #include "CC.h"
 int thread_flag=1;
+<<<<<<< HEAD
 int stop_threads=1;
+=======
+>>>>>>> origin/master
 using namespace std;
 
 int main(int argc, char const *argv[])
@@ -53,8 +56,8 @@ int main(int argc, char const *argv[])
 				break;
 			if(graph.search(node,edge))
 				continue;
-			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,0);
+			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,0);
 		}
 	}
 	myReadFile.close();
@@ -98,6 +101,8 @@ int main(int argc, char const *argv[])
 
 	bool isstatic;
 	int order = 0;
+	int version = 0;
+	bool prev_com = false;
 
 	if(myReadFile.is_open()){
 		myReadFile>>r;
@@ -112,7 +117,7 @@ int main(int argc, char const *argv[])
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
-				cout<<"A"<<endl;
+				//cout<<"A"<<endl;
 				while(com != 'F')
 				{
 					myReadFile>>node>>edge;
@@ -122,36 +127,44 @@ int main(int argc, char const *argv[])
 						queriesnum++;
 						if(graph.search(node,edge))
 							continue;
-						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-						cc.InsertNewEdge(node,edge, &updatenum);
+						if(prev_com)
+							version++;
+						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
+						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
+						cc.InsertNewEdge(node,edge, &updatenum, version);
+						prev_com=false;
 					}
 					else if(com == 'Q')
 					{
 						queriesnum++;
-						Job job(&graph, NULL, NULL, &cc, node, edge, 1, order, isstatic);
+						Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic,0);
 						if(job.order >= js.get_resultsize())
+						{
+							//cout<<job.order<<" < "<<js.get_resultsize()<<endl;
 							js.increase();
+						}
+						//cout<<"a"<<endl;
 						js.submit_job(job);
 						order++;
+						prev_com=true;
 					}
-					/*
-					if(updatenum > 500)
-					{
-						cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
-						cc.rebuild(&graph);
-						updatenum=0;
-						queriesnum=0;
-					}*/
-
+					js.wait_all_jobs();
 					myReadFile>>com;
+					//sleep(1);
+					//cout<<"Order: "<<order<<endl;
+					js.print_results();
+					//js.reset_results();
+					order=0;
 				}
+<<<<<<< HEAD
 				cout<<"B"<<endl;
 				myReadFile>>com;
 				//sleep(1);
 				js.print_results();
 				//js.reset_results();
 				order=0;
+=======
+>>>>>>> origin/master
 			}
 		}
 		else
@@ -168,7 +181,11 @@ int main(int argc, char const *argv[])
 			//grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			cerr<<"Grail Ready"<<endl;
 			myReadFile>>com;
+<<<<<<< HEAD
 			JobScheduler js(8);
+=======
+			JobScheduler js(5);
+>>>>>>> origin/master
 			while(!myReadFile.eof())
 			{
 				stop_threads=1;
@@ -184,7 +201,11 @@ int main(int argc, char const *argv[])
 					myReadFile>>node>>edge;
 					//cout<<com;
 					//cout<<" Input: "<<node<<" "<<edge<<endl;
+<<<<<<< HEAD
 					Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic);
+=======
+					Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic,0);
+>>>>>>> origin/master
 					if(job.order >= js.get_resultsize())
 					{
 						//cout<<job.order<<" < "<<js.get_resultsize()<<endl;

@@ -3,17 +3,94 @@
 #include <cstdlib>
 #include <string.h>
 using namespace std;
-#define ALSIZE 20
+#define JOBSIZE 256
+//////////////////////////////////////////////////////////////
+Jobs::Jobs()
+{
+	for(int i=0;i<JOBS_NUMBER;i++)
+	{
+		valid_job[i]=false;
+	}
+	jobs_counter=0;
+}
+
+Job Jobs::getJob(int i)
+{
+	valid_job[i]=false;
+	return jobs[i];
+}
+
+bool Jobs::isValid(int i)
+{
+	return valid_job[i];
+}
+
+void Jobs::initializeJobs()
+{
+	for(int i=0;i<JOBS_NUMBER;i++)
+	{
+		valid_job[i]=false;
+	}
+	jobs_counter=0;
+}
+
+void Jobs::setJob(int i,Job job)
+{
+	jobs[i].setJob(job);
+	valid_job[i]=true;
+	jobs_counter++;
+}
+
+void Jobs::setJobs()
+{
+	for(int i=0;i<JOBS_NUMBER;i++)
+	{
+		valid_job[i]=false;
+	}
+}
+
+void Jobs::copyJobs(Jobs jobs_)
+{
+	for(int i=0;i<JOBS_NUMBER;i++)
+	{
+		jobs[i].setJob(jobs_.getJob(i));
+		valid_job[i]=jobs_.isValid(i);
+	} 
+}
+
+int Jobs::getJobsCounter()
+{
+	return jobs_counter;
+}
+void Jobs::setJobsCounterZero()
+{
+	jobs_counter=0;
+}
+void Jobs::incJobsCounter()
+{
+	jobs_counter++;
+}
+void Jobs::decJobsCounter()
+{
+	jobs_counter--;
+}
+void Jobs::setInValid(int i)
+{
+	valid_job[i]=false;
+}
+////////////////////////////////////////////////////////////
 JobList::JobList()
 {
-	array=(Job *)malloc(sizeof(Job)*ALSIZE);
-	if(array==NULL)
-		cout<<ALSIZE<<endl;
+	array=(Jobs*)malloc(sizeof(Jobs)*JOBSIZE);
+	assert(array!=NULL);
+	for(int i=0;i<JOBSIZE;i++)
+	{
+		array[i].initializeJobs();
+	}
 	head=0;
 	elements=0;
-	size=ALSIZE;
+	size=JOBSIZE;
 	back=0;
-	//cout<<"S"<<back<<endl;
 }
 
 JobList::~JobList()
@@ -22,70 +99,60 @@ JobList::~JobList()
 }
 void JobList::Insert(Job job)
 {
-	//cout<<"olo"<<endl;
-	///cout<<"S1"<<back<<endl;
-	//cout<<size<<""<<back<<endl;
 	if(back==size)
 	{
 		DoubleSize();
 	}
-	//memcpy((Job)array[back], (Job)job, sizeof(Job));
-	array[back]=job;
-	//cout<<"Insert: "<<array[back].source<<endl;
-	back++;
+
+	int pos = elements % JOBS_NUMBER;
+	array[back].setJob(pos,job);
 	elements++;
+	if (pos == JOBS_NUMBER-1)
+		back++;
 }
 
-Job* JobList::pop()
+Jobs* JobList::pop()
 {
-	//Job* job;
-	//job->source = array[head].source;
-	//job->target = array[head].target;
-	//job->kind = array[head].kind;
-	//memcpy(&array[head], &job, sizeof(Job));
-	//job=array[head];
-	//Job job(array[head].source, array[head].target, array[head].kind);
-	//cout<<"Remove: "<<job->source<<endl;
 	if(empty())
 	{
 		cerr<<"Queue is empty!"<<endl;
-		return NULL;
+		exit(0);
 	}
 	return &array[head];
 }
 
 void JobList::remove()
 {
+	//cerr<<"elements = "<<elements<<" head= "<<head<<" back = "<<back<<endl;
+	elements-=JOBS_NUMBER;
 	head++;
-	elements--;
 }
 
 bool JobList::empty()
 {
-	return head==back;
-}
-uint32_t JobList::get_size()
-{
-	return back-head;
+	//cerr<<"elements = "<<elements<<" head= "<<head<<" back = "<<back<<endl;
+	return (head>=back && elements<=0);
 }
 
 void JobList::DoubleSize()
 {
-	if(size > 50000)
-	{
-		size=(uint32_t)size*3/2;
-		array=(Job*)realloc(array,sizeof(Job)*size);
-		assert(array!=NULL);
-		return;
-	}
-
 	size=size*2;
-	array=(Job*)realloc(array,sizeof(Job)*size);
+	cerr<< "ROPALO2"<< size << endl;
+	array=(Jobs*)realloc(array,sizeof(Jobs)*size);
 	assert(array!=NULL);
+	for(int i=size/2;i<size;i++)
+	{
+		array[i].initializeJobs();
+	}
+	
 }
 
 void JobList::Set()
 {
+	for(int i=0;i<JOBSIZE;i++)
+	{
+		array[i].initializeJobs();
+	}
 	head=0;
 	back=0;
 	elements=0;

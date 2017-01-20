@@ -1,8 +1,11 @@
 #include "JobScheduler.h"
 #include <iostream>
 extern int thread_flag;
+<<<<<<< HEAD
 extern int stop_threads;
 
+=======
+>>>>>>> origin/master
 using namespace std;
 #define RESULTSIZE 1024
 JobScheduler::JobScheduler(uint32_t size_)
@@ -84,6 +87,7 @@ void JobScheduler::reset_results()
 void JobScheduler::submit_job(Job job)
 {
     queue->Insert(job);
+<<<<<<< HEAD
     pthread_mutex_lock(&mylock);
     counter++;
     pthread_mutex_unlock(&mylock);
@@ -93,6 +97,14 @@ void JobScheduler::wait_all_jobs()
 {	
 	pthread_mutex_lock(&mtx);
 	stop_threads = 0;
+=======
+    counter++;
+}
+
+void JobScheduler::wait_all_jobs()
+{
+	pthread_mutex_lock(&mtx);
+>>>>>>> origin/master
 	pthread_cond_signal(&cond_nonempty);
 	pthread_mutex_unlock(&mtx);
 	pthread_mutex_lock(&mylock);
@@ -109,27 +121,46 @@ void* JobScheduler::execute_all_jobs()
 	{
 		jobs=NULL;
 		pthread_mutex_lock(&mtx);
+<<<<<<< HEAD
 			while(queue->empty() || stop_threads)
 				pthread_cond_wait(&cond_nonempty,&mtx);
+=======
+			while(queue->empty())
+				pthread_cond_wait(&cond_nonempty,&mtx);
+			cerr<<"ropalo"<<endl;
+>>>>>>> origin/master
 		    jobs=queue->pop();
 		    queue->remove();
 		if(!queue->empty())
 			pthread_cond_signal(&cond_nonempty);
 	    pthread_mutex_unlock(&mtx);
+<<<<<<< HEAD
 
 	    for(int i=0;i<JOBS_NUMBER;i++)
 	    {
 	    	 if(jobs->isValid(i)==false)
 	    	 {	//cerr<<"ropalo2"<<endl;
+=======
+	    cerr<<"ropalo"<<jobs<<endl;
+	    for(int i=0;i<JOBS_NUMBER;i++)
+	    {
+	    	 if(jobs->isValid(i)==false)
+	    	 {	cerr<<"ropalo2"<<endl;
+>>>>>>> origin/master
 	    	 	break;
 	    	 }
 	    	 	
 	    	 int re=jobs->getJob(i).run();
+<<<<<<< HEAD
+=======
+	    	 cerr << "Result"<<re<<endl;
+>>>>>>> origin/master
 	    	 results[jobs->getJob(i).getOrder()] = re;
 	    	 jobs->setInValid(i);
 	    }
 	   
 	    pthread_mutex_lock(&mylock);
+<<<<<<< HEAD
 		    counter-=JOBS_NUMBER;
 		  	jobs->setJobsCounterZero();
 		    if(counter<=0)
@@ -137,6 +168,14 @@ void* JobScheduler::execute_all_jobs()
 		    	counter=0;
 				pthread_cond_signal(&non_done);
 			}
+=======
+	    	cerr<<"ropalo3"<<endl;
+		    counter-=JOBS_NUMBER;
+		    jobs->setJobsCounterZero();
+		    if(counter<=0)
+		    	counter=0;
+				pthread_cond_signal(&non_done);
+>>>>>>> origin/master
 	    pthread_mutex_unlock(&mylock);
 	   
    	}
@@ -145,8 +184,12 @@ void* JobScheduler::execute_all_jobs()
 
 void JobScheduler::print_results()
 {
+<<<<<<< HEAD
 	pthread_mutex_lock(&mylock);
 	//cerr<< results_size<<"------------------------------"<<endl;
+=======
+	cerr<< results_size<<"------------------------------"<<endl;
+>>>>>>> origin/master
 	for(int i=0; i< results_size; i++)
 	{
 		//cout<<"i="<<i<<" size="<<results_size<<endl;
@@ -156,6 +199,10 @@ void JobScheduler::print_results()
 		results[i]=-2;
 	}
 	queue->Set();
+<<<<<<< HEAD
 	//cerr<<"------------------------------"<<endl;
 	pthread_mutex_unlock(&mylock);
+=======
+	cerr<<"------------------------------"<<endl;
+>>>>>>> origin/master
 }

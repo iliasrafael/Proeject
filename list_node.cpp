@@ -31,10 +31,13 @@ void list_node::setLastNeighbor(uint32_t neighbor){
 	last_neighbor=neighbor;
 }
 ////////////////////////////////////////////////////
-bool list_node::Insert(uint32_t id)
+bool list_node::Insert(uint32_t id, int vers)
 {
 	if(last_neighbor<N)
-		neighbor[last_neighbor++]=id;
+	{
+		neighbor[last_neighbor]=id;
+		edgeProperty[last_neighbor++]=vers;
+	}
 	else
 		return false;
 	return true;
