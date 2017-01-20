@@ -15,47 +15,68 @@ GrailIndex::GrailIndex(uint32_t size)
 	}
 }
 
+GrailInfo::GrailInfo()
+{
+	visited=false;
+	from=-1;
+	count=0;
+}
+bool GrailInfo::getVisited()
+{
+	return visited;
+}
+void GrailInfo::setVisited(bool visited_)
+{
+	visited=visited_;
+}
+int GrailInfo::getFrom()
+{
+	return from;
+}
+void GrailInfo::setFrom(int from_)
+{
+	from=from_;
+}
+uint32_t GrailInfo::getCount()
+{
+	return count;
+}
+void GrailInfo::raiseCount()
+{
+	count++;
+}
+
+
 void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 {
 	int offset;
 	uint32_t curr = 0;
 	int last;
 	Stack stack;
-	bool *visited;
-	visited=(bool*)malloc(sizeof(bool)*size);
 	uint32_t r = 1;
 	uint32_t mr = 1;
 	uint32_t* neigh;
-	int* from;
-	uint32_t* count;
-	from=(int*)malloc(sizeof(int)*size);
-	count=(uint32_t*)malloc(sizeof(uint32_t)*size);
-	for(uint32_t i=0; i<size; i++)
-	{
-		visited[i]=false;
-		from[i]=-1;
-		count[i]=0;
-	}
+	GrailInfo * grailinfo=new GrailInfo[size];
 	list_node * cells;
 	uint32_t head;
 	uint32_t prev;
 
-	for(uint32_t j=0; j<size; j++)
+	for(int j=0; j<size; j++)
 	{
-		if(visited[j] == true)
+		if(grailinfo[j].getVisited() == true)
 			continue;
 
 		stack.add(j);
-		visited[j] = true;
+		grailinfo[j].setVisited(true);
 		last=j;
 
 		while(1)
 		{
-			if(count[last] < graph->getOutIndex()->getCount(last))
+			if(grailinfo[last].getCount() < graph->getOutIndex()->getCount(last))
 			{
 				offset = graph->getOutIndex()->getPosition(last);
 				cells=graph->getOutBuffer()->getListNode(offset);
-				int pos=count[last]/N;
+				int pos = grailinfo[last].getCount()/N;
 				offset=cells->getOffset();
 				int metr=0;
 				while(metr<pos)
@@ -65,13 +86,13 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 					metr++;
 				}
 				neigh=cells->getNeighbors();
-				curr=neigh[count[last]%N];
-				count[last]++;
-				if(visited[curr] == false)
+				curr=neigh[grailinfo[last].getCount()%N];
+				grailinfo[last].raiseCount();
+				if(grailinfo[curr].getVisited() == false)
 				{
 					stack.add(curr);
-					visited[curr] = true;
-					from[curr]=last;
+					grailinfo[curr].setVisited(true);
+					grailinfo[curr].setFrom(last);
 					last=curr;
 				}
 			}
@@ -84,21 +105,19 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 				min_rank[head] = find_min(head, graph);
 				r++;
 				prev=head;
-				last = from[head];
-				/*
-				cout<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				cout<<"ID :"<<head<<" [ "<<min_rank[head]<<" , "<<rank[head]<<" ]"<<endl;
-				cout<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				*/
+				last = grailinfo[head].getFrom();
+				
+				//cerr<<"~~~~~~~~~~~~~~~~~~"<<endl;
+				//cerr<<"ID :"<<head<<" [ "<<min_rank[head]<<" , "<<rank[head]<<" ]"<<endl;
+				//cerr<<"~~~~~~~~~~~~~~~~~~"<<endl;
+				
 				if(last == -1)
 					break;
 			}
 
 		}
 	}
-	free(visited);
-	free(from);
-	free(count);
+	delete []grailinfo;
 }
 
 uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
@@ -106,28 +125,31 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph)
 	uint32_t min=rank[node_id];
 	int offset = graph->getOutIndex()->getPosition(node_id);
 	//cout<<"OFFSET: "<<offset<<endl;
-	if(offset == -1)
-		return min;
-
-	list_node * cells = graph->getOutBuffer()->getListNode(offset);
-	uint32_t* neighbors = cells->getNeighbors();
-
-	
-	for(int j = 0; j<cells->getLastNeighbor(); j++)
+	if(offset != -1)
 	{
-		if(min_rank[neighbors[j]] < min)
-			min = min_rank[neighbors[j]];
-	}
-	offset = cells->getOffset();
-	while(offset != -1) {
-		neighbors = graph->getOutBuffer()->getListNode(offset)->getNeighbors();
-		for(int j = 0; j<graph->getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
+		list_node * cells = graph->getOutBuffer()->getListNode(offset);
+		uint32_t* neighbors = cells->getNeighbors();
+
+		
+		for(int j = 0; j<cells->getLastNeighbor(); j++)
 		{
 			if(min_rank[neighbors[j]] < min)
 				min = min_rank[neighbors[j]];
 		}
-		offset = graph->getOutBuffer()->getListNode(offset)->getOffset();
+		offset = cells->getOffset();
+		while(offset != -1) {
+			neighbors = graph->getOutBuffer()->getListNode(offset)->getNeighbors();
+			for(int j = 0; j<graph->getOutBuffer()->getListNode(offset)->getLastNeighbor(); j++)
+			{
+				if(min_rank[neighbors[j]] < min)
+					min = min_rank[neighbors[j]];
+			}
+			offset = graph->getOutBuffer()->getListNode(offset)->getOffset();
+		}
+		
 	}
+	
+	
 	return min;
 }
 

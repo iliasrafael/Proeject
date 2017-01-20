@@ -8,7 +8,8 @@
 #include "SCC.h"
 #include "GrailIndex.h"
 #include "CC.h"
-
+int thread_flag=1;
+int stop_threads=1;
 using namespace std;
 
 int main(int argc, char const *argv[])
@@ -24,20 +25,21 @@ int main(int argc, char const *argv[])
 		cerr << ">4 for Medium Static File" << endl;
 		cerr << ">5 for Large Dynamic File" << endl;
 		cerr << ">6 for Large Static File" << endl;
+		cerr << ">7 for Example File" << endl;
 		cin >> option;	
 	}
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("tinyGraph.txt");
+		myReadFile.open("tiny/tinyGraph.txt");
 	else if(option==2)
-		myReadFile.open("smallGraph.txt");
+		myReadFile.open("small/smallGraph.txt");
 	else if(option==3 || option==4)
 		myReadFile.open("medium/mediumGraph.txt");
 	else if(option==6 || option==5)
 		myReadFile.open("large.txt");
 	else if(option==7)
-		myReadFile.open("example.txt");
+		myReadFile.open("small/example.txt");
 	time_t now = time(NULL),end;
    	char* currtime = ctime(&now);
    	cerr << "Started at: " << currtime;
@@ -72,19 +74,19 @@ int main(int argc, char const *argv[])
 
 	
 	if(option==1)
-		myReadFile.open("tinyWorkload_FINAL.txt");
+		myReadFile.open("tiny/tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("smallWorkload_FINAL.txt");
+		myReadFile.open("small/smallWorkload_FINAL.txt");
 	else if(option==3)
-		myReadFile.open("mediumWorkload_FINAL.txt");
+		myReadFile.open("medium/mediumWorkload_FINAL.txt");
 	else if(option==4)
-		myReadFile.open("mediumWorkload_static_FINAL.txt");
+		myReadFile.open("medium/mediumWorkload_static_FINAL.txt");
 	else if(option==5)
 		myReadFile.open("largeWorkload_6000_20.txt");
 	else if(option==6)
 		myReadFile.open("largeWorkload_48000_40.txt");
 	else if(option==7)
-		myReadFile.open("exampleWorkload.txt");
+		myReadFile.open("small/exampleWorkload.txt");
 		
 	char com;
 	char r[9];
@@ -106,7 +108,7 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-			JobScheduler js(5);
+			JobScheduler js(1);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
@@ -148,7 +150,7 @@ int main(int argc, char const *argv[])
 				myReadFile>>com;
 				//sleep(1);
 				js.print_results();
-				js.reset_results();
+				//js.reset_results();
 				order=0;
 			}
 		}
@@ -157,18 +159,19 @@ int main(int argc, char const *argv[])
 			isstatic = true;
 
 			cerr<<"SCC_Search: "<<endl;
-			SCC scc = graph.SCC_Search();
-			Graph hypergraph;
+			//SCC scc = graph.SCC_Search();
+			//Graph hypergraph;
 			cerr<<"Building HyperGraph . . . "<< endl;
-			hypergraph.creation(&scc,&graph);
+			//hypergraph.creation(&scc,&graph);
 			cerr<<"Running Grail . . ."<<endl;
-			GrailIndex grailindex(scc.getComponentCount()+1);
-			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
+			//GrailIndex grailindex(scc.getComponentCount()+1);
+			//grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
 			cerr<<"Grail Ready"<<endl;
-			JobScheduler js(5);
 			myReadFile>>com;
+			JobScheduler js(8);
 			while(!myReadFile.eof())
 			{
+				stop_threads=1;
 				while(com != 'F')
 				{
 					
@@ -181,7 +184,7 @@ int main(int argc, char const *argv[])
 					myReadFile>>node>>edge;
 					//cout<<com;
 					//cout<<" Input: "<<node<<" "<<edge<<endl;
-					Job job(&graph, &scc, &grailindex, NULL, node, edge, 1, order, isstatic);
+					Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic);
 					if(job.order >= js.get_resultsize())
 					{
 						//cout<<job.order<<" < "<<js.get_resultsize()<<endl;
@@ -193,21 +196,21 @@ int main(int argc, char const *argv[])
 					//cout<<"Order: "<<order<<endl;
 					myReadFile>>com;
 				}
+				js.wait_all_jobs();
 				myReadFile>>com;
 				//sleep(1);
 				//cout<<"Order: "<<order<<endl;
 				js.print_results();
-				js.reset_results();
+				//js.reset_results();
 				order=0;
 			}
-
 		}
 
 	}
-
+	myReadFile.close();
 	end = time(NULL);
    	currtime = ctime(&end);
-
+   	thread_flag=0;
    	cerr << "Finished at: " << currtime;
    	cerr << "After running for: "<< end-now<<"secs." <<endl;
 	return 0;

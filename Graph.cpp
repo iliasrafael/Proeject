@@ -149,8 +149,8 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 	bool result;
 	if(start==target)
 		return 0;
-	inc_oura.Set();
-	out_oura.Set();
+	ArrayList inc_oura;
+	ArrayList out_oura;
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
 	x1=start/100;

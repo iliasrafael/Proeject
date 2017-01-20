@@ -22,4 +22,20 @@ public:
 	uint32_t getminrank(uint32_t i);
 };
 
+class GrailInfo
+{
+	bool visited;
+	int from;
+	uint32_t count;
+
+public:
+	GrailInfo();
+	bool getVisited();
+	void setVisited(bool visited);
+	int getFrom();
+	void setFrom(int from);
+	uint32_t getCount();
+	void raiseCount();
+};
+
 #endif
