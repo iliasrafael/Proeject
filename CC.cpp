@@ -138,14 +138,14 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 	}
 
 }
-int CC::check(uint32_t id,uint32_t id2, int vers)
+int CC::check(uint32_t id,uint32_t id2)
 {	
 	//cerr << "NodeId1 = " << id << "ComponentId1 = " << ccindex[id] << endl;
 	//cerr << "NodeId2 = " << id2 << "ComponentId2 = " << ccindex[id2] << endl;
 	if(ccindex[id]==ccindex[id2])
 		return 1;
 	else  
-		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL,vers);
+		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL,0);
 }
 
 void CC::rebuild(Graph * graph)

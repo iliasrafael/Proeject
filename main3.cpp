@@ -53,8 +53,8 @@ int main(int argc, char const *argv[])
 				break;
 			if(graph.search(node,edge))
 				continue;
-			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,0);
+			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,0);
 		}
 	}
 	myReadFile.close();
@@ -98,6 +98,8 @@ int main(int argc, char const *argv[])
 
 	bool isstatic;
 	int order = 0;
+	int version = 0;
+	bool prev_com = false;
 
 	if(myReadFile.is_open()){
 		myReadFile>>r;
@@ -122,18 +124,22 @@ int main(int argc, char const *argv[])
 						queriesnum++;
 						if(graph.search(node,edge))
 							continue;
-						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+						if(prev_com)
+							version++;
+						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
+						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
 						cc.InsertNewEdge(node,edge, &updatenum);
+						prev_com=false;
 					}
 					else if(com == 'Q')
 					{
 						queriesnum++;
-						Job job(&graph, NULL, NULL, &cc, node, edge, 1, order, isstatic);
+						Job job(&graph, NULL, NULL, &cc, node, edge, 1, order, isstatic, version);
 						if(job.order >= js.get_resultsize())
 							js.increase();
 						js.submit_job(job);
 						order++;
+						prev_com=true;
 					}
 					/*
 					if(updatenum > 500)
@@ -152,6 +158,7 @@ int main(int argc, char const *argv[])
 				js.print_results();
 				//js.reset_results();
 				order=0;
+				prev_com=false;
 			}
 		}
 		else
@@ -184,7 +191,7 @@ int main(int argc, char const *argv[])
 					myReadFile>>node>>edge;
 					//cout<<com;
 					//cout<<" Input: "<<node<<" "<<edge<<endl;
-					Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic);
+					Job job(&graph, NULL, NULL, NULL, node, edge, 1, order, isstatic,0);
 					if(job.order >= js.get_resultsize())
 					{
 						//cout<<job.order<<" < "<<js.get_resultsize()<<endl;

@@ -28,7 +28,7 @@ Buffer* Graph::getIncBuffer()
 }
 
 //////////////////////////////////////////////////////////////////////////////
-bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
+bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2, int vers)
 {	
 	if(id == id2)
 		return true;
@@ -41,17 +41,17 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 	{
 		if(last>=buffer->getSize())
 			buffer->reallocation();
-		int offset=buffer->InsertFirstNode(id2);
+		int offset=buffer->InsertFirstNode(id2, vers);
 		index->InsertNode(id,offset);
 	}
 	else
 	{
 		int position = index->getPosition(id);
-		bool res=buffer->getListNode(position)->Insert(id2);
+		bool res=buffer->getListNode(position)->Insert(id2, vers);
 		if(res==false)
 			if(index->getLastBucket(id)!=0)
 			{
-				res=buffer->getListNode(index->getLastBucket(id))->Insert(id2);
+				res=buffer->getListNode(index->getLastBucket(id))->Insert(id2, vers);
 			}
 		if(res==false)
 		{
@@ -64,7 +64,7 @@ bool Graph::Insert(NodeIndex *index,Buffer *buffer, uint32_t id,uint32_t id2)
 			else if(buffer->getListNode(index->getLastBucket(id))->getOffset()==-1)
 				buffer->getListNode(index->getLastBucket(id))->setOffset(last);
 			index->setLastBucket(id,last);
-			buffer->getListNode(last)->Insert(id2);
+			buffer->getListNode(last)->Insert(id2, vers);
 			buffer->setLast(last+1);
 		}
 	}
@@ -126,8 +126,11 @@ void visited_del(uint32_t **visited,int sqr)
 	free(visited);
 }
 
-int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailIndex * grailindex)
+int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailIndex * grailindex, int version)
 {
+	ArrayList inc_oura;
+	ArrayList out_oura;
+
 	int visited_size;
 	uint32_t x1,y1;
 	int scc_target;
@@ -149,8 +152,8 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 	bool result;
 	if(start==target)
 		return 0;
-	ArrayList inc_oura;
-	ArrayList out_oura;
+	inc_oura.Set();
+	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
 	x1=start/100;
@@ -171,7 +174,7 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 			visited[x1][i]=0;
 	}
 	visited[x1][y1]=1;
-	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target))
+	if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target, version))
 	{
 		visited_del(visited,sqr);
 		return count;
@@ -180,14 +183,14 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 	{	
 		if(out_oura.get_size()<inc_oura.get_size())
 		{
-			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target))
+			if(Update(out_index,out_buffer,count,out_oura,1,visited,scc,scc_flag,scc_target,grailindex,target, version))
 			{
 				visited_del(visited,sqr);
 				return count;
 			}
 		}
 		else{
-			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_flag,scc_target,grailindex,start))
+			if(Update(inc_index,inc_buffer,count,inc_oura,2,visited,scc,scc_flag,scc_target,grailindex,start, version))
 			{
 				visited_del(visited,sqr);
 				return count;
@@ -199,7 +202,7 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 }
 
 //////////////////////////////////////////////////////////////////////////////
-bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex * grailindex,int target)
+bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex * grailindex,int target, int version)
 {
 
 	uint32_t off;
@@ -222,6 +225,8 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				neigh=cells->getNeighbors();
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
+					if(version < cells->getProperties()[i])
+						continue;
 					if(scc_flag && scc->findSCCid(neigh[i])!=scc_target)
 						continue;
 					if(grailindex!=NULL)
@@ -236,7 +241,6 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 							if(grailindex->isReachableGrailIndex(target,neigh[i],scc)==0)
 								continue;
 						}
-						
 					}
 					x=neigh[i]/100;
 					y=neigh[i]%100;
@@ -459,13 +463,13 @@ SCC Graph::SCC_Search()
 	delete []table;
 	return scc;
 }
-int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node)
+/*int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node)
 {
 	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
 		return -1;
 	else
 		return BBFS(source_node,target_node,scc,true,NULL);
-}
+}*/
 
 
 void Graph::creation(SCC *scc,Graph * graph)
@@ -492,8 +496,8 @@ void Graph::creation(SCC *scc,Graph * graph)
 					uint32_t target=scc->findSCCid(neigh[y]);
 					if(target!=i)
 					{
-						Insert(getOutIndex(),getOutBuffer(),i,target);
-						Insert(getIncIndex(),getIncBuffer(),target,i);
+						Insert(getOutIndex(),getOutBuffer(),i,target,0);
+						Insert(getIncIndex(),getIncBuffer(),target,i,0);
 					}
 				}
 				off=cells->getOffset();
