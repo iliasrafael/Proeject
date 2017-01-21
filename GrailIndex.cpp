@@ -20,6 +20,7 @@ GrailInfo::GrailInfo()
 	visited=false;
 	from=-1;
 	count=0;
+	next_off=-1;
 }
 bool GrailInfo::getVisited()
 {
@@ -45,7 +46,14 @@ void GrailInfo::raiseCount()
 {
 	count++;
 }
-
+int GrailInfo::getNext_off()
+{
+	return next_off;
+}
+void GrailInfo::setNext_off(int off)
+{
+	next_off=off;
+}
 
 void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 {
@@ -60,6 +68,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 	list_node * cells;
 	uint32_t head;
 	uint32_t prev;
+	int next_off=-1;
 
 	for(int j=0; j<size; j++)
 	{
@@ -74,19 +83,34 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 		{
 			if(grailinfo[last].getCount() < graph->getOutIndex()->getCount(last))
 			{
-				offset = graph->getOutIndex()->getPosition(last);
-				cells=graph->getOutBuffer()->getListNode(offset);
-				int pos = grailinfo[last].getCount()/N;
-				offset=cells->getOffset();
-				int metr=0;
-				while(metr<pos)
+				//offset = graph->getOutIndex()->getPosition(last);
+				//cells=graph->getOutBuffer()->getListNode(offset);
+				//int pos = grailinfo[last].getCount()/N;
+				//offset=cells->getOffset();
+				//int metr=0;
+				/*while(metr<pos)
 				{	
 					cells=graph->getOutBuffer()->getListNode(offset);
 					offset=cells->getOffset();
 					metr++;
+				}*/
+				//cerr<<"--->"<<metr<<endl;
+
+				
+				if(grailinfo[last].getNext_off() == -1)
+				{
+					offset = graph->getOutIndex()->getPosition(last);
+					cells=graph->getOutBuffer()->getListNode(offset);
+					neigh=cells->getNeighbors();
+					curr=neigh[grailinfo[last].getCount()%N];
 				}
-				neigh=cells->getNeighbors();
-				curr=neigh[grailinfo[last].getCount()%N];
+				else
+				{
+					cells=graph->getOutBuffer()->getListNode(grailinfo[last].getNext_off());
+					neigh=cells->getNeighbors();
+					curr=neigh[grailinfo[last].getCount()%N];
+				}
+				
 				grailinfo[last].raiseCount();
 				if(grailinfo[curr].getVisited() == false)
 				{
@@ -94,6 +118,11 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size)
 					grailinfo[curr].setVisited(true);
 					grailinfo[curr].setFrom(last);
 					last=curr;
+				}
+
+				if(grailinfo[last].getCount()%N == 0)
+				{
+					grailinfo[last].setNext_off(cells->getOffset());
 				}
 			}
 			else

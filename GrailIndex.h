@@ -27,6 +27,7 @@ class GrailInfo
 	bool visited;
 	int from;
 	uint32_t count;
+	int next_off;
 
 public:
 	GrailInfo();
@@ -36,6 +37,8 @@ public:
 	void setFrom(int from);
 	uint32_t getCount();
 	void raiseCount();
+	void setNext_off(int off);
+	int getNext_off();
 };
 
 #endif
