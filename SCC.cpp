@@ -143,6 +143,7 @@ InfoTable::InfoTable()
 	//defined=false;
 	count=0;
 	from=-1;
+	next_off=-1;
 }
 /*bool InfoTable::IsDefined()
 {
@@ -199,4 +200,12 @@ uint32_t InfoTable::getIndex()
 int InfoTable::getFrom()
 {
 	return from;
+}
+int InfoTable::getNext_off()
+{
+	return next_off;
+}
+void InfoTable::setNext_off(int off)
+{
+	next_off = off;
 }

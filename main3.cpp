@@ -129,7 +129,7 @@ int main(int argc, char const *argv[])
 							version++;
 						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
 						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
-						cc.InsertNewEdge(node,edge, &updatenum, version);
+						cc.InsertNewEdge(node,edge, &updatenum, 0);
 						prev_com=false;
 					}
 					else if(com == 'Q')

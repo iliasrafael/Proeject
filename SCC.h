@@ -48,6 +48,8 @@ class InfoTable
 	bool on_stack;
 	uint32_t count;
 	int from;
+	int next_off;
+
 	public:
 	InfoTable();
 	void stacked();
@@ -62,6 +64,8 @@ class InfoTable
 	uint32_t getLowLink();
 	uint32_t getIndex();
 	int getFrom();
+	int getNext_off();
+	void setNext_off(int off);
 };
 
 #endif

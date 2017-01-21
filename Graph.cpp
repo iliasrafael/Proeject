@@ -362,7 +362,9 @@ SCC Graph::SCC_Search()
 	InfoTable * table=new InfoTable[visited_size];
 	uint32_t index=1;
 	uint32_t last;
-	int off;
+	int offset=-1;
+	uint32_t current=0;
+
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 
@@ -386,22 +388,43 @@ SCC Graph::SCC_Search()
 			{
 				//cout<<"Last : "<<last<<endl;
 				//cout<<table[last].getCount()<<" < "<<out_index.getCount(last)<<endl;
-				off=out_index.getPosition(last);
+				//off=out_index.getPosition(last);
 				//cout<<"Last: "<<last<<"Offset: "<<off<<endl;
-				cells=out_buffer.getListNode(off);
-				int pos=table[last].getCount()/N;
-				off=cells->getOffset();
-				int metr=0;
-				while(metr<pos)
+				//cells=out_buffer.getListNode(off);
+				//int pos=table[last].getCount()/N;
+				//off=cells->getOffset();
+				//int metr=0;
+				/*while(metr<pos)
 				{	
 					cells=out_buffer.getListNode(off);
 					off=cells->getOffset();
 					metr++;
+				}*/
+				//neigh=cells->getNeighbors();
+				//uint32_t current=neigh[table[last].getCount()%N];
+				//table[last].AddCount();
+
+				if(table[last].getNext_off() == -1)
+				{
+					offset = getOutIndex()->getPosition(last);
+					cells = getOutBuffer()->getListNode(offset);
+					neigh = cells->getNeighbors();
+					current = neigh[table[last].getCount()%N];
 				}
-				neigh=cells->getNeighbors();
-				uint32_t current=neigh[table[last].getCount()%N];
+				else
+				{
+					cells = getOutBuffer()->getListNode(table[last].getNext_off());
+					neigh = cells->getNeighbors();
+					current = neigh[table[last].getCount()%N];
+				}
+
 				table[last].AddCount();
 
+				if(table[last].getCount()%N == 0)
+				{
+					table[last].setNext_off(cells->getOffset());
+				}
+				
 				if(table[current].getIndex() == 0)
 				{
 					table[current].setFrom((int)last);
@@ -421,6 +444,8 @@ SCC Graph::SCC_Search()
 					else
 						table[last].setLowLink(table[current].getIndex());
 				}
+
+				
 			}
 			else
 			{

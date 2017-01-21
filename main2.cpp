@@ -45,8 +45,8 @@ int main(void)
 				break;
 			if(graph.search(node,edge))
 				continue;
-			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
+			graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,0);
+			graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,0);
 		}
 	}
 	myReadFile.close();
@@ -101,16 +101,16 @@ int main(void)
 					queriesnum++;
 					if(graph.search(node,edge))
 						continue;
-					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge);
-					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node);
-					cc.InsertNewEdge(node,edge, &updatenum);
+					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,0);
+					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,0);
+					cc.InsertNewEdge(node,edge, &updatenum,0);
 				}
 				if(com=='Q')
 				{	 
 					queriesnum++;
 					check = cc.check(node,edge);
 					if( check >= 0)
-						cout<<graph.BBFS(node,edge,NULL,false,NULL)<<endl;
+						cout<<graph.BBFS(node,edge,NULL,false,NULL,0)<<endl;
 					else
 						cout<<"-1"<<endl;		
 				}
@@ -143,12 +143,12 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='Q')
 				{
-					uint32_t a = scc.findSCCid(node);
-					uint32_t b = scc.findSCCid(edge);
+					//uint32_t a = scc.findSCCid(node);
+					//uint32_t b = scc.findSCCid(edge);
 					if(grailindex.isReachableGrailIndex(node,edge,&scc)==1)
-						cout<<graph.BBFS(node,edge,&scc,false,&grailindex)<<endl;
+						cout<<graph.BBFS(node,edge,&scc,false,&grailindex,0)<<endl;
 					else if(grailindex.isReachableGrailIndex(node,edge,&scc)==2)
-						cout<<graph.BBFS(node,edge,&scc,true,NULL)<<endl;
+						cout<<graph.BBFS(node,edge,&scc,true,NULL,0)<<endl;
 					else 
 						cout<<"-1"<<endl;
 				}
