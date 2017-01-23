@@ -19,7 +19,7 @@ public:
 	int UpdateIndex(int componentId1,int componentId2, int vers);
 	void CCSearch(Graph* graph);
 	void CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura);
-	int check(uint32_t id,uint32_t id2);
+	int check(uint32_t id,uint32_t id2, int vers);
 	void rebuild(Graph*);
 	void CCDoubleSize();
 	void InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count, int vers);

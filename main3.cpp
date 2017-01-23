@@ -110,12 +110,13 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-			JobScheduler js(3);
+			JobScheduler js(5);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
 				//cout<<"A"<<endl;
 				stop_threads=1;
+				cerr<<"AAA"<<endl;
 				while(com != 'F')
 				{
 					myReadFile>>node>>edge;
@@ -129,7 +130,7 @@ int main(int argc, char const *argv[])
 							version++;
 						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
 						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
-						cc.InsertNewEdge(node,edge, &updatenum, 0);
+						cc.InsertNewEdge(node,edge, &updatenum, version);
 						prev_com=false;
 					}
 					else if(com == 'Q')
@@ -142,14 +143,14 @@ int main(int argc, char const *argv[])
 						order++;
 						prev_com=true;
 					}
-					/*
-					if(updatenum > 500)
+					
+					if(updatenum > 1000)
 					{
 						cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 						cc.rebuild(&graph);
 						updatenum=0;
 						queriesnum=0;
-					}*/
+					}
 
 					myReadFile>>com;
 				}
@@ -161,6 +162,7 @@ int main(int argc, char const *argv[])
 				//js.reset_results();
 				order=0;
 				prev_com=false;
+				cerr<<"BBB"<<endl;
 			}
 		}
 		else
