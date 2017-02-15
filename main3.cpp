@@ -161,8 +161,8 @@ int main(int argc, char const *argv[])
 			Graph hypergraph;
 			hypergraph.creation(&scc,&graph);
 			GrailIndex grailindex(scc.getComponentCount()+1);
-			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,0);
-			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,1);
+			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1,0);
+			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1,1);
 
 			myReadFile>>com;
 			JobScheduler js(8);

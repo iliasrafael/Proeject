@@ -129,15 +129,15 @@ int main(void)
 		}
 		else
 		{
-			cerr<<"SCC_Search: "<<endl;
+
 			SCC scc = graph.SCC_Search();
 			Graph hypergraph;
-			cerr<<"Building HyperGraph . . . "<< endl;
+
 			hypergraph.creation(&scc,&graph);
-			cerr<<"Running Grail . . ."<<endl;
+
 			GrailIndex grailindex(scc.getComponentCount()+1);
-			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,0);
-			cerr<<"Grail Ready"<<endl;
+			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1,0);
+
 			while(!myReadFile.eof())
 			{
 				myReadFile>>com;

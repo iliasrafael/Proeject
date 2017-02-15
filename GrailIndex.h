@@ -14,7 +14,6 @@ public:
 	GrailIndex(uint32_t size_);
 	~GrailIndex();
 	void buildGrailIndex(Graph* graph, uint32_t size,int flag);
-	void buildGrailIndex22(Graph* graph, uint32_t size,int flag);
 	uint32_t find_min(uint32_t node_id, Graph* graph,int flag);
 	int isReachableGrailIndex(uint32_t source, uint32_t target,SCC* scc);
 	void setrank(uint32_t r, uint32_t i,int flag);

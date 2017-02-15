@@ -14,7 +14,6 @@ GrailIndex::GrailIndex(uint32_t size)
 			rank[i][j]=0;
 			min_rank[i][j]=0;
 		}
-
 	}
 }
 
@@ -56,89 +55,6 @@ int GrailInfo::getNext_off()
 void GrailInfo::setNext_off(int off)
 {
 	next_off=off;
-}
-
-void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
-{
-	int offset;
-	uint32_t curr = 0;
-	int last;
-	Stack stack;
-	uint32_t r = 1;
-	uint32_t mr = 1;
-	uint32_t* neigh;
-	GrailInfo * grailinfo=new GrailInfo[size];
-	list_node * cells;
-	uint32_t head;
-	uint32_t prev;
-	int next_off=-1;
-
-	for(int j=0; j<size; j++)
-	{
-		if(grailinfo[j].getVisited() == true)
-		{
-			continue;
-		}
-
-		stack.add(j);
-		grailinfo[j].setVisited(true);
-		last=j;
-
-		while(1)
-		{
-			if(grailinfo[last].getCount() < graph->getOutIndex()->getCount(last))
-			{
-
-				
-				if(grailinfo[last].getNext_off() == -1)
-				{
-					offset = graph->getOutIndex()->getPosition(last);
-					cells=graph->getOutBuffer()->getListNode(offset);
-					neigh=cells->getNeighbors();
-					curr=neigh[grailinfo[last].getCount()%N];
-
-				}
-				else
-				{
-					cells=graph->getOutBuffer()->getListNode(grailinfo[last].getNext_off());
-					neigh=cells->getNeighbors();
-					curr=neigh[grailinfo[last].getCount()%N];
-				}
-				
-				grailinfo[last].raiseCount();
-
-				if(grailinfo[curr].getVisited() == false)
-				{
-					stack.add(curr);
-					grailinfo[curr].setVisited(true);
-					grailinfo[curr].setFrom(last);
-					last=curr;
-				}
-
-				if(grailinfo[last].getCount()%N == 0)
-				{
-					grailinfo[last].setNext_off(cells->getOffset());
-				}
-			}
-			else
-			{
-
-				if(stack.empty())
-					break;
-				head = stack.pop();
-				rank[flag][head] = r;
-				min_rank[flag][head] = find_min(head, graph,flag);
-				r++;
-				prev=head;
-				last = grailinfo[head].getFrom();
-			
-				if(last == -1)
-					break;
-			}
-
-		}
-	}
-	delete []grailinfo;
 }
 
 uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph,int flag)
@@ -222,7 +138,7 @@ GrailIndex::~GrailIndex()
 		
 }
 
-void GrailIndex::buildGrailIndex22(Graph* graph, uint32_t size,int flag)
+void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 {
 	int offset;
 	int start=0;
