@@ -9,6 +9,11 @@ GrailIndex::GrailIndex(uint32_t size)
 		assert(rank!=NULL);
 		min_rank[i] = (uint32_t *)malloc(sizeof(uint32_t)*size);
 		assert(min_rank!=NULL);
+		for(int j=0; j<size; j++)
+		{
+			rank[i][j]=0;
+			min_rank[i][j]=0;
+		}
 
 	}
 }
