@@ -145,8 +145,7 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='Q')
 				{
-					//uint32_t a = scc.findSCCid(node);
-					//uint32_t b = scc.findSCCid(edge);
+
 					if(grailindex.isReachableGrailIndex(node,edge,&scc)==1)
 						cout<<graph.BBFS(node,edge,&scc,false,&grailindex,0)<<endl;
 					else if(grailindex.isReachableGrailIndex(node,edge,&scc)==2)
