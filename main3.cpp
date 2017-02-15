@@ -31,11 +31,11 @@ int main(int argc, char const *argv[])
 
 	ifstream myReadFile;
 	if(option==1)
-		myReadFile.open("tiny/tinyGraph.txt");
+		myReadFile.open("tinyGraph.txt");
 	else if(option==2)
-		myReadFile.open("small/smallGraph.txt");
+		myReadFile.open("smallGraph.txt");
 	else if(option==3 || option==4)
-		myReadFile.open("medium/mediumGraph.txt");
+		myReadFile.open("mediumGraph.txt");
 	else if(option==6 || option==5)
 		myReadFile.open("large.txt");
 	else if(option==7)
@@ -74,13 +74,13 @@ int main(int argc, char const *argv[])
 
 	
 	if(option==1)
-		myReadFile.open("tiny/tinyWorkload_FINAL.txt");
+		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("small/smallWorkload_FINAL.txt");
+		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
-		myReadFile.open("medium/mediumWorkload_FINAL.txt");
+		myReadFile.open("mediumWorkload_FINAL.txt");
 	else if(option==4)
-		myReadFile.open("medium/mediumWorkload_static_FINAL.txt");
+		myReadFile.open("mediumWorkload_static_FINAL.txt");
 	else if(option==5)
 		myReadFile.open("largeWorkload_6000_20.txt");
 	else if(option==6)
@@ -110,13 +110,12 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-			JobScheduler js(5);
+			JobScheduler js(16);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
 				//cout<<"A"<<endl;
 				stop_threads=1;
-				cerr<<"AAA"<<endl;
 				while(com != 'F')
 				{
 					myReadFile>>node>>edge;
@@ -130,7 +129,14 @@ int main(int argc, char const *argv[])
 							version++;
 						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
 						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
-						cc.InsertNewEdge(node,edge, &updatenum, version);
+						cc.InsertNewEdge(node,edge, &updatenum, 0);
+						if(updatenum > 1000)
+						{
+							cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
+							cc.rebuild(&graph);
+							updatenum=0;
+							queriesnum=0;
+						}
 						prev_com=false;
 					}
 					else if(com == 'Q')
@@ -143,14 +149,14 @@ int main(int argc, char const *argv[])
 						order++;
 						prev_com=true;
 					}
-					
-					if(updatenum > 1000)
+					/*
+					if(updatenum > 500)
 					{
 						cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 						cc.rebuild(&graph);
 						updatenum=0;
 						queriesnum=0;
-					}
+					}*/
 
 					myReadFile>>com;
 				}
@@ -162,7 +168,6 @@ int main(int argc, char const *argv[])
 				//js.reset_results();
 				order=0;
 				prev_com=false;
-				cerr<<"BBB"<<endl;
 			}
 		}
 		else
@@ -176,10 +181,14 @@ int main(int argc, char const *argv[])
 			hypergraph.creation(&scc,&graph);
 			cerr<<"Running Grail . . ."<<endl;
 			GrailIndex grailindex(scc.getComponentCount()+1);
-			grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1);
+			//grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1,0);
+			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,0);
+			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,1);
+			//grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,2);
+			//grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,3);
 			cerr<<"Grail Ready"<<endl;
 			myReadFile>>com;
-			JobScheduler js(5);
+			JobScheduler js(16);
 			//cerr<<"SCC: "<<scc.findSCCid(1)<<endl;
 			while(!myReadFile.eof())
 			{

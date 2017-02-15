@@ -8,35 +8,31 @@ CC::CC(uint32_t size_)
 	assert(ccindex!=NULL);
 	for(int i=0;i<size_;i++)
 		ccindex[i]=-1;
-	updateIndex = new Graph;
+	updateIndex = new HashList(size_);
 	metricVal=0;
 	size_cc=size_;
 }
 CC::~CC()
 {
 	free(ccindex);
-	delete updateIndex;
 }
 void CC::Insert(uint32_t nodeId,uint32_t componentId)
 {
 	ccindex[nodeId]=componentId;
 }
 
-int CC::UpdateIndex(int componentId1,int componentId2, int vers)
+int CC::UpdateIndex(int componentId1,int componentId2)
 {
-	if(updateIndex->search(componentId1,componentId2))
-		return 0;
-	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId1,componentId2,vers);
-	updateIndex->Insert(updateIndex->getOutIndex(),updateIndex->getOutBuffer(),componentId2,componentId1,vers);
-	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId1,componentId2,vers);
-	updateIndex->Insert(updateIndex->getIncIndex(),updateIndex->getIncBuffer(),componentId2,componentId1,vers);
-	return 1;
+	return updateIndex->Insert(componentId1,componentId2);
 }
 
 void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count, int vers)
 {
 	if(id>size_cc || id2>size_cc)
+	{
 		CCDoubleSize();
+		updateIndex->DoubleSize();
+	}
 	if(ccindex[id]==-1 && ccindex[id2]==-1)
 	{	
 		ccindex[id]=counter;
@@ -49,7 +45,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count, int vers)
 		ccindex[id2]=ccindex[id];
 	else if(ccindex[id]!=ccindex[id2])
 	{
-			if(UpdateIndex(ccindex[id], ccindex[id2], vers))
+			if(UpdateIndex(ccindex[id], ccindex[id2]))
 				(*count)++;
 	}
 	
@@ -59,6 +55,7 @@ void CC::CCDoubleSize()
 	int temp=size_cc;
 	size_cc*=2;
 	ccindex=(int*)realloc(ccindex,size_cc*sizeof(int));
+	assert(ccindex!=NULL);
 	for(int i=temp;i<size_cc;i++)
 		ccindex[i]=-1;
 }
@@ -138,14 +135,14 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 	}
 
 }
-int CC::check(uint32_t id,uint32_t id2, int vers)
+int CC::check(uint32_t id,uint32_t id2)
 {	
 	//cerr << "NodeId1 = " << id << "ComponentId1 = " << ccindex[id] << endl;
 	//cerr << "NodeId2 = " << id2 << "ComponentId2 = " << ccindex[id2] << endl;
 	if(ccindex[id]==ccindex[id2])
 		return 1;
 	else  
-		return updateIndex->BBFS(ccindex[id],ccindex[id2],NULL,false,NULL,vers);
+		return updateIndex->Search(ccindex[id],ccindex[id2]);
 }
 
 void CC::rebuild(Graph * graph)
@@ -153,6 +150,6 @@ void CC::rebuild(Graph * graph)
 	for(int i=0;i<size_cc;i++)
 		ccindex[i]=-1;
 	delete updateIndex;
-	updateIndex = new Graph;
+	updateIndex = new HashList(size_cc);
 	CCSearch(graph);
 }

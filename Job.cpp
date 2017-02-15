@@ -75,7 +75,7 @@ int Job::run()
 	//cout<<"Runnig ..."<<endl;
 	if(!isstatic)
 	{
-		int check = cc->check(source,target,version);
+		int check = cc->check(source,target);
 		if( check >= 0)
 			return graph->BBFS(source,target,NULL,false,NULL,version);
 		else

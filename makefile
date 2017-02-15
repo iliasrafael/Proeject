@@ -1,7 +1,7 @@
-OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o main3.o SCC.o GrailIndex.o CC.o JobScheduler.o JobList.o Job.o
-OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o CC.o
-SOURCE = list_node.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main3.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp JobScheduler.cpp JobList.cpp Job.cpp
-HEADER = list_node.h Buffer.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h CC.h JobScheduler.h JobList.h Job.h
+OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o hashlist.o main3.o SCC.o GrailIndex.o CC.o JobScheduler.o JobList.o Job.o
+OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o hashlist.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o CC.o
+SOURCE = list_node.cpp hashlist.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main3.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp JobScheduler.cpp JobList.cpp Job.cpp
+HEADER = list_node.h Buffer.h hashlist.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h CC.h JobScheduler.h JobList.h Job.h
 OUT1 = out 
 OUT2 = testing
 CC = g++
@@ -29,6 +29,9 @@ Graph.o: Graph.cpp Graph.h
 
 ArrayList.o: ArrayList.cpp ArrayList.h
 	$(CC) $(FLAGS) ArrayList.cpp
+
+hashlist.o: hashlist.cpp hashlist.h
+	$(CC) $(FLAGS) hashlist.cpp
 
 Stack.o: Stack.cpp Stack.h
 	$(CC) $(FLAGS) Stack.cpp

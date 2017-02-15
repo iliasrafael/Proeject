@@ -152,7 +152,7 @@ void JobScheduler::print_results()
 		//cout<<"i="<<i<<" size="<<results_size<<endl;
 		if(results[i]==-2)
 			break;
-		cout<<results[i]<<endl;
+		printf("%d\n",results[i]);
 		results[i]=-2;
 	}
 	queue->Set();

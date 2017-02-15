@@ -3,7 +3,7 @@
 #include "Components.h"
 #include "SCC.h"
 #include "Stack.h"
-
+#define MYHASH 2000
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -142,7 +142,9 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 		visited_size=out_index.getSize();
 	else
 		visited_size=inc_index.getSize();
-	int sqr=visited_size/100+1;
+	if(start >= visited_size || target >= visited_size)
+		return -1;
+	int sqr=visited_size/MYHASH+1;
 	uint32_t ** visited;
 	visited=(uint32_t**)malloc(sizeof(uint32_t*)*(sqr));
 	for(int i=0;i<sqr;i++)
@@ -156,21 +158,21 @@ int Graph::BBFS(uint32_t start , uint32_t target,SCC *scc,bool scc_flag,GrailInd
 	out_oura.Set();
 	out_oura.Insert(start);
 	inc_oura.Insert(target);
-	x1=start/100;
-	y1=start%100;
+	x1=start/MYHASH;
+	y1=start%MYHASH;
 	if(visited[x1]==NULL)
 	{
-		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*100);
-		for(int i=0;i<100;i++)
+		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*MYHASH);
+		for(int i=0;i<MYHASH;i++)
 			visited[x1][i]=0;
 	}
 	visited[x1][y1]=2;
-	x1=target/100;
-	y1=target%100;
+	x1=target/MYHASH;
+	y1=target%MYHASH;
 	if(visited[x1]==NULL)
 	{
-		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*100);
-		for(int i=0;i<100;i++)
+		visited[x1]=(uint32_t *)malloc(sizeof(uint32_t)*MYHASH);
+		for(int i=0;i<MYHASH;i++)
 			visited[x1][i]=0;
 	}
 	visited[x1][y1]=1;
@@ -244,12 +246,12 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 								continue;
 						}
 					}
-					x=neigh[i]/100;
-					y=neigh[i]%100;
+					x=neigh[i]/MYHASH;
+					y=neigh[i]%MYHASH;
 					if(visited[x]==NULL)
 					{
-						visited[x]=(uint32_t *)malloc(sizeof(uint32_t)*100);
-						for(int i=0;i<100;i++)
+						visited[x]=(uint32_t *)malloc(sizeof(uint32_t)*MYHASH);
+						for(int i=0;i<MYHASH;i++)
 							visited[x][i]=0;
 					}
 					if(visited[x][y]==situation)
