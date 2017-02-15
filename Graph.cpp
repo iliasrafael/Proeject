@@ -389,7 +389,7 @@ int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t sou
 	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
 		return -1;
 	else
-		return BBFS(source_node,target_node,scc,true,NULL);
+		return BBFS(source_node,target_node,scc,true,NULL,0);
 }
 
 
