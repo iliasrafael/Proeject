@@ -125,7 +125,7 @@ int main(int argc, char const *argv[])
 						graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,version);
 						graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,version);
 						cc.InsertNewEdge(node,edge, &updatenum, 0);
-						if(updatenum > 1000)
+						if(updatenum > 1000 && ((double)updatenum/queriesnum)>0.3)
 						{
 							cc.rebuild(&graph);
 							updatenum=0;
