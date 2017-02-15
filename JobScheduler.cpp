@@ -45,7 +45,7 @@ JobScheduler::~JobScheduler()
 }
 void JobScheduler::increase()
 {
-	pthread_mutex_lock(&mylock);
+	
 	uint32_t s = results_size;
 	results_size = s*2;
 	 cerr<<"ROPALO "<<results_size<<endl;
@@ -56,7 +56,6 @@ void JobScheduler::increase()
     }
 
 	assert(results!=NULL);
-	pthread_mutex_unlock(&mylock);
 }
 
 
@@ -80,9 +79,7 @@ void JobScheduler::reset_results()
 void JobScheduler::submit_job(Job job)
 {
     queue->Insert(job);
-    pthread_mutex_lock(&mylock);
     counter++;
-    pthread_mutex_unlock(&mylock);
 }
 
 void JobScheduler::wait_all_jobs()
