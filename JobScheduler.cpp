@@ -48,7 +48,6 @@ void JobScheduler::increase()
 	
 	uint32_t s = results_size;
 	results_size = s*2;
-	 cerr<<"ROPALO "<<results_size<<endl;
 	results=(int*)realloc(results,sizeof(int)*results_size);
 	for(int i=s;i<results_size;i++)
     { 

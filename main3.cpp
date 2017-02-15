@@ -193,7 +193,7 @@ int main(int argc, char const *argv[])
 				js.wait_all_jobs();
 				myReadFile>>com;
 
-				js.print_results();
+				js.print_results();	
 				order=0;
 			}
 		}

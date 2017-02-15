@@ -135,7 +135,6 @@ bool JobList::empty()
 void JobList::DoubleSize()
 {
 	size=size*2;
-	cerr<< "ROPALO2"<< size << endl;
 	array=(Jobs*)realloc(array,sizeof(Jobs)*size);
 	assert(array!=NULL);
 	for(int i=size/2;i<size;i++)

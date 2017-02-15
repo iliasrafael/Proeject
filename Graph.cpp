@@ -3,7 +3,7 @@
 #include "Components.h"
 #include "SCC.h"
 #include "Stack.h"
-#define MYHASH 2000
+#define MYHASH 1000
 ///////////////////////////////////////////////////////////////////////////////
 /* GRAPH */
 ///////////////////////////////////////////////////////////////////////////////
@@ -381,7 +381,6 @@ SCC Graph::SCC_Search()
 			}
 		}
 	}
-	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 	return scc;
 }
