@@ -110,7 +110,7 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-			JobScheduler js(16);
+			JobScheduler js(12);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
@@ -149,14 +149,6 @@ int main(int argc, char const *argv[])
 						order++;
 						prev_com=true;
 					}
-					/*
-					if(updatenum > 500)
-					{
-						cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
-						cc.rebuild(&graph);
-						updatenum=0;
-						queriesnum=0;
-					}*/
 
 					myReadFile>>com;
 				}
@@ -188,7 +180,7 @@ int main(int argc, char const *argv[])
 			//grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,3);
 			cerr<<"Grail Ready"<<endl;
 			myReadFile>>com;
-			JobScheduler js(16);
+			JobScheduler js(8);
 			//cerr<<"SCC: "<<scc.findSCCid(1)<<endl;
 			while(!myReadFile.eof())
 			{

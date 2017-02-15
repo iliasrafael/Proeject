@@ -1,19 +1,29 @@
 OBJS1 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o hashlist.o main3.o SCC.o GrailIndex.o CC.o JobScheduler.o JobList.o Job.o
 OBJS2 = list_node.o Buffer.o NodeIndex.o Graph.o hashlist.o ArrayList.o Stack.o Components.o testing.o SCC.o GrailIndex.o CC.o
+OBJS3 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o hashlist.o main1.o SCC.o GrailIndex.o CC.o
+OBJS4 = list_node.o Buffer.o NodeIndex.o Graph.o ArrayList.o Stack.o Components.o hashlist.o main2.o SCC.o GrailIndex.o CC.o 
 SOURCE = list_node.cpp hashlist.cpp Buffer.cpp NodeIndex.cpp Graph.cpp ArrayList.cpp Stack.cpp Components.cpp main3.cpp testing.cpp SCC.cpp GrailIndex.cpp CC.cpp JobScheduler.cpp JobList.cpp Job.cpp
 HEADER = list_node.h Buffer.h hashlist.h NodeIndex.h Graph.h ArrayList.h Components.h Stack.h SCC.h GrailIndex.h CC.h JobScheduler.h JobList.h Job.h
 OUT1 = out 
 OUT2 = testing
+OUT3 = part1
+OUT4 = part2
 CC = g++
 FLAGS = -g -c
 
-all: $(OUT1) $(OUT2)
+all: $(OUT1) $(OUT2) $(OUT3) $(OUT4)
 
 $(OUT1): $(OBJS1)
 	$(CC) -g -pthread $(OBJS1) -o $@
 
 $(OUT2): $(OBJS2)
 	$(CC) -g $(OBJS2) -o $@
+
+$(OUT3): $(OBJS3)
+	$(CC) -g -pthread $(OBJS3) -o $@
+
+$(OUT4): $(OBJS4)
+	$(CC) -g $(OBJS4) -o $@
 
 list_node.o: list_node.cpp
 	$(CC) $(FLAGS) list_node.cpp list_node.h
@@ -50,6 +60,12 @@ Components.o: Components.cpp Components.h
 
 main3.o: main3.cpp
 	$(CC) $(FLAGS) main3.cpp
+
+main1.o: main1.cpp
+	$(CC) $(FLAGS) main1.cpp
+
+main2.o: main2.cpp
+	$(CC) $(FLAGS) main2.cpp
 
 testing.o: testing.cpp
 	$(CC) $(FLAGS) testing.cpp

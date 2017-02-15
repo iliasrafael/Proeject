@@ -13,15 +13,13 @@ using namespace std;
 int main(void)
 {	
 	int option=0;
-	while(option<1 || option>6)
+	while(option<1 || option>4)
 	{
 		cerr << ">Please choose Input File  :)"<<endl;
 		cerr << ">1 for Tiny File" << endl;
 		cerr << ">2 for Small File" << endl;
-		cerr << ">3 for Medium Dynamic File" << endl;
-		cerr << ">4 for Medium Static File" << endl;
-		cerr << ">5 for Large Dynamic File" << endl;
-		cerr << ">6 for Large Static File" << endl;
+		cerr << ">3 for Medium File" << endl;
+		cerr << ">4 for Large File" << endl;
 		cin >> option;	
 	}
 
@@ -30,10 +28,11 @@ int main(void)
 		myReadFile.open("tinyGraph.txt");
 	else if(option==2)
 		myReadFile.open("smallGraph.txt");
-	else if(option==3 || option==4)
+	else if(option==3)
 		myReadFile.open("mediumGraph.txt");
-	else if(option==6 || option==5)
+	else if(option==4)
 		myReadFile.open("large.txt");
+
 	time_t now = time(0),end;
    	char* currtime = ctime(&now);
    	cerr << "Started at: " << currtime;
@@ -70,29 +69,19 @@ int main(void)
 	if(option==1)
 		myReadFile.open("tinyWorkload_FINAL.txt");
 	else if(option==2)
-		myReadFile.open("smallWorkload.txt");
+		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
-		myReadFile.open("mediumWorkload_FINAL.txt");
-	else if(option==4)
 		myReadFile.open("mediumWorkload_static_FINAL.txt");
-	else if(option==5)
+	else if(option==4)
 		myReadFile.open("largeWorkload_6000_20.txt");
-	else if(option==6)
-		myReadFile.open("largeWorkload_48000_40.txt");
-		
+
 	char com;
-	char r[9];
+	char r[8];
 	bool kind;
-	int check;
 	if(myReadFile.is_open()){
 		myReadFile>>r;
 		if(strcmp(r,"DYNAMIC")==0)
 		{
-			kind=1;
-			uint32_t queriesnum=0;
-			uint32_t updatenum=0;
-			CC cc(size);
-			cc.CCSearch(&graph);
 			while(!myReadFile.eof())
 			{
 				myReadFile>>com;
@@ -100,44 +89,19 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='A')
 				{
-					queriesnum++;
 					if(graph.search(node,edge))
 						continue;
 					graph.Insert(graph.getOutIndex(),graph.getOutBuffer(),node,edge,0);
 					graph.Insert(graph.getIncIndex(),graph.getIncBuffer(),edge,node,0);
-					cc.InsertNewEdge(node,edge, &updatenum,0);
 				}
-				if(com=='Q')
-				{	 
-					queriesnum++;
-					check = cc.check(node,edge);
-					if( check >= 0)
+				else if(com=='Q')
+				{	
 						cout<<graph.BBFS(node,edge,NULL,false,NULL,0)<<endl;
-					else
-						cout<<"-1"<<endl;		
-				}
-				if(updatenum > 500)
-				{
-					cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
-					cc.rebuild(&graph);
-					updatenum=0;
-					queriesnum=0;
 				}
 			}
-			cerr << "UpdateNum = " << updatenum << endl;
-
 		}
 		else
 		{
-			cerr<<"SCC_Search: "<<endl;
-			SCC scc = graph.SCC_Search();
-			Graph hypergraph;
-			cerr<<"Building HyperGraph . . . "<< endl;
-			hypergraph.creation(&scc,&graph);
-			cerr<<"Running Grail . . ."<<endl;
-			GrailIndex grailindex(scc.getComponentCount()+1);
-			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,0);
-			cerr<<"Grail Ready"<<endl;
 			while(!myReadFile.eof())
 			{
 				myReadFile>>com;
@@ -145,21 +109,14 @@ int main(void)
 					myReadFile>>node>>edge;
 				if(com=='Q')
 				{
-					//uint32_t a = scc.findSCCid(node);
-					//uint32_t b = scc.findSCCid(edge);
-					if(grailindex.isReachableGrailIndex(node,edge,&scc)==1)
-						cout<<graph.BBFS(node,edge,&scc,false,&grailindex,0)<<endl;
-					else if(grailindex.isReachableGrailIndex(node,edge,&scc)==2)
-						cout<<graph.BBFS(node,edge,&scc,true,NULL,0)<<endl;
-					else 
-						cout<<"-1"<<endl;
+					cout<<graph.BBFS(node,edge,NULL,false,NULL,0)<<endl;
 				}
 			}
 		}
 	}
 	myReadFile.close();
 	
-	end = time(0);
+	end = time(0);  //<--------- Polu wraios kwdikas
    	currtime = ctime(&end);
 
    	cerr << "Finished at: " << currtime;
