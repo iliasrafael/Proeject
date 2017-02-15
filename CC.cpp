@@ -15,6 +15,7 @@ CC::CC(uint32_t size_)
 CC::~CC()
 {
 	free(ccindex);
+	delete updateIndex;
 }
 void CC::Insert(uint32_t nodeId,uint32_t componentId)
 {
