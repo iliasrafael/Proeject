@@ -123,14 +123,12 @@ Jobs* JobList::pop()
 
 void JobList::remove()
 {
-	//cerr<<"elements = "<<elements<<" head= "<<head<<" back = "<<back<<endl;
 	elements-=JOBS_NUMBER;
 	head++;
 }
 
 bool JobList::empty()
 {
-	//cerr<<"elements = "<<elements<<" head= "<<head<<" back = "<<back<<endl;
 	return (head>=back && elements<=0);
 }
 

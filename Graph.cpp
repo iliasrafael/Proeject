@@ -228,7 +228,6 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 				for(int i=0;i<cells->getLastNeighbor();i++)
 				{
 					if(version < cells->getProperties()[i]){
-						//cerr<<version<<" "<<cells->getProperties()[i]<<endl;
 						continue;
 					}
 					if(scc_flag && scc->findSCCid(neigh[i])!=scc_target)
@@ -268,86 +267,7 @@ bool Graph::Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,in
 	}
 	return false;
 }
-//////////////////////////////////////////////////////////////////////////////
-//                        END OF PART 1                                     //
-//////////////////////////////////////////////////////////////////////////////
 
-/*CC Graph::CCSearch()
-{
-	int componentId=-1;
-	uint32_t visited_size;
-	if(out_index.getSize()>inc_index.getSize())
-		visited_size=out_index.getSize();
-	else
-		visited_size=inc_index.getSize();
-	bool *visited;
-	visited=(bool*)malloc(sizeof(bool)*visited_size);
-	for(uint32_t i=0;i<visited_size;i++)
-		visited[i]=false;
-	uint32_t current_node;
-	int off;
-	CC cc(visited_size);
-	for(uint32_t i=0;i<visited_size;i++)
-	{
-		if(visited[i]==true)
-			continue;
-		if(out_index.getCount(i)<=0 && inc_index.getCount(i)<=0)
-			continue;
-		out_oura.Set();
-		componentId++;
-		visited[i]=true;
-		cc.Insert(i,componentId);
-		CC_update(i,visited);
-		while(out_oura.empty()==false)
-		{
-			current_node=out_oura.remove();
-			CC_update(current_node,visited);
-			cc.Insert(current_node,componentId);
-		}
-	}
-	cout<<"Count of Components: "<<componentId+1<<endl;
-	free(visited);
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-void Graph::CC_update(uint32_t id,bool* visited)
-{
-	int off,off2;
-	list_node * cells;
-	uint32_t* neigh;
-	off=out_index.getPosition(id);
-	while(off!=-1)
-	{
-		cells=out_buffer.getListNode(off);
-		neigh=cells->getNeighbors();
-		for(int j=0;j<cells->getLastNeighbor();j++)
-		{
-			if(visited[neigh[j]]==true)
-				continue;
-			out_oura.Insert(neigh[j]);
-			visited[neigh[j]]=true;
-		}
-		off=cells->getOffset();
-	}
-	off2=inc_index.getPosition(id);
-	while(off2!=-1)
-	{
-		cells=inc_buffer.getListNode(off2);
-		neigh=cells->getNeighbors();
-		for(int j=0;j<cells->getLastNeighbor();j++)
-		{
-			if(visited[neigh[j]]==true)
-				continue;
-			out_oura.Insert(neigh[j]);
-			visited[neigh[j]]=true;
-		}
-		off2=cells->getOffset();
-	}
-
-}*/
-
-//////////////////////////////////////////////////////////////////////////////
 SCC Graph::SCC_Search()
 {
 	uint32_t visited_size;
@@ -358,7 +278,6 @@ SCC Graph::SCC_Search()
 		visited_size=out_index.getSize();
 	else
 		visited_size=inc_index.getSize();
-	//cout<<"SIZE: " <<visited_size<<endl;
 	SCC scc(visited_size); // thelei free
 	Stack stack;
 	InfoTable * table=new InfoTable[visited_size];
@@ -370,8 +289,6 @@ SCC Graph::SCC_Search()
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 
-		////cout<<"kombos "<<i<<endl;
-		////cout<<" b"<<out_index.getPosition(i)<<endl;
 		if(table[i].getIndex() != 0 || (out_index.getPosition(i)<0 && inc_index.getPosition(i)<0))
 			continue;
 
@@ -382,29 +299,11 @@ SCC Graph::SCC_Search()
 		table[i].stacked();
 		table[i].setCount();
 		table[i].setFrom(-1);
-		//table[i].do_defined();
 		last=i;
 		while(1)
 		{	
 			if(table[last].getCount()<out_index.getCount(last))
 			{
-				//cout<<"Last : "<<last<<endl;
-				//cout<<table[last].getCount()<<" < "<<out_index.getCount(last)<<endl;
-				//off=out_index.getPosition(last);
-				//cout<<"Last: "<<last<<"Offset: "<<off<<endl;
-				//cells=out_buffer.getListNode(off);
-				//int pos=table[last].getCount()/N;
-				//off=cells->getOffset();
-				//int metr=0;
-				/*while(metr<pos)
-				{	
-					cells=out_buffer.getListNode(off);
-					off=cells->getOffset();
-					metr++;
-				}*/
-				//neigh=cells->getNeighbors();
-				//uint32_t current=neigh[table[last].getCount()%N];
-				//table[last].AddCount();
 
 				if(table[last].getNext_off() == -1)
 				{
@@ -436,7 +335,6 @@ SCC Graph::SCC_Search()
 					index++;
 					stack.add(current);
 					table[current].stacked();
-					//table[current].do_defined();
 					last=current;
 				}
 				else if(table[current].IsStacked())
@@ -451,7 +349,6 @@ SCC Graph::SCC_Search()
 			}
 			else
 			{
-				//cout<<"ELSE"<<endl;
 				if(table[last].getLowLink() == table[last].getIndex())
 				{
 					uint32_t head;
@@ -461,13 +358,11 @@ SCC Graph::SCC_Search()
 						scc.Insert(scc_id,head);
 						while(head!=last) {
 							head=stack.pop();
-							//cout<<"kefalaki "<<table[head].getFrom()<<" apo "<<head<<endl;
 							table[head].UnStacked();
 							scc.Insert(scc_id,head);
-							//counter++;
-						}  //isws dn xriazetai elegxos to evala gia to segm
+							
+						}
 						scc_id++;	
-					//}
 				}	
 				uint32_t from;
 				from=table[last].getFrom();
@@ -481,24 +376,22 @@ SCC Graph::SCC_Search()
 				}
 				else
 				{
-					//cout<<"Freeedom"<<endl;
 					break;
 				}
 			}
 		}
 	}
-	//scc.Print();
 	cout<<scc.getComponentCount()+1<<endl;
 	delete []table;
 	return scc;
 }
-/*int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node)
+int Graph::estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node)
 {
 	if(scc->findSCCid(source_node)!=scc->findSCCid(target_node))
 		return -1;
 	else
 		return BBFS(source_node,target_node,scc,true,NULL);
-}*/
+}
 
 
 void Graph::creation(SCC *scc,Graph * graph)
@@ -535,5 +428,4 @@ void Graph::creation(SCC *scc,Graph * graph)
 	}
 
 }
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+

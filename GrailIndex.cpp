@@ -10,11 +10,6 @@ GrailIndex::GrailIndex(uint32_t size)
 		min_rank[i] = (uint32_t *)malloc(sizeof(uint32_t)*size);
 		assert(min_rank!=NULL);
 
-		/*for(int j=0; j<size; j++)
-		{
-			rank[i][j]=0;
-			min_rank[i][j]=0;
-		}*/
 	}
 }
 
@@ -80,9 +75,6 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 			continue;
 		}
 
-		//if(graph->getOutIndex()->getPosition(j)<0 && graph->getIncIndex()->getPosition(j)<0)
-			//continue;
-
 		stack.add(j);
 		grailinfo[j].setVisited(true);
 		last=j;
@@ -91,7 +83,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 		{
 			if(grailinfo[last].getCount() < graph->getOutIndex()->getCount(last))
 			{
-				//cerr << "FIRST" << endl;
+
 				
 				if(grailinfo[last].getNext_off() == -1)
 				{
@@ -112,7 +104,6 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 
 				if(grailinfo[curr].getVisited() == false)
 				{
-					cerr << "FALSE" << endl;
 					stack.add(curr);
 					grailinfo[curr].setVisited(true);
 					grailinfo[curr].setFrom(last);
@@ -126,7 +117,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 			}
 			else
 			{
-				//cerr<<"ROPALO2"<<endl;
+
 				if(stack.empty())
 					break;
 				head = stack.pop();
@@ -135,11 +126,7 @@ void GrailIndex::buildGrailIndex(Graph* graph, uint32_t size,int flag)
 				r++;
 				prev=head;
 				last = grailinfo[head].getFrom();
-				
-				cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				cerr<<"ID :"<<head<<" [ "<<min_rank[flag][head]<<" , "<<rank[flag][head]<<" ]"<<endl;
-				cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				
+			
 				if(last == -1)
 					break;
 			}
@@ -153,7 +140,6 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph,int flag)
 {
 	uint32_t min=rank[flag][node_id];
 	int offset = graph->getOutIndex()->getPosition(node_id);
-	//cout<<"OFFSET: "<<offset<<endl;
 	if(offset != -1)
 	{
 		list_node * cells = graph->getOutBuffer()->getListNode(offset);
@@ -175,18 +161,15 @@ uint32_t GrailIndex::find_min(uint32_t node_id, Graph* graph,int flag)
 			}
 			offset = graph->getOutBuffer()->getListNode(offset)->getOffset();
 		}
-		
 	}
-	
 	
 	return min;
 }
 
 int GrailIndex::isReachableGrailIndex(uint32_t source, uint32_t target,SCC* scc)
 {
-	//cerr<<"sourceId: "<<source<<endl;
+
 	uint32_t sourceSccId = scc->findSCCid(source);
-	//cerr<<"sourceSccId: "<<sourceSccId<<endl;
 	uint32_t targetSccId = scc->findSCCid(target);
 
 	if( sourceSccId == targetSccId )
@@ -231,130 +214,9 @@ GrailIndex::~GrailIndex()
 		free(rank[i]);
 		free(min_rank[i]);
 	}
-
-	//free(rank);
-	//free(min_rank);
 		
 }
 
-/*void GrailIndex::buildGrailIndex22(Graph* graph, uint32_t size,int flag)
-{
-	int offset;
-	uint32_t curr = 0;
-	int last;
-	Stack stack;
-	uint32_t r = 1;
-	uint32_t mr = 1;
-	uint32_t* neigh;
-	GrailInfo * grailinfo=new GrailInfo[size];
-	list_node * cells;
-	uint32_t head;
-	uint32_t prev;
-	int next_off=-1;
-	int jj=-1;
-	for(int j=0; j<size; j++)
-	{
-		if(j==size)
-		{
-			j=0;
-			size=jj;
-		}
-		if(jj==-1)
-		{
-			while(j<size)
-			{
-				j++;
-				if(graph->getIncIndex()->getPosition(j)<0)
-				{	jj=j;
-					break;
-				}
-			}
-		}
-		if(grailinfo[j].getVisited() == true)
-		{
-			//cerr<<"ROPALO"<<endl;
-			continue;
-		}
-
-		//if(graph->getOutIndex()->getPosition(j)<0 && graph->getIncIndex()->getPosition(j)<0)
-			//continue;
-
-		stack.add(j);
-		grailinfo[j].setVisited(true);
-		last=j;
-
-		while(1)
-		{
-			if(grailinfo[last].getCount() < graph->getOutIndex()->getCount(last))
-			{
-				//offset = graph->getOutIndex()->getPosition(last);
-				//cells=graph->getOutBuffer()->getListNode(offset);
-				//int pos = grailinfo[last].getCount()/N;
-				//offset=cells->getOffset();
-				//int metr=0;
-				/*while(metr<pos)
-				{	
-					cells=graph->getOutBuffer()->getListNode(offset);
-					offset=cells->getOffset();
-					metr++;
-				}
-				//cerr<<"--->"<<metr<<endl;
-
-				
-				if(grailinfo[last].getNext_off() == -1)
-				{
-					offset = graph->getOutIndex()->getPosition(last);
-					cells=graph->getOutBuffer()->getListNode(offset);
-					neigh=cells->getNeighbors();
-					curr=neigh[grailinfo[last].getCount()%N];
-
-				}
-				else
-				{
-					cells=graph->getOutBuffer()->getListNode(grailinfo[last].getNext_off());
-					neigh=cells->getNeighbors();
-					curr=neigh[grailinfo[last].getCount()%N];
-				}
-				
-				grailinfo[last].raiseCount();
-
-				if(grailinfo[curr].getVisited() == false)
-				{
-					//cerr<<"ROPALO11"<<endl;
-					stack.add(curr);
-					grailinfo[curr].setVisited(true);
-					grailinfo[curr].setFrom(last);
-					last=curr;
-				}
-
-				if(grailinfo[last].getCount()%N == 0)
-				{
-					grailinfo[last].setNext_off(cells->getOffset());
-				}
-			}
-			else
-			{
-				if(stack.empty())
-					break;
-				head = stack.pop();
-				rank[flag][head] = r;
-				min_rank[flag][head] = find_min(head, graph,flag);
-				r++;
-				prev=head;
-				last = grailinfo[head].getFrom();
-				
-				/*cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				cerr<<"ID :"<<head<<" [ "<<min_rank[flag][head]<<" , "<<rank[flag][head]<<" ]"<<endl;
-				cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				
-				if(last == -1)
-					break;
-			}
-
-		}
-	}
-	delete []grailinfo;
-}*/
 void GrailIndex::buildGrailIndex22(Graph* graph, uint32_t size,int flag)
 {
 	int offset;
@@ -429,7 +291,6 @@ void GrailIndex::buildGrailIndex22(Graph* graph, uint32_t size,int flag)
 
 				if(grailinfo[curr].getVisited() == false)
 				{
-					//cerr << "FALSE2" << endl;
 					stack.add(curr);
 					grailinfo[curr].setVisited(true);
 					grailinfo[curr].setFrom(last);
@@ -450,11 +311,7 @@ void GrailIndex::buildGrailIndex22(Graph* graph, uint32_t size,int flag)
 				min_rank[flag][head] = find_min(head, graph,flag);
 				r++;
 				prev=head;
-				last = grailinfo[head].getFrom();
-				
-				/*cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;
-				cerr<<"ID :"<<head<<" [ "<<min_rank[flag][head]<<" , "<<rank[flag][head]<<" ]"<<endl;
-				cerr<<"~~~~~~~~~~~~~~~~~~"<<flag<<"~~~~~~~~~~~~~~~~~~"<<endl;*/
+				last = grailinfo[head].getFrom();	
 				
 				if(last == -1)
 					break;

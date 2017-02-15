@@ -10,10 +10,6 @@ JobScheduler::JobScheduler(uint32_t size_)
 	size=size_;
 	workers = (pthread_t*)malloc(sizeof(pthread_t)*size);
 	assert(workers!=NULL);
-	//mut = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t)*size);
-    //for(int i=0;i<size;i++)
-        //pthread_mutex_init(&mut[i],0);	//attribute?
-	//mtx = (pthread_mutex_t)malloc(sizeof(pthread_mutex_t));
 
 	pthread_mutex_init(&mtx, NULL);
 	pthread_mutex_init(&mut,NULL);
@@ -104,7 +100,7 @@ void JobScheduler::wait_all_jobs()
 void* JobScheduler::execute_all_jobs()
 {
 	Jobs* jobs;
-	//cout<<"execute_all_jobs"<<endl;
+
 	while(thread_flag)
 	{
 		jobs=NULL;
@@ -120,7 +116,7 @@ void* JobScheduler::execute_all_jobs()
 	    for(int i=0;i<JOBS_NUMBER;i++)
 	    {
 	    	 if(jobs->isValid(i)==false)
-	    	 {	//cerr<<"ropalo2"<<endl;
+	    	 {	
 	    	 	break;
 	    	 }
 	    	 	
@@ -146,16 +142,16 @@ void* JobScheduler::execute_all_jobs()
 void JobScheduler::print_results()
 {
 	pthread_mutex_lock(&mylock);
-	//cerr<< results_size<<"------------------------------"<<endl;
+
 	for(int i=0; i< results_size; i++)
 	{
-		//cout<<"i="<<i<<" size="<<results_size<<endl;
+
 		if(results[i]==-2)
 			break;
 		printf("%d\n",results[i]);
 		results[i]=-2;
 	}
 	queue->Set();
-	//cerr<<"------------------------------"<<endl;
+
 	pthread_mutex_unlock(&mylock);
 }

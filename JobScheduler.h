@@ -30,8 +30,6 @@ public:
 	static void* send_wrapper(void* object)
 	{
 		return ((JobScheduler*)object)->execute_all_jobs();
-	    //static_cast<JobScheduler*>(object)->execute_all_jobs();
-	    //return 0;
 	}
 
 	uint32_t get_resultsize();

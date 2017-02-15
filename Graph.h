@@ -28,7 +28,7 @@ public:
 	bool Update(NodeIndex &index,Buffer &buffer,int &count,ArrayList &oura,int situation,uint32_t ** visited,SCC *scc,bool scc_flag,int scc_target,GrailIndex *grailindex,int target, int version);
 	bool search(uint32_t id,uint32_t id2);
 	SCC SCC_Search();
-	//int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
+	int estimateShortestPathStronglyConnectedComponents(SCC *scc,uint32_t source_node, uint32_t target_node);
 	void creation(SCC *scc,Graph *graph);
 };
 

@@ -37,7 +37,7 @@ void CC::InsertNewEdge(uint32_t id,uint32_t id2, uint32_t *count, int vers)
 	{	
 		ccindex[id]=counter;
 		ccindex[id2]=counter;
-		counter++;//isws lathos
+		counter++;
 	}
 	else if(ccindex[id]==-1)
 		ccindex[id]=ccindex[id2];
@@ -74,7 +74,7 @@ void CC::CCSearch(Graph* graph)
 		visited[i]=false;
 	uint32_t current_node;
 	int off;
-	CC cc(visited_size);
+	//CC cc(visited_size);
 	for(uint32_t i=0;i<visited_size;i++)
 	{
 		if(visited[i]==true)
@@ -93,7 +93,7 @@ void CC::CCSearch(Graph* graph)
 			Insert(current_node,componentId);
 		}
 	}
-	//cout<<"Count of Components: "<<componentId+1<<endl;
+
 	counter=componentId+1;
 	free(visited);
 }
@@ -137,8 +137,6 @@ void CC::CC_update(Graph* graph,uint32_t id,bool* visited,ArrayList* out_oura)
 }
 int CC::check(uint32_t id,uint32_t id2)
 {	
-	//cerr << "NodeId1 = " << id << "ComponentId1 = " << ccindex[id] << endl;
-	//cerr << "NodeId2 = " << id2 << "ComponentId2 = " << ccindex[id2] << endl;
 	if(ccindex[id]==ccindex[id2])
 		return 1;
 	else  
