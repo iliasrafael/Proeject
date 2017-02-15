@@ -71,7 +71,7 @@ int main(void)
 	else if(option==2)
 		myReadFile.open("smallWorkload_FINAL.txt");
 	else if(option==3)
-		myReadFile.open("mediumWorkload_static_FINAL.txt");
+		myReadFile.open("mediumWorkload_FINAL.txt");
 	else if(option==4)
 		myReadFile.open("largeWorkload_6000_20.txt");
 

@@ -91,11 +91,6 @@ int main(int argc, char const *argv[])
 	char com;
 	char r[9];
 
-	//Job job(1,2,0);
-	//JobScheduler js(5);
-	//js.submit_job(job);
-
-
 	bool isstatic;
 	int order = 0;
 	int version = 0;
@@ -110,7 +105,7 @@ int main(int argc, char const *argv[])
 			uint32_t updatenum=0;
 			CC cc(size);
 			cc.CCSearch(&graph);
-			JobScheduler js(12);
+			JobScheduler js(8);
 			myReadFile>>com;
 			while(!myReadFile.eof())
 			{
@@ -132,7 +127,6 @@ int main(int argc, char const *argv[])
 						cc.InsertNewEdge(node,edge, &updatenum, 0);
 						if(updatenum > 1000)
 						{
-							cerr<<"rebuilding.. "<<updatenum<<" "<<queriesnum<<endl;
 							cc.rebuild(&graph);
 							updatenum=0;
 							queriesnum=0;
@@ -153,11 +147,8 @@ int main(int argc, char const *argv[])
 					myReadFile>>com;
 				}
 				js.wait_all_jobs();
-				//cout<<"B"<<endl;
 				myReadFile>>com;
-				//sleep(1);
 				js.print_results();
-				//js.reset_results();
 				order=0;
 				prev_com=false;
 			}
@@ -166,22 +157,15 @@ int main(int argc, char const *argv[])
 		{
 			isstatic = true;
 
-			cerr<<"SCC_Search: "<<endl;
 			SCC scc = graph.SCC_Search();
 			Graph hypergraph;
-			cerr<<"Building HyperGraph . . . "<< endl;
 			hypergraph.creation(&scc,&graph);
-			cerr<<"Running Grail . . ."<<endl;
 			GrailIndex grailindex(scc.getComponentCount()+1);
-			//grailindex.buildGrailIndex(&hypergraph, scc.getComponentCount()+1,0);
 			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,0);
 			grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,1);
-			//grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,2);
-			//grailindex.buildGrailIndex22(&hypergraph, scc.getComponentCount()+1,3);
-			cerr<<"Grail Ready"<<endl;
+
 			myReadFile>>com;
 			JobScheduler js(8);
-			//cerr<<"SCC: "<<scc.findSCCid(1)<<endl;
 			while(!myReadFile.eof())
 			{
 				stop_threads=1;
@@ -195,26 +179,21 @@ int main(int argc, char const *argv[])
 						continue;
 					}
 					myReadFile>>node>>edge;
-					//cout<<com;
-					//cout<<" Input: "<<node<<" "<<edge<<endl;
 					Job job(&graph, &scc, &grailindex, NULL, node, edge, 1, order, isstatic,0);
 					if(job.order >= js.get_resultsize())
 					{
-						//cout<<job.order<<" < "<<js.get_resultsize()<<endl;
+						
 						js.increase();
 					}
-					//cout<<"a"<<endl;
+
 					js.submit_job(job);
 					order++;
-					//cout<<"Order: "<<order<<endl;
 					myReadFile>>com;
 				}
 				js.wait_all_jobs();
 				myReadFile>>com;
-				//sleep(1);
-				//cout<<"Order: "<<order<<endl;
+
 				js.print_results();
-				//js.reset_results();
 				order=0;
 			}
 		}
