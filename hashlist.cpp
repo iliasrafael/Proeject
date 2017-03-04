@@ -52,6 +52,8 @@ bool HashList::Insert(uint32_t start,uint32_t target)
 }
 bool HashList::Search(uint32_t start,uint32_t target)
 {
+	if(start > my_size || target > my_size)
+		return false;
 	if(start < target)
 	{
 		if(List[start]!=NULL)
@@ -75,4 +77,9 @@ void HashList::DoubleSize()
 	assert(List!=NULL);
 	for(uint32_t i=my_size/2;i<my_size;i++)
 		List[i]=NULL;
+	for(uint32_t i=0;i<my_size/2;i++)
+	{
+		if(List[i]!=NULL)
+			List[i]=(bool*)realloc(List[i],my_size*sizeof(bool));
+	}
 }
